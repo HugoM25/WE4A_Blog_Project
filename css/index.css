@@ -1,13 +1,53 @@
+:root {
+    --background-color: #3e3e45;  
+}
+
+.main-layout {
+    display: grid;
+    grid-template-areas: 
+        "trends search search search options"
+        "trends posts-feed posts-feed posts-feed options"
+        "trends posts-feed posts-feed posts-feed options";
+    grid-template-columns: 0.4fr 0.1fr 0.2fr 0.1fr 0.4fr;
+    grid-template-rows: 0.1fr 1fr 0.1fr;
+    gap: 10px;
+
+    min-width: 100vw;
+    min-height: 100vh;
+
+    background-color: var(--background-color);
+}
+
+.trends {
+    grid-area: trends;
+}
+
+.search {
+    grid-area: search;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+.options {
+    grid-area: options;
+}
 .posts-feed {
+    grid-area: posts-feed;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
     gap: 10px;
-    width: 40%;
-    margin: auto;
-    max-height: 100vh;
+    max-height: 90vh;
     overflow-y: scroll;
 }
-.posts-feed::-webkit-scrollbar{
-    display: none;
+
+.posts-feed::-webkit-scrollbar {
+    width: 0px;
 }
