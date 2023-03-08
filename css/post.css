@@ -173,8 +173,24 @@ html, body {
     filter: invert(48%) sepia(95%) saturate(982%) hue-rotate(79deg) brightness(122%) contrast(127%);
 }
 
+.post > .footer > .action.blue:hover > img {
+    background-color: rgba(0,0,255,0.2);
+    filter: invert(36%) sepia(96%) saturate(1493%) hue-rotate(188deg) brightness(100%) contrast(87%);    
+}
+.post > .footer > .action.yellow:hover > img {
+    background-color: rgba(255,255,0,0.2);
+    filter: invert(99%) sepia(100%) saturate(4239%) hue-rotate(354deg) brightness(110%) contrast(105%);
+}
+
+.post > .footer > .action.blue:hover > p {
+    color: rgb(88, 166, 230);
+}
+
+.post > .footer > .action.yellow:hover > p {
+    color: yellow;
+}
 .post > .footer > .action.red:hover > p {
-    color: red;
+    color: rgb(248, 34, 34);
 }
 
 .post > .footer > .action.green:hover > p {
