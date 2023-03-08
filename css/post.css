@@ -14,8 +14,8 @@ html, body {
 }
 
 .post {
-    --background-color : #000000;
-    --text-color : #ffffff;
+    --background-color : #050a0f;
+    --text-color : #BFDBF7;
 
     width: 100%;
 
@@ -32,8 +32,7 @@ html, body {
     font-family: 'Montserrat', sans-serif;
 
     padding: 10px;
-    border-radius: 8px;
-
+    border: solid 1px var(--text-color);
     gap: 10px;
 }
 

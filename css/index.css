@@ -1,5 +1,5 @@
 :root {
-    --background-color: #3e3e45;  
+    --background-color: #050a0f;  
 }
 
 .main-layout {
@@ -36,14 +36,17 @@
 
 .options {
     grid-area: options;
+
+    display: flex;
+    flex-direction: column;
 }
+
 .posts-feed {
     grid-area: posts-feed;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    gap: 10px;
     max-height: 90vh;
     overflow-y: scroll;
 }
