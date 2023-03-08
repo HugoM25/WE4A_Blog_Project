@@ -1,0 +1,13 @@
+.posts-feed {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    width: 50%;
+    margin: auto;
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+.posts-feed::-webkit-scrollbar{
+    display: none;
+}

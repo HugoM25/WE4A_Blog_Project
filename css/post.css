@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700'); 
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.post {
+    --background-color : #000000;
+    --text-color : #ffffff;
+
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-areas:
+        "post-profile post-header"
+        "post-profile post-content"
+        "post-profile post-footer";
+
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.post:hover {
+    cursor: pointer;
+}
+.post > .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 5px 0px 5px 0px;
+    grid-area: post-header;
+}
+
+.post > .content {
+    grid-area: post-content;
+    padding: 5px 0px 5px 0px;
+}
+
+.post > .footer {
+    grid-area: post-footer;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+.post > .profile {
+    grid-area: post-profile;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.post > .profile > img {
+    width: auto;
+    height:100px;
+    border-radius: 50%;
+}
+
+.post > .header > .user-name {
+    font-weight: bold;
+}
+
+.post > .header > .user-id {
+    font-size: 0.8em;
+}
+
+.post > .header > .post-date {
+    font-size: 0.8em;
+} 
+
+.post > .footer > .action > img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding: 10%;
+    filter: invert(100%) sepia(1%) saturate(12%) hue-rotate(317deg) brightness(104%) contrast(100%);
+    transition: background-color 0.2s;
+}
+
+.post > .footer > .action > p {
+    font-size: 0.8em;
+    transition: color 0.2s;
+}
+
+.post > .footer > .action {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.post > .footer > .action.red:hover > img {
+    background-color: rgba(255,0,0,0.2);
+    filter: invert(13%) sepia(79%) saturate(7446%) hue-rotate(6deg) brightness(110%) contrast(119%);
+}
+.post > .footer > .action.green:hover > img {
+    background-color: rgba(0,255,0,0.2);
+    filter: invert(48%) sepia(95%) saturate(982%) hue-rotate(79deg) brightness(122%) contrast(127%);
+}
+
+.post > .footer > .action.red:hover > p {
+    color: red;
+}
+
+.post > .footer > .action.green:hover > p {
+    color: rgb(7, 255, 7);
+}
+    
+
