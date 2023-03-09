@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: row;
-    width: 50%;
+    width: 80%;
 }
 
 .search-field > input {
