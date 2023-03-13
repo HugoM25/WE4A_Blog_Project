@@ -5,14 +5,13 @@
     <link rel="stylesheet" href="css/post.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/search.css">
+    <script src="js/searchOptions.js" charset="utf-8" defer></script>
+    <meta charset="UTF-8">
 </head>
 <body>
     <div class="main-layout">
 
         <div class="trends">
-            <div>
-                <h2>Trends for you</h2>
-            </div>
         </div>
 
         <div class="search">
@@ -23,22 +22,22 @@
                 </button>
             </div>
             <div class="feed-selection">
-                <button>
+                <button class="feed-option-button">
                     <span>
                         Latest
                     </span>
                 </button>
-                <button>
+                <button class="feed-option-button">
                     <span>
                         Top
                     </span>
                 </button>
-                <button class="active">
+                <button class="feed-option-button active">
                     <span>
                         Photos
                     </span>
                 </button>
-                <button>
+                <button class="feed-option-button">
                     <span>
                         Text
                     </span>
@@ -49,7 +48,7 @@
         <div class="options">
         </div>
 
-        <div class="posts-feed">
+        <div class="posts-feed" id="feed">
             <div class="post">
                 <div class="profile">
                     <img src="images/default_pic.jpg" alt="Profile Picture">
@@ -60,7 +59,7 @@
                     <p class="post-date"> 14h </p>
                 </div>
                 <div class="content">
-                    <p>Description of the post. This post is cool. You can say everything you want... I guess 👍</p>
+                    <p>Description of the post. This post is cool. You can say everything you want... I guess 🤮</p>
                 </div>
                 <div class="footer">
                     <button class="action red">
