@@ -29,9 +29,13 @@ $allow_text = $_GET['allow_text'];
 
 
 // Create the query to get the most liked posts
-$sql = "SELECT post_id, content,likes,repost, author_id, time, image_path FROM userpost"."ORDER BY likes DESC LIMIT 5";
+$sql = 'SELECT post_id, content,likes,repost, author_id, time, image_path FROM userpost ORDER BY likes DESC LIMIT '.$nb;
 
-
+// Create query that adds a where clause to the query if the allow_text parameter is 0
+if ($allow_image == 1 && $allow_text == 0) {
+  $sql = 'SELECT post_id, content,likes,repost, author_id, time, image_path FROM userpost WHERE image_path != "" ORDER BY likes DESC LIMIT '.$nb;
+}
+echo $sql;
 $result = $conn->query($sql);
 
 

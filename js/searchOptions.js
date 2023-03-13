@@ -25,7 +25,7 @@ function setNewButtonActive(indexButtonActive) {
     retrievePostCategory(indexButtonActive);
 }
 
-function retrievePostCategory(){
+function retrievePostCategory(indexButtonActive){
 
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
@@ -33,6 +33,16 @@ function retrievePostCategory(){
             document.getElementById("feed").innerHTML = this.responseText;
         }
     };
-    xmlhttp.open("GET", "php/getpostcategory.php?nb=10", true);
+    feed_request_type_1 = "php/getpostcategory.php?nb=10&allow_image=1&allow_text=0";
+    feed_request_type_2 = "php/getpostcategory.php?nb=10&allow_image=1&allow_text=1";
+    if (indexButtonActive == 0) {
+        xmlhttp.open("GET", feed_request_type_1, true);
+    }
+    else if (indexButtonActive == 1) {
+        xmlhttp.open("GET", feed_request_type_2, true);
+    }
+    else {
+        xmlhttp.open("GET", feed_request_type_1, true);
+    }
     xmlhttp.send();
 }
