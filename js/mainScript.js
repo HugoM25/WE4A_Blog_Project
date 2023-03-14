@@ -1,3 +1,8 @@
+// Import the functions from interactionHandler.js
+import { SetButtonsFunctionality } from "./interactionHandler.js";
+import { retrievePost } from "./postLoader.js";
+
+
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("feed-option-button");
 
@@ -22,27 +27,34 @@ function setNewButtonActive(indexButtonActive) {
     document.getElementById("feed").innerHTML = "";
 
     // Fill the post feed with the new posts
-    retrievePostCategory(indexButtonActive);
-}
-
-function retrievePostCategory(indexButtonActive){
-
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("feed").innerHTML = this.responseText;
-        }
-    };
-    feed_request_type_1 = "php/getpostcategory.php?nb=10&allow_image=1&allow_text=0";
-    feed_request_type_2 = "php/getpostcategory.php?nb=10&allow_image=1&allow_text=1";
+    var reqObj = {nb : 10, allow_image : 1, allow_text : 1};
     if (indexButtonActive == 0) {
-        xmlhttp.open("GET", feed_request_type_1, true);
+        reqObj = {
+            nb: 10,
+            allow_image: 1,
+            allow_text: 1
+        };
+    } else if (indexButtonActive == 1) {
+        reqObj = {
+            nb: 10,
+            allow_image: 1,
+            allow_text: 0
+        };
+    } else if (indexButtonActive == 2) {
+        reqObj = {
+            nb: 10,
+            allow_image: 0,
+            allow_text: 1
+        };
     }
-    else if (indexButtonActive == 1) {
-        xmlhttp.open("GET", feed_request_type_2, true);
-    }
-    else {
-        xmlhttp.open("GET", feed_request_type_1, true);
-    }
-    xmlhttp.send();
+
+    retrievePost(reqObj)
+    .then(function(responseText) {
+        document.getElementById('feed').innerHTML = responseText;
+        SetButtonsFunctionality();
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
 }
+

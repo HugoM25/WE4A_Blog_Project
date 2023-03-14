@@ -34,8 +34,23 @@ function calculate_time($time_post, $new_time) {
     }
 }
 
+function format_nb($number) {
+    if ($number < 1000) {
+        return $number;
+    }
+    else if ($number < 1000000) {
+        return floor($number/1000)."K";
+    }
+    else if ($number < 1000000000) {
+        return floor($number/1000000)."M";
+    }
+    else {
+        return floor($number/1000000000)."B";
+    }
+}
+
 function create_post($user_infos, $post_infos) {
-    return '<div class="post">
+    return '<div class="post" post-id="'.$post_infos["post_id"].'">
         <div class="profile">
             <img src="images/default_pic.jpg" alt="Profile Picture">
         </div>
@@ -49,17 +64,17 @@ function create_post($user_infos, $post_infos) {
             .($post_infos["image_path"] != "" ? '<img src="'.$post_infos["image_path"].'" alt="Post Image">' : '').'
         </div>
         <div class="footer">
-            <button class="action red">
+            <button class="action red" id="like">
                 <img src="images/icons/heart_icon.svg" class="icon-like"></img>
-                <p>'.$post_infos["likes"].'</p>
+                <p>'.format_nb($post_infos["likes"]).'</p>
             </button>
-            <button class="action green">
+            <button class="action green" id="repost">
                 <img src="images/icons/echo_icon.svg" class="icon-echo"></img>
-                <p>'.$post_infos["repost"].'</p>
+                <p>'.format_nb($post_infos["repost"]).'</p>
             </button>
-            <button class="action blue">
+            <button class="action blue" id="share">
                 <img src="images/icons/share_icon.svg" class="icon-like"></img>
-                <p> 1K </p>
+                <p> SHARE </p>
             </button>
             <div class="flair">
                 <p>Sport</p>
