@@ -27,25 +27,27 @@ function setNewButtonActive(indexButtonActive) {
     document.getElementById("feed").innerHTML = "";
 
     // Fill the post feed with the new posts
-    var reqObj = {nb : 10, allow_image : 1, allow_text : 1};
+    var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'likes'};
     if (indexButtonActive == 0) {
-        reqObj = {
-            nb: 10,
-            allow_image: 1,
-            allow_text: 1
-        };
-    } else if (indexButtonActive == 1) {
-        reqObj = {
-            nb: 10,
-            allow_image: 1,
-            allow_text: 0
-        };
+        reqObj.nb = 10;
+        reqObj.allow_image = 1;
+        reqObj.allow_text = 1;
+        reqObj.sort = 'time';
+    }else if (indexButtonActive == 1){
+        reqObj.nb = 10;
+        reqObj.allow_image = 1;
+        reqObj.allow_text = 1;
+        reqObj.sort = 'likes';
     } else if (indexButtonActive == 2) {
-        reqObj = {
-            nb: 10,
-            allow_image: 0,
-            allow_text: 1
-        };
+        reqObj.nb = 10;
+        reqObj.allow_image = 1;
+        reqObj.allow_text = 0;
+        
+    } else if (indexButtonActive == 3) {
+        reqObj.nb = 10;
+        reqObj.allow_image = 0;
+        reqObj.allow_text = 1;
+        
     }
 
     retrievePost(reqObj)

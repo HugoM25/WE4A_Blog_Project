@@ -6,10 +6,11 @@ function retrievePost(filterObj=null) {
         filterObj = {
             nb: 10,
             allow_image: 1,
-            allow_text: 1
+            allow_text: 1,
+            sort: 'likes'
         };
     }
-    var request = `php/getpostcategory.php?nb=${filterObj.nb}&allow_image=${filterObj.allow_image}&allow_text=${filterObj.allow_text}`;
+    var request = `php/getpostcategory.php?nb=${filterObj.nb}&allow_image=${filterObj.allow_image}&allow_text=${filterObj.allow_text}&sort=${filterObj.sort}`;
     
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();
