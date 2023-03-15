@@ -51,9 +51,7 @@ if ($allow_image == 0 || $allow_text == 0){
   }
 }
 $sql = $sql.'ORDER BY '.$sort.' DESC LIMIT '.$nb;
-echo $sql;
 $result = $conn->query($sql);
-
 $tmp_nb = $nb;
 
 //If there are results from the query
