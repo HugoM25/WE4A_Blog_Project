@@ -33,7 +33,7 @@ if ($result->num_rows > 0) {
 }
 else {
     // Create the query to add the user to the database
-    $sql2 = "INSERT INTO `siteuser` (`name`, `password_hash`) VALUES ('".$test_username."', '".password_hash($test_password, PASSWORD_DEFAULT)."')";
+    $sql2 = "INSERT INTO `siteuser` (`name`, `password_hash`, `ref`) VALUES ('".$test_username."', '".password_hash($test_password, PASSWORD_DEFAULT)."', '@".$test_username."')";
     $result2 = $conn->query($sql2);
     echo "success";
 }
