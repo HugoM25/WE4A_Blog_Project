@@ -17,6 +17,32 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
     });
 }
 
+checkUserLoggedIn().then(function(response) {
+    console.log(JSON.parse(response));
+    response = JSON.parse(response);
+    document.getElementById("connexion-panel").innerHTML = response["connected_panel"];
+
+});
+
+// Check if the user is logged in
+function checkUserLoggedIn() {
+    var request = `php/checkuserconnexion.php`;
+    
+    return new Promise(function(resolve, reject) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                resolve(this.responseText);
+            } else if (this.readyState == 4) {
+                reject('Error retrieving post.');
+            }
+        };
+        xmlhttp.open('GET', request, true);
+        xmlhttp.send();
+    });
+}
+
+
 function setNewButtonActive(indexButtonActive) {
     // Remove active class from all buttons
     for (var i = 0; i < buttonsOptionsSearch.length; i++) {

@@ -27,6 +27,14 @@ $result = $conn->query($sql);
 
 //If there are results from the query
 if ($result->num_rows > 0 && password_verify($test_password, $result->fetch_assoc()["password_hash"])) { 
+    // If the password is correct, the user is logged in
+    // Set the cookies
+
+    unset($_COOKIE['name']); unset($_COOKIE['password']);
+
+    setcookie('name', $test_username,time()+3600*24, '/'); 
+    setcookie('password', $test_password, time()+3600*24, '/');
+
     echo "success";
 } 
 else {

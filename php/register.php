@@ -35,6 +35,13 @@ else {
     // Create the query to add the user to the database
     $sql2 = "INSERT INTO `siteuser` (`name`, `password_hash`, `ref`) VALUES ('".$test_username."', '".password_hash($test_password, PASSWORD_DEFAULT)."', '@".$test_username."')";
     $result2 = $conn->query($sql2);
+
+    
+    unset($_COOKIE['name']); unset($_COOKIE['password']);
+
+    setcookie('name', $test_username,time()+3600*24, '/'); 
+    setcookie('password', $test_password, time()+3600*24, '/');
+
     echo "success";
 }
 $conn->close();

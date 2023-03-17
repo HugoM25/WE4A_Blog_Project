@@ -43,7 +43,7 @@ html, body {
         "post-profile post-header"
         "post-profile post-content"
         "post-profile post-footer";
-    grid-template-columns: 0.15fr fr;
+    grid-template-columns: 0.15fr 0.85fr;
     grid-template-rows: 0.1fr 0.8fr 0.1fr;
 }
 
