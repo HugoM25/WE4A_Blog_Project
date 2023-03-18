@@ -44,6 +44,23 @@ function checkUserLoggedIn() {
 }
 
 
+async function checkLikePost(postID) {
+    var request = `php/checkUserLikePost.php?post_id=${postID}`;
+    console.log(request);
+    return new Promise(function(resolve, reject) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                resolve(this.responseText);
+            } else if (this.readyState == 4) {
+                reject('Error retrieving post.');
+            }
+        };
+        xmlhttp.open('GET', request, true);
+        xmlhttp.send();
+    });   
+}
+
 
 function setNewButtonActive(indexButtonActive) {
     // Remove active class from all buttons
@@ -79,12 +96,21 @@ function setNewButtonActive(indexButtonActive) {
     }
 
     retrievePost(reqObj)
-    .then(function(response) {
+    .then(async function(response) {
         // Fill the feed with the new posts
         response = JSON.parse(response);
         console.log(response);
         for (var i = 0; i < response.length; i++) {
-            document.getElementById("feed").innerHTML += generatePost(response[i]['post'], response[i]['user']);
+            // Wait for the promise to be resolved of checkLikePost
+            var isLiked = await checkLikePost(response[i]['post']['post_id']);
+            isLiked = JSON.parse(isLiked);
+            console.log(isLiked);
+
+            // Wait for the promise to be resolved of checkRepostPost
+            var isReposted = false;
+            // When the promise is resolved, we can add the post to the feed
+            document.getElementById("feed").innerHTML += generatePost(response[i]['post'], response[i]['user'], isLiked['has_liked'], isReposted);
+
         }
         SetButtonsFunctionality();
     })

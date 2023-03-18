@@ -27,11 +27,13 @@ var findPostParentID = function(elem) {
 };
 
 function LikeFunctionality(postID, button){
-    alert("Like " + postID);
     likePost(postID).then(function(response) {
         console.log(response);
         if (response.includes("unliked") === false) {
             button.classList.add("active");
+        }
+        else {
+            button.classList.remove("active");
         }
     });
 }
