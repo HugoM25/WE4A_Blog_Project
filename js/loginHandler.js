@@ -100,7 +100,7 @@ function signIn(event){
     var xhr = new XMLHttpRequest();
 
     // Define the PHP script URL and parameters
-    var url = "php/login.php";
+    var url = "php/loginUser.php";
     var params = "username=" + encodeURIComponent(usernameInput.value) + "&password=" + encodeURIComponent(passwordInput.value);
 
     // Set the HTTP request method and content type

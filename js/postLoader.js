@@ -10,7 +10,7 @@ function retrievePost(filterObj=null) {
             sort: 'likes'
         };
     }
-    var request = `php/getpostcategory.php?nb=${filterObj.nb}&allow_image=${filterObj.allow_image}&allow_text=${filterObj.allow_text}&sort=${filterObj.sort}`;
+    var request = `php/getPosts.php?nb=${filterObj.nb}&allow_image=${filterObj.allow_image}&allow_text=${filterObj.allow_text}&sort=${filterObj.sort}`;
     
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();

@@ -18,7 +18,7 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
 }
 
 checkUserLoggedIn().then(function(response) {
-    console.log(JSON.parse(response));
+    console.log(response);
     response = JSON.parse(response);
     document.getElementById("connexion-panel").innerHTML = response["connected_panel"];
 
@@ -26,7 +26,7 @@ checkUserLoggedIn().then(function(response) {
 
 // Check if the user is logged in
 function checkUserLoggedIn() {
-    var request = `php/checkuserconnexion.php`;
+    var request = `php/getInfosOnConnectedUser.php`;
     
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();
@@ -85,4 +85,3 @@ function setNewButtonActive(indexButtonActive) {
         console.error(error);
     });
 }
-
