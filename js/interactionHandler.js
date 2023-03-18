@@ -4,7 +4,7 @@ function SetButtonsFunctionality() {
         // Get the action type
         if (button.id === 'like') {
             button.addEventListener('click', function(){
-                LikeFunctionality(findPostParentID(button));
+                LikeFunctionality(findPostParentID(button), button);
             }, false);
         }
         else if (button.id == "repost") {
@@ -26,8 +26,14 @@ var findPostParentID = function(elem) {
     return attribute;
 };
 
-function LikeFunctionality(postID){
+function LikeFunctionality(postID, button){
     alert("Like " + postID);
+    likePost(postID).then(function(response) {
+        console.log(response);
+        if (response.includes("unliked") === false) {
+            button.classList.add("active");
+        }
+    });
 }
 
 function RepostFunctionality(postID){
@@ -41,3 +47,25 @@ function ShareFunctionality(postID){
 export { SetButtonsFunctionality };
 
 
+
+function likePost(postId) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        // Define the PHP script URL and parameters
+        var url = "php/likePost.php";
+        var params = "post_id=" + encodeURIComponent(postId);
+    
+        // Set the HTTP request method and content type
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                resolve(this.responseText);
+            } else if (this.readyState == 4) {
+                reject('Error retrieving post.');
+            }
+        };
+        xhr.send(params);
+    });
+}

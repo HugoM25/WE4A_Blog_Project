@@ -43,6 +43,7 @@ function checkUserLoggedIn() {
 }
 
 
+
 function setNewButtonActive(indexButtonActive) {
     // Remove active class from all buttons
     for (var i = 0; i < buttonsOptionsSearch.length; i++) {
@@ -85,3 +86,5 @@ function setNewButtonActive(indexButtonActive) {
         console.error(error);
     });
 }
+
+

@@ -29,17 +29,16 @@ $result = $conn->query($sql);
 // check if the user has already liked the post
 if ($result->num_rows > 0) {
     //Already liked
-    $sql = "DELETE FROM post_likes WHERE user_id = '".$user_id."' AND post_id = '".$post_id."'";
+    $sql2 = "DELETE FROM post_likes WHERE user_id = '".$user_id."' AND post_id = '".$post_id."'";
+    $result2 = $conn->query($sql2);
+    echo "unliked";
 } 
 else {
     //Not already liked
-    $sql = "INSERT INTO post_likes (user_id, post_id) VALUES ('".$user_id."', '".$post_id."')";
+    $sql2 = "INSERT INTO post_likes (user_id, post_id) VALUES ('".$user_id."', '".$post_id."')";
+    $result2 = $conn->query($sql2);
+    echo "liked";
 }
-
-$result = $conn->query($sql);
-
 // close the connection
 $conn->close();
-
-
 ?>
