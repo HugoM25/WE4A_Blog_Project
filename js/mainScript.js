@@ -1,7 +1,8 @@
 // Import the functions from interactionHandler.js
 import { SetButtonsFunctionality } from "./interactionHandler.js";
 import { retrievePost } from "./postLoader.js";
-
+import { generatePost } from "./templatePost.js";
+import { generateConnexionPanel } from "./templateConnexionPanel.js";
 
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("feed-option-button");
@@ -20,7 +21,7 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
 checkUserLoggedIn().then(function(response) {
     console.log(response);
     response = JSON.parse(response);
-    document.getElementById("connexion-panel").innerHTML = response["connected_panel"];
+    document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
 
 });
 
@@ -78,8 +79,13 @@ function setNewButtonActive(indexButtonActive) {
     }
 
     retrievePost(reqObj)
-    .then(function(responseText) {
-        document.getElementById('feed').innerHTML = responseText;
+    .then(function(response) {
+        // Fill the feed with the new posts
+        response = JSON.parse(response);
+        console.log(response);
+        for (var i = 0; i < response.length; i++) {
+            document.getElementById("feed").innerHTML += generatePost(response[i]['post'], response[i]['user']);
+        }
         SetButtonsFunctionality();
     })
     .catch(function(error) {

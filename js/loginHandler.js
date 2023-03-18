@@ -73,7 +73,6 @@ function signUp(event){
     // Define the function to be executed when the PHP script response is received
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log(xhr.responseText);
             
             if (xhr.responseText.includes("success")) {
                 // Redirect to the index.html page
@@ -109,9 +108,7 @@ function signIn(event){
 
     // Define the function to be executed when the PHP script response is received
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log(xhr.responseText);
-            
+        if (xhr.readyState == 4 && xhr.status == 200) {            
             if (xhr.responseText.includes("success")) {
                 // Redirect to the index.html page
                 window.location.href = "index.html";

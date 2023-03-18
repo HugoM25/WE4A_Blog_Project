@@ -29,7 +29,7 @@ function getDataOnUser($curr_user_id){
             "user_id" => $row["user_id"],
             "ref" => $row["ref"],
             "name" => $row["name"],
-            "connected_panel" => generate_connexion_panel($row)
+            "profile_picture_path" => $row["profile_picture_path"]
         );
         header("Content-Type: application/json");
         echo json_encode($response);

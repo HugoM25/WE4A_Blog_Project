@@ -41,7 +41,7 @@ $sql = generateSQLPostRequest($allow_image, $allow_text, $sort, $nb);
 
 $result = $conn->query($sql);
 $tmp_nb = $nb;
-
+$i = 0;
 //If there are results from the query
 if ($result->num_rows > 0) {
     // for every row display the result
@@ -56,13 +56,32 @@ if ($result->num_rows > 0) {
         $user_info_result = $conn->query($sql2);
         if ($user_info_result->num_rows > 0) {
             $user_info_result = $user_info_result->fetch_assoc();
-            echo create_post($user_info_result, $row);
+            // Returns json with the post and the user infos
+            $response[$i] = array( 
+                "post" => array(
+                    "post_id" => $row["post_id"],
+                    "author_id" => $row["author_id"],
+                    "content" => $row["content"],
+                    "image_path" => $row["image_path"],
+                    "time" => $row["time"],
+                    "likes" => $row["likes"],
+                    "repost" => $row["repost"]
+                ),
+                "user" => array(
+                    "user_id" => $user_info_result["user_id"],
+                    "ref" => $user_info_result["ref"],
+                    "name" => $user_info_result["name"]
+                )
+            );
         $tmp_nb--;
+        $i++;
         }
         else {
             echo "0 results";
         }
     }
+    header("Content-Type: application/json");
+    echo json_encode($response);
 } 
 else {
     echo "0 results";
