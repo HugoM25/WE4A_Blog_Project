@@ -8,7 +8,12 @@ if (isset($_SESSION['user_id'])) {
     getDataOnUser($_SESSION['user_id']);
 }
 else {
-    echo "No user logged in";
+    $response = array( 
+        "success" => false
+    );
+    header("Content-Type: application/json");
+    echo json_encode($response);
+    exit();
 }
 
 function getDataOnUser($curr_user_id){
@@ -29,7 +34,8 @@ function getDataOnUser($curr_user_id){
             "user_id" => $row["user_id"],
             "ref" => $row["ref"],
             "name" => $row["name"],
-            "profile_picture_path" => $row["profile_picture_path"]
+            "profile_picture_path" => $row["profile_picture_path"],
+            "success" => true
         );
         header("Content-Type: application/json");
         echo json_encode($response);

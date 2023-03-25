@@ -26,29 +26,8 @@ var findPostParentID = function(elem) {
     return attribute;
 };
 
-function LikeFunctionality(postID, button){
-    likePost(postID).then(function(response) {
-        console.log(response);
-        if (response.includes("unliked") === false) {
-            button.classList.add("active");
-        }
-        else {
-            button.classList.remove("active");
-        }
-    });
-}
 
-function RepostFunctionality(postID){
-    alert("Repost " + postID);
-}
-
-function ShareFunctionality(postID){
-    alert("Share " + postID);
-}
-
-export { SetButtonsFunctionality };
-
-
+// Like a post -------------------------------------------
 
 function likePost(postId) {
     return new Promise(function(resolve, reject) {
@@ -71,3 +50,34 @@ function likePost(postId) {
         xhr.send(params);
     });
 }
+function LikeFunctionality(postID, button){
+    likePost(postID).then(function(response) {
+        response = JSON.parse(response);
+        // if request is successful
+        if (response['success'] === true) {
+            console.log("Like " + postID);
+            // Change the button style
+            if (button.classList.contains("active")) {
+                button.classList.remove("active");
+            }
+            else {
+                button.classList.add("active");
+            }
+        }
+    });
+}
+
+
+
+function RepostFunctionality(postID){
+    alert("Repost " + postID);
+}
+
+function ShareFunctionality(postID){
+    alert("Share " + postID);
+}
+
+export { SetButtonsFunctionality };
+
+
+

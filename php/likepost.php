@@ -5,7 +5,12 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 }
 else {
-    echo "No user logged in";
+    $response = array( 
+        "success" => false
+    );
+    header("Content-Type: application/json");
+    echo json_encode($response);
+    exit();
 }
 
 // get post id
@@ -31,14 +36,19 @@ if ($result->num_rows > 0) {
     //Already liked
     $sql2 = "DELETE FROM post_likes WHERE user_id = '".$user_id."' AND post_id = '".$post_id."'";
     $result2 = $conn->query($sql2);
-    echo "unliked";
 } 
 else {
     //Not already liked
     $sql2 = "INSERT INTO post_likes (user_id, post_id) VALUES ('".$user_id."', '".$post_id."')";
     $result2 = $conn->query($sql2);
-    echo "liked";
 }
+
+$response = array( 
+    "success" => true
+);
+header("Content-Type: application/json");
+echo json_encode($response);
+
 // close the connection
 $conn->close();
 ?>

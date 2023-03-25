@@ -18,11 +18,21 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
     });
 }
 
+// Initialize the connection panel
 checkUserLoggedIn().then(function(response) {
-    console.log(response);
+
     response = JSON.parse(response);
     document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
 
+    // Add event listener to logout button
+    document.getElementById("logout-button").addEventListener("click", function() {
+        window.location.href = "login.html";
+    });
+    // Add event listener to settings button
+    document.getElementById("settings-button").addEventListener("click", function() {
+        window.location.href = "profile.html";
+    }
+    );
 });
 
 // Check if the user is logged in
@@ -46,7 +56,6 @@ function checkUserLoggedIn() {
 
 async function checkLikePost(postID) {
     var request = `php/checkUserLikePost.php?post_id=${postID}`;
-    console.log(request);
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -104,8 +113,6 @@ function setNewButtonActive(indexButtonActive) {
             // Wait for the promise to be resolved of checkLikePost
             var isLiked = await checkLikePost(response[i]['post']['post_id']);
             isLiked = JSON.parse(isLiked);
-            console.log(isLiked);
-
             // Wait for the promise to be resolved of checkRepostPost
             var isReposted = false;
             // When the promise is resolved, we can add the post to the feed

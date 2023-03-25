@@ -3,11 +3,18 @@
 // Get the parameters from the url
 isset($_GET['post_id']) ? $post_id = $_GET['post_id'] : $post_id = -1;
 
-// get user id
+ // get the user id from the session (if the user is logged in)
 session_start();
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+if (isset($_SESSION['user_id']) == false) {
+    // User is not logged in so return false
+    $response = array( 
+        "has_liked" => false
+    );
+    echo json_encode($response);
+    exit();
 }
+
+$user_id = $_SESSION['user_id'];
 
 $servername = "localhost";
 $username = "root";

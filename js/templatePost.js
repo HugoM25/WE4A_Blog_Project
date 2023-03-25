@@ -6,7 +6,7 @@ function generatePost(infosPost, infosUser, isPostLiked=false, isPostReposted=fa
                 <img src="images/default_pic.jpg" alt="Profile Picture">
             </div>
             <div class="header">
-                <a class="user-name" href="https://twitter.com/home">${infosUser["name"]}</a>
+                <a class="user-name" href="${"profile.html?username=" + infosUser["name"]}">${infosUser["name"]}</a>
                 <p class="user-id">${infosUser["ref"]}</p>
                 <p class="post-date">${parseTime(infosPost["time"], Date.now()/1000)}</p>
             </div>
