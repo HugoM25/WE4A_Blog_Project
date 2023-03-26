@@ -14,35 +14,93 @@ $dbname = "we4a_blog_db";
 $test_username = $_POST["username"];
 $test_password = $_POST["password"];
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+if (checkUsernameExist($test_username)){
+  $response = array( 
+    "success" => false,
+    "error" => "Username already taken"
+  );
+  header("Content-Type: application/json");
+  echo json_encode($response);
+  exit();
 }
 
-// Create a query to check if the username is not already taken
-$sql = "SELECT name, password_hash FROM siteuser WHERE name = '".$test_username."'";
+addUserToDb($test_username, $test_password);
+startUserSession($test_username);
 
-$result = $conn->query($sql);
+$response = array( 
+  "success" => true
+);
+header("Content-Type: application/json");
+echo json_encode($response);
 
-//If there are results from the query
-if ($result->num_rows > 0) {
+
+function startUserSession($curr_username){
+  session_start();
+  $_SESSION['username'] = $curr_username;
+  $_SESSION['loggedin'] = true;
+  $_SESSION['user_id'] = getUserID($curr_username);
+}
+
+function checkUsernameExist($test_username) {
+  $servername = "localhost";
+  $username = "root";
+  $password = "root";
+  $dbname = "we4a_blog_db";
+  // Create connection
+  $conn = new mysqli($servername, $username, $password, $dbname);
+  // Create a query to check if the username is not already taken
+  $sql = "SELECT name, password_hash FROM siteuser WHERE name = '".$test_username."'";
+  $result = $conn->query($sql);
+
+
+  $exist = false;
+
+  //If there are results from the query
+  if ($result->num_rows > 0) {
     //Username already taken
-    echo "Username already taken";
+    $exist = true;
+  }
+  $conn->close();
+  return $exist;
 }
-else {
-    // Create the query to add the user to the database
-    $sql2 = "INSERT INTO `siteuser` (`name`, `password_hash`, `ref`) VALUES ('".$test_username."', '".password_hash($test_password, PASSWORD_DEFAULT)."', '@".$test_username."')";
-    $result2 = $conn->query($sql2);
 
-    
-    unset($_COOKIE['name']); unset($_COOKIE['password']);
+function addUserToDb($new_username, $new_password){
+  $servername = "localhost";
+  $username = "root";
+  $password = "root";
+  $dbname = "we4a_blog_db";
+  // Create connection
+  $conn = new mysqli($servername, $username, $password, $dbname);
 
-    setcookie('name', $test_username,time()+3600*24, '/'); 
-    setcookie('password', $test_password, time()+3600*24, '/');
+  // Create the query to add the user to the database
+  $sql2 = "INSERT INTO `siteuser` (`name`, `password_hash`, `ref`) VALUES ('".$new_username."', '".password_hash($new_password, PASSWORD_DEFAULT)."', '@".$new_username."')";
+  $result2 = $conn->query($sql2);
 
-    echo "success";
+  $conn->close();
 }
-$conn->close();
+
+function getUserID($curr_username){
+  $user_current_id = -1;
+
+  // connect to the database
+  $servername = "localhost";
+  $username = "root";
+  $password = "root";
+  $dbname = "we4a_blog_db";
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  // check the database for the user's id
+  $sql = "SELECT user_id FROM siteuser WHERE name = '".$curr_username."' ORDER BY name DESC LIMIT 1";
+
+  $result = $conn->query($sql);
+
+  if ($result->num_rows > 0 ) { 
+      $row = $result->fetch_assoc();
+      $user_current_id = $row["user_id"];
+  }
+
+  $conn->close();
+  return $user_current_id; 
+}
+
 ?>

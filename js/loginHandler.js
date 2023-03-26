@@ -73,10 +73,15 @@ function signUp(event){
     // Define the function to be executed when the PHP script response is received
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            
-            if (xhr.responseText.includes("success")) {
+            // Parse the JSON response
+            var response = JSON.parse(xhr.responseText);
+
+            if (response["success"] == true) {
                 // Redirect to the index.html page
                 window.location.href = "index.html";
+            }
+            else {
+                alert(response["error"]);
             }
         }
     }
