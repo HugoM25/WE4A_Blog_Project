@@ -1,0 +1,40 @@
+
+/* ---------------------------------------------- */
+/* The buttons that are underlined when active */
+
+.button-selection-underlined {
+    --underline-color: #1da1f2;
+    --color-background-active: #34373a;
+    --text-active-color: white;
+    --text-inactive-color: grey;
+
+    border: none;
+    background-color: transparent;
+    color: var(--text-inactive-color);
+    font-size: 1em;
+    font-weight: bold;
+    width: 25%;
+    height: 100%;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.button-selection-underlined:hover {
+    background-color: var(--color-background-active);
+}
+
+.button-selection-underlined.active {
+    color: var(--text-active-color);
+}
+
+.button-selection-underlined.active::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 2px;
+    background-color: var(--underline-color);
+    margin: 0 auto;
+    position: relative;
+    top: 10px;
+}
+
+/* ---------------------------------------------- */
