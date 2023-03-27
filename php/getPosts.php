@@ -1,21 +1,34 @@
 
 <?php 
 require_once('postmaker.php');
+require_once('dbUtils.php');
 
-// Function that generates the SQL query to get the posts
-function generateSQLPostRequest($allow_image, $allow_text, $sort, $nb){
-    $req = 'SELECT * FROM userpost'; 
-    // Add a where clause if the allow_image or allow_text parameter is 0
-    if ($allow_image == 0 || $allow_text == 0){
+function generateSQLPostRequest($allow_image, $allow_text, $sort, $nb, $by_user){
+    $req= 'SELECT * FROM userpost'; 
+    $nb_where_clause = 0;
+    // If there is a where clause to add
+    if ($allow_image == 0 || $allow_text == 0 || $by_user){
         $req = $req.' WHERE ';
-        if ($allow_image == 0) {
+        // If we want to allow only image posts
+        if ( $allow_image == 0 ) {
             $req = $req.'image_path IS NULL ';
+            $nb_where_clause++;
         }
-        if ($allow_text == 0) {
-            if ($allow_image == 0) {
+        // If we want to allow only text posts
+        if ( $allow_text == 0) {
+            if ($nb_where_clause > 0) {
                 $req = $req.'AND ';
             }
             $req = $req.'image_path != "" ';
+            $nb_where_clause++;
+        }
+        // If we want to filter by user
+        if ($by_user) {
+            if ($nb_where_clause > 0) {
+                $req = $req.'AND ';
+            }
+            $req = $req.'author_id = '.getUserID($by_user);
+            $nb_where_clause++;
         }
     }
     $req = $req.' ORDER BY '.$sort.' DESC LIMIT '.$nb;
@@ -27,6 +40,7 @@ isset($_GET['allow_image']) ? $allow_image = $_GET['allow_image'] : $allow_image
 isset($_GET['allow_text']) ? $allow_text = $_GET['allow_text'] : $allow_text = 1;
 isset($_GET['sort']) ? $sort = $_GET['sort'] : $sort = 'time';
 isset($_GET['nb']) ? $nb = $_GET['nb'] : $nb = 10;
+isset($_GET['by_user']) ? $by_user = $_GET['by_user'] : $by_user = null;
 
 
 $servername = "localhost";
@@ -37,8 +51,7 @@ $dbname = "we4a_blog_db";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-$sql = generateSQLPostRequest($allow_image, $allow_text, $sort, $nb);
-
+$sql = generateSQLPostRequest($allow_image, $allow_text, $sort, $nb, $by_user);
 $result = $conn->query($sql);
 $tmp_nb = $nb;
 $i = 0;
