@@ -40,8 +40,16 @@ isset($_GET['allow_image']) ? $allow_image = $_GET['allow_image'] : $allow_image
 isset($_GET['allow_text']) ? $allow_text = $_GET['allow_text'] : $allow_text = 1;
 isset($_GET['sort']) ? $sort = $_GET['sort'] : $sort = 'time';
 isset($_GET['nb']) ? $nb = $_GET['nb'] : $nb = 10;
-isset($_GET['by_user']) ? $by_user = $_GET['by_user'] : $by_user = null;
 
+if (isset($_GET['by_user']) == false) {
+    $by_user = null;
+}
+else {
+    $by_user = $_GET['by_user'];
+    if (getUserID($by_user) == -1) {
+        $by_user = null;
+    }
+}
 
 $servername = "localhost";
 $username = "root";

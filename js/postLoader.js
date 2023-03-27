@@ -7,10 +7,11 @@ function retrievePost(filterObj=null) {
             nb: 10,
             allow_image: 1,
             allow_text: 1,
-            sort: 'likes'
+            sort: 'likes', 
+            by_user: null
         };
     }
-    var request = `php/getPosts.php?nb=${filterObj.nb}&allow_image=${filterObj.allow_image}&allow_text=${filterObj.allow_text}&sort=${filterObj.sort}`;
+    var request = `php/getPosts.php?nb=${filterObj.nb}&allow_image=${filterObj.allow_image}&allow_text=${filterObj.allow_text}&by_user=${filterObj.by_user ? filterObj.by_user : 'null'}&sort=${filterObj.sort}`;
     
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();

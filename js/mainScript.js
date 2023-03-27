@@ -81,7 +81,7 @@ function setNewButtonActive(indexButtonActive) {
     document.getElementById("feed").innerHTML = "";
 
     // Fill the post feed with the new posts
-    var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'likes'};
+    var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null'};
     if (indexButtonActive == 0) {
         reqObj.nb = 10;
         reqObj.allow_image = 1;
