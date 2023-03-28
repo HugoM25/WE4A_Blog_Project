@@ -1,6 +1,5 @@
 
 <?php 
-require_once('postmaker.php');
 require_once('dbUtils.php');
 
 function generateSQLPostRequest($allow_image, $allow_text, $sort, $nb, $by_user){
@@ -98,14 +97,18 @@ if ($result->num_rows > 0) {
         $i++;
         }
         else {
-            echo "0 results";
+            $empty = json_decode ("{}");
+            $result = json_encode($empty); 
+            echo $result;
         }
     }
     header("Content-Type: application/json");
     echo json_encode($response);
 } 
 else {
-    echo "0 results";
+    $empty = json_decode ("{}");
+    $result = json_encode($empty); 
+    echo $result;
 }
 $conn->close();
 

@@ -1,9 +1,8 @@
 // Import the functions from interactionHandler.js
-import { SetButtonsFunctionality } from "./interactionHandler.js";
-import { retrievePost } from "./postLoader.js";
-import { generatePost } from "./templatePost.js";
-import { generateConnexionPanel } from "./templateConnexionPanel.js";
-
+import { SetButtonsFunctionality, checkLikePost } from "../utils/interactionHandler.js";
+import { retrievePost } from "../utils/postLoader.js";
+import { generatePost } from "../templates/templatePost.js";
+import { initializeConnexionPanel } from "../utils/userConnexion.js";
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("feed-option-button");
 
@@ -18,58 +17,7 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
     });
 }
 
-// Initialize the connection panel
-checkUserLoggedIn().then(function(response) {
-
-    response = JSON.parse(response);
-    document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
-
-    // Add event listener to logout button
-    document.getElementById("logout-button").addEventListener("click", function() {
-        window.location.href = "login.html";
-    });
-    // Add event listener to settings button
-    document.getElementById("settings-button").addEventListener("click", function() {
-        window.location.href = "profile.html";
-    }
-    );
-});
-
-// Check if the user is logged in
-function checkUserLoggedIn() {
-    var request = `php/getInfosOnConnectedUser.php`;
-    
-    return new Promise(function(resolve, reject) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            } else if (this.readyState == 4) {
-                reject('Error retrieving post.');
-            }
-        };
-        xmlhttp.open('GET', request, true);
-        xmlhttp.send();
-    });
-}
-
-
-async function checkLikePost(postID) {
-    var request = `php/checkUserLikePost.php?post_id=${postID}`;
-    return new Promise(function(resolve, reject) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            } else if (this.readyState == 4) {
-                reject('Error retrieving post.');
-            }
-        };
-        xmlhttp.open('GET', request, true);
-        xmlhttp.send();
-    });   
-}
-
+initializeConnexionPanel();
 
 function setNewButtonActive(indexButtonActive) {
     // Remove active class from all buttons

@@ -1,7 +1,4 @@
 <?php
-
-require_once('connectedpanel.php');
-
 // Get the user id from the session
 session_start();
 if (isset($_SESSION['user_id'])) {
