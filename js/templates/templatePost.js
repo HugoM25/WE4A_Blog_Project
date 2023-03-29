@@ -1,5 +1,21 @@
 
-function generatePost(infosPost, infosUser, isPostLiked=false, isPostReposted=false){
+import { checkLikePost } from "../utils/interactionHandler.js";
+
+async function generatePost(infosPost, infosUser, isUserConnected=false){
+
+    var isPostLiked = false;
+    var isPostReposted = false;
+
+    if (isUserConnected){
+        // Check if user liked the post
+        var likeInfos = await checkLikePost(infosPost['post_id']);
+        isPostLiked = JSON.parse(likeInfos)['has_liked'];
+
+        // Check if user reposted the post
+        
+    }
+    
+
     return (`
         <div class="post" post-id="${infosPost["post_id"]}">
             <div class="profile">
@@ -36,7 +52,6 @@ function generatePost(infosPost, infosUser, isPostLiked=false, isPostReposted=fa
         </div>
     `);
 }
-
 function parseTime(time_then, time_now){
     let diff = parseInt(time_now) - parseInt(time_then);
     let time = "";

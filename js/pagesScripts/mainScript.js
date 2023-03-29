@@ -57,15 +57,11 @@ function setNewButtonActive(indexButtonActive) {
         // Fill the feed with the new posts
         response = JSON.parse(response);
         console.log(response);
+        document.getElementById("feed").innerHTML = "";
         for (var i = 0; i < response.length; i++) {
-            // Wait for the promise to be resolved of checkLikePost
-            var isLiked = await checkLikePost(response[i]['post']['post_id']);
-            isLiked = JSON.parse(isLiked);
-            // Wait for the promise to be resolved of checkRepostPost
-            var isReposted = false;
-            // When the promise is resolved, we can add the post to the feed
-            document.getElementById("feed").innerHTML += generatePost(response[i]['post'], response[i]['user'], isLiked['has_liked'], isReposted);
-
+            await generatePost(response[i]['post'], response[i]['user'], true).then(function(response) {
+                document.getElementById("feed").innerHTML += response;
+            });
         }
         SetButtonsFunctionality();
     })
