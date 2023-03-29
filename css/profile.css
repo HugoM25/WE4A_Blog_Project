@@ -56,7 +56,6 @@ html, body {
     grid-area: content;
     overflow-y: scroll;
     max-height: 70vh;
-    border: white solid 1px;
 
 }
 
