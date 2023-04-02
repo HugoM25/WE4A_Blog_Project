@@ -6,14 +6,17 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="css/connexion-panel.css">
+
     <script src="js/pagesScripts/mainScript.js" type="module" charset="utf-8" defer></script>
     <script src="js/utils/interactionHandler.js" type="module" charset="utf-8" defer></script>
+    <script src="js/createPost.js" type="module" charset="utf-8" defer></script>
     <meta charset="UTF-8">
 </head>
 <body>
     <div class="main-layout">
 
         <div class="left-side">
+
             <div class="connexion-panel" id="connexion-panel">
                 <div class="icon-user">
                     <img src="images/default_pic.jpg" alt="user avatar"></img>
@@ -31,6 +34,7 @@
                     </button>
                 </div>
             </div>
+            
         </div>
 
         <div class="search">
@@ -65,10 +69,29 @@
         </div>
 
         <div class="options">
+            
         </div>
 
-        <div class="posts-feed" id="feed">
-            
+        <div class="posts-feed">
+            <div class="post">
+                <div class="profile">
+                    <img src="images/default_pic.jpg" alt="Profile Picture">
+                </div>
+                <div class="header">
+                    <a class="user-name" href="profile.html?username=ElonMusk">ElonMusk</a>
+                    <p class="user-id">@elon</p>
+                    <p class="post-date"></p>
+                </div>
+                <div class="content">
+                    <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280"></textarea>
+                </div>
+                <div class="footer">
+                    <button id="post-edit-button"> <span> Send </span></button>
+                </div>
+            </div>
+            <div id="feed">
+
+            </div>
         </div>
     </div>
     </body>

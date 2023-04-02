@@ -95,8 +95,5 @@ function setButtonFeedFunctionalities() {
             console.error(error);
         });
     }); 
-
-
-
 }
 

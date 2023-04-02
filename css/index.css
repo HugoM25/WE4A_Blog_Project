@@ -56,6 +56,7 @@
     grid-area: posts-feed;
     display: flex;
     flex-direction: column;
+    flex-grow: auto;
     width: 100%;
     max-height: 90vh;
     overflow-y: scroll;

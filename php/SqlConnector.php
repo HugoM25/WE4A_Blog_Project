@@ -26,7 +26,11 @@ class SqlConnector {
     // Execute a SQL query and return the result
     function ask_database($sql) {
         $result = $this->conn->query($sql);
-        if ($result->num_rows > 0) {
+        // Check if the query was successful
+        if ($result == false) {
+            die("Error: " . $sql . "<br>" . $this->conn->error);
+        }
+        if (is_object($result) && $result->num_rows > 0) {
             return $result;
         }
         else {

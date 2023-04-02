@@ -29,7 +29,7 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
             <div class="content">
                 <p>${infosPost["content"]}</p>
                 ${
-                    infosPost["image_path"] != null ? `<img src="${infosPost["image_path"]}" alt="Post Image">` : ''
+                    processImgLink(infosPost["image_path"])
                 }
             </div>
             <div class="footer">
@@ -90,4 +90,11 @@ function parseNb(num){
 
 }
 
+function processImgLink(link){
+    if(link == "" || link == null){
+        return '';
+    }else{
+        return `<img src="${link}" alt="Post Image">`;
+    }
+}
 export { generatePost };

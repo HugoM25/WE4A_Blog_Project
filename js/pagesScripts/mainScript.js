@@ -26,7 +26,6 @@ function setNewButtonActive(indexButtonActive) {
     }
     // Add active class to the clicked button
     buttonsOptionsSearch[indexButtonActive].classList.add("active");
-    document.getElementById("feed").innerHTML = "";
 
     // Fill the post feed with the new posts
     var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null'};

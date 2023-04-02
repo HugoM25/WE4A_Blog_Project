@@ -165,6 +165,48 @@ html, body {
 }
 
 
+.post:has(> .content > textarea) > .footer {
+    justify-content: flex-end;
+}
+
+.post > .content > textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2em;
+    padding: 10px;
+    resize: none;
+    outline: none;
+}
+
+.post:has(> .content > textarea) > .footer > button {
+    width: 30%;
+    height: 30px;
+    background-color: transparent;
+    border: solid 1px var(--text-color);
+    color: white;
+    border-radius: 8px;
+
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.post:has(> .content > textarea) > .content {
+    flex-grow: auto;
+}
+
+.post:has(> .content > textarea) > .footer > button:hover {
+    background-color: var(--text-color);
+    color: var(--background-color);
+}
+
+.post:has(> .content > textarea) > .footer > button:active {
+    transform: scale(1.1);
+}
+
+
 .post > .footer > .action.red:hover > img  {
     background-color: rgba(255,0,0,0.2);
     filter: invert(13%) sepia(79%) saturate(7446%) hue-rotate(6deg) brightness(110%) contrast(119%);
