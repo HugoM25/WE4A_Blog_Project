@@ -2,8 +2,8 @@ function formatText(text) {
     // Replace all ** with <b> and </b>
     const boldText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
 
-    // Replace all // with <i> and </i>
-    const italicText = boldText.replace(/\/\/(.*?)\/\//g, "<i>$1</i>");
+    // Replace all ## with <i> and </i>
+    const italicText = boldText.replace(/##(.*?)##/g, "<i>$1</i>");
 
     // Replace all __ with <u> and </u>
     const underlinedText = italicText.replace(/__(.*?)__/g, "<u>$1</u>");
