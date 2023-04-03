@@ -1,5 +1,6 @@
 
 import { checkLikePost } from "../utils/interactionHandler.js";
+import { formatText } from "../utils/textFormatter.js";
 
 async function generatePost(infosPost, infosUser, isUserConnected=false){
 
@@ -27,7 +28,7 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
                 <p class="post-date">${parseTime(infosPost["time"], Date.now()/1000)}</p>
             </div>
             <div class="content">
-                <p>${infosPost["content"]}</p>
+                <p>${formatText(infosPost["content"])}</p>
                 ${
                     processImgLink(infosPost["image_path"])
                 }

@@ -182,6 +182,11 @@ html, body {
     outline: none;
 }
 
+.post > .content  a {
+    text-decoration: underline;
+    color: #1da1f2;
+
+}
 .post:has(> .content > textarea) > .footer > button {
     width: 30%;
     height: 30px;
