@@ -91,3 +91,8 @@ html, body {
     border: none;
     background-color: transparent;
 }
+
+.info-user > a {
+    color: white;
+    text-decoration: underline;
+}

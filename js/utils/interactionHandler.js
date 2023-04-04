@@ -96,7 +96,60 @@ async function checkLikePost(postID) {
 
 
 
-export { SetButtonsFunctionality, checkLikePost };
+// delete a post -------------------------------------------
+
+function SetSudoFunctionality() {
+    // Set the sudo delete buttons functionality
+    document.querySelectorAll('#sudo-delete').forEach(function(button) {
+        // Get the action type
+        button.addEventListener('click', function(){
+                deleteFunctionality(findPostParentID(button));
+            }, false);
+    });
+
+    // Set the sudo edit buttons functionality
+    document.querySelectorAll('#sudo-edit').forEach(function(button) {
+        // Get the action type
+            button.addEventListener('click', function(){
+                editFunctionality(findPostParentID(button));
+            }, false);
+        
+    });
+
+}
+
+function deleteFunctionality(postID){
+    /* Create a alert box to confirm the deletion */
+    var confirmDelete = confirm("Are you sure you want to delete this post?");
+    if (confirmDelete == true) {
+        
+        // Delete the post
+        // send post request to php script
+        var xhr = new XMLHttpRequest();
+        // Define the PHP script URL and parameters
+        var url = "php/addPost.php";
+        var params = "post_id=" + encodeURIComponent(postID) + "&action=delete_post";
+
+        // Set the HTTP request method and content type
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Delete the post from the DOM
+                var post = document.querySelector(`.post[post-id="${postID}"]`);
+                post.parentNode.removeChild(post);
+            }
+        };
+        xhr.send(params);
+    }
+}
+
+function editFunctionality(postID){
+    alert("Edit " + postID);
+}
+
+export { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality };
 
 
 

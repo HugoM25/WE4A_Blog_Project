@@ -1,5 +1,5 @@
 // Import the functions from interactionHandler.js
-import { SetButtonsFunctionality, checkLikePost } from "../utils/interactionHandler.js";
+import { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality } from "../utils/interactionHandler.js";
 import { retrievePost } from "../utils/postLoader.js";
 import { generatePost } from "../templates/templatePost.js";
 import { initializeConnexionPanel } from "../utils/userConnexion.js";
@@ -13,7 +13,6 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
         var indexButtonActive = Array.prototype.indexOf.call(buttonsOptionsSearch, this);
         // Set the clicked button as active
         setNewButtonActive(indexButtonActive);
-
     });
 }
 
@@ -63,6 +62,7 @@ function setNewButtonActive(indexButtonActive) {
             });
         }
         SetButtonsFunctionality();
+        SetSudoFunctionality();
     })
     .catch(function(error) {
         console.error(error);

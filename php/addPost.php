@@ -13,6 +13,79 @@ class AddPostObj {
         if ($this->sqlConnector->is_working == false) {
             die("Connection failed: " . $this->sqlConnector->conn->connect_error);
         }
+
+        // Get the action to do
+        $action = null;
+        if (isset($_POST['action']) == true) {
+            $action = $_POST['action'];
+        }
+
+        // Do the action
+        switch ($action) {
+            case 'add_post':
+                $this->add_post();
+                break;
+            case 'delete_post':
+                $this->delete_post();
+                break;
+            default:
+                $response = array(
+                    'success' => false,
+                    'error' => 'Action not found',
+                );
+                echo json_encode($response);
+                break;
+        }
+
+        
+    }
+
+    public function delete_post(){
+        $post_id = null;
+        // Get post argument 
+        if (isset($_POST['post_id']) == true) {
+            $post_id = $_POST['post_id'];
+        }
+
+        // Get connected user id
+        session_start();
+        $connected_user_id = $_SESSION['user_id'];
+
+        if ($_SESSION['user_id'] == null) {
+            $response = array(
+                'success' => false,
+                'error' => 'User not found',
+            );
+            echo json_encode($response);
+            return;
+        }
+
+        // Verify that the post is from the connected user
+        $sql = "SELECT * FROM userpost WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        $results = $this->sqlConnector->ask_database($sql);
+
+        if ($results->num_rows == 0) {
+            $response = array(
+                'success' => false,
+                'error' => 'Post not found',
+            );
+            echo json_encode($response);
+            return;
+        }
+
+        // Delete the post in the database
+        $sql = "DELETE FROM userpost WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        $results = $this->sqlConnector->ask_database($sql);
+
+        $response = array(
+            'success' => true,
+        );
+
+        echo json_encode($response);
+    }
+
+
+    public function add_post(){
         $post_text = null;
         $post_image = null;
         // Get post argument 

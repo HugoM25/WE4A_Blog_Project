@@ -1,11 +1,13 @@
 
 import { checkLikePost } from "../utils/interactionHandler.js";
 import { formatText } from "../utils/textFormatter.js";
+import { checkUserLoggedIn } from "../utils/userConnexion.js";
 
 async function generatePost(infosPost, infosUser, isUserConnected=false){
 
     var isPostLiked = false;
     var isPostReposted = false;
+    var isPostFromUser = false;
 
     if (isUserConnected){
         // Check if user liked the post
@@ -14,11 +16,27 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
 
         // Check if user reposted the post
         
+
+        // Check if the post is from the user
+        var connectedUserInfos = await checkUserLoggedIn();
+        var connectedUserId = JSON.parse(connectedUserInfos)['user_id']; 
+
+        isPostFromUser = connectedUserId == infosPost['author_id'];
     }
     
 
     return (`
         <div class="post" post-id="${infosPost["post_id"]}">
+        ${
+            isPostFromUser ? `<div class="edit-options">
+            <button class="edit-button" id="sudo-edit">
+                <img src="images/icons/edit_icon.svg" class="icon-edit"></img>
+            </button>
+            <button class="edit-button" id="sudo-delete">
+                <img src="images/icons/trash_icon.svg" class="icon-delete"></img>
+            </button>
+            </div>` : ""
+        }
             <div class="profile">
                 <img src="images/default_pic.jpg" alt="Profile Picture">
             </div>
@@ -98,4 +116,6 @@ function processImgLink(link){
         return `<img src="${link}" alt="Post Image">`;
     }
 }
+
+
 export { generatePost };

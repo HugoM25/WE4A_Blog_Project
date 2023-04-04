@@ -4,7 +4,7 @@ function generateConnexionPanel(infosUser){
             <img src="${infosUser['profile_picture_path']}" alt="user avatar">
     </div>
     <div class="info-user">
-        <span class="connected-username" >${infosUser['name']}</span>
+        <a class="connected-username" href="profile.html?username=${infosUser['name']}">${infosUser['name']}</a>
         <span class="connected-user-ref">${infosUser['ref']}</span>
     </div>
     <div class="action-user">

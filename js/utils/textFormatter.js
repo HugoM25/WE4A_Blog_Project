@@ -14,9 +14,13 @@ function formatText(text) {
     // Replace all \n with <br>
     const newLineText = strikedText.replace(/\n/g, "<br>");
 
+    // Replace [text](link) with <a href="link">text</a>
     const linkedText = newLineText.replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2'>$1</a>");
 
-    return linkedText;
+    // Replace all --r with <span class="rainbow"> and </span>
+    const rainbowText = linkedText.replace(/--r(.*?)r--/g, "<span class='rainbow'>$1</span>");
+
+    return rainbowText;
 }
 
 export {formatText};

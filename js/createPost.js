@@ -19,12 +19,21 @@ postCreator.addEventListener("click", function() {
     // Get the content of the textarea
     var content = textarea.value;
 
+    // Make sure the content is not empty 
+    if (content == "") {
+        alert("You can't post an empty post!");
+        return;
+    }
+    
+    //Replace the ' with a '' to avoid SQL errors 
+    content = content.replace(/'/g, "''");
+
     // Create a new XMLHttpRequest object
     var xhr = new XMLHttpRequest();
 
     // Define the PHP script URL and parameters
     var url = "php/addPost.php";
-    var params = "post_text=" + encodeURIComponent(content) + "&post_image=" + encodeURIComponent("");
+    var params = "post_text=" + encodeURIComponent(content) + "&post_image=" + encodeURIComponent("") + "&action=add_post";
 
     // Set the HTTP request method and content type
     xhr.open("POST", url, true);

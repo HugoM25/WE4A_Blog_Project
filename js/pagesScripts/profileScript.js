@@ -1,7 +1,7 @@
 import {retrievePost } from "../utils/postLoader.js";
 import { generatePost } from "../templates/templatePost.js";
 import { checkUserLoggedIn, initializeConnexionPanel } from "../utils/userConnexion.js";
-import { SetButtonsFunctionality, checkLikePost } from "../utils/interactionHandler.js";
+import { SetButtonsFunctionality, SetSudoFunctionality, checkLikePost } from "../utils/interactionHandler.js";
 
 // Get the username from the URL
 const queryString = window.location.search;
@@ -64,6 +64,7 @@ function setButtonFeedFunctionalities() {
                 });
             }
             SetButtonsFunctionality();
+            SetSudoFunctionality();
         })
         .catch(function(error) {
             console.error(error);
@@ -90,6 +91,7 @@ function setButtonFeedFunctionalities() {
                 });
             }
             SetButtonsFunctionality();
+            SetSudoFunctionality();
         })
         .catch(function(error) {
             console.error(error);

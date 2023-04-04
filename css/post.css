@@ -71,6 +71,23 @@ html, body {
     flex-direction: column;
 }
 
+
+.post > .edit-options {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.post > .edit-options img {
+    height: 30px;
+    width: 30px;
+}
+
+.post > .edit-options > button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
 .post > .content > img {
     width: 100%;
     height: auto;
@@ -186,6 +203,17 @@ html, body {
     text-decoration: underline;
     color: #1da1f2;
 
+}
+
+.post > .content span.hashtag {
+    color: #1da1f2;
+}
+
+.post > .content span.rainbow {
+    background: linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
 }
 .post:has(> .content > textarea) > .footer > button {
     width: 30%;
