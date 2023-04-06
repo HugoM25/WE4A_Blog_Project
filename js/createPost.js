@@ -16,6 +16,10 @@ textarea.oninput = function() {
 var postCreator = document.getElementById("post-edit-button");
 
 postCreator.addEventListener("click", function() {
+
+    // Get the image
+    var image = document.getElementById("image").files[0];
+
     // Get the content of the textarea
     var content = textarea.value;
 
@@ -24,20 +28,22 @@ postCreator.addEventListener("click", function() {
         alert("You can't post an empty post!");
         return;
     }
-    
     //Replace the ' with a '' to avoid SQL errors 
     content = content.replace(/'/g, "''");
+
+    var formData = new FormData();
+    formData.append("post_text", content);
+    formData.append("post_image", image);
+    formData.append("action", "add_post");
 
     // Create a new XMLHttpRequest object
     var xhr = new XMLHttpRequest();
 
     // Define the PHP script URL and parameters
     var url = "php/addPost.php";
-    var params = "post_text=" + encodeURIComponent(content) + "&post_image=" + encodeURIComponent("") + "&action=add_post";
 
     // Set the HTTP request method and content type
     xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     // Define the function to be executed when the PHP script response is received
     xhr.onreadystatechange = function() {
@@ -56,7 +62,7 @@ postCreator.addEventListener("click", function() {
     }
 
     // Send the HTTP request with the parameters
-    xhr.send(params);
+    xhr.send(formData);
 });
 
 

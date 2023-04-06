@@ -19,6 +19,9 @@ class GetPostObj {
     public $liked_by; 
     public $liked_by_ID;
 
+    public $post_id;
+    public $offset; 
+
 
     public function __construct() {
         // Create a connection to the database
@@ -38,7 +41,8 @@ class GetPostObj {
         isset($_GET['allow_text']) ? $this->allow_text = $_GET['allow_text'] : $this->allow_text = 1;
         isset($_GET['sort']) ? $this->sort = $_GET['sort'] : $this->sort = 'time';
         isset($_GET['nb']) ? $this->nb = $_GET['nb'] : $this->nb = 10;
-
+        isset($_GET['post_id']) ? $this->post_id = $_GET['post_id'] : $this->post_id = -1;
+        isset($_GET['offset']) ? $this->offset = $_GET['offset'] : $this->offset = 0;
 
         if (isset($_GET['by_user']) == false) {
             $this->by_user = null;
@@ -122,7 +126,7 @@ class GetPostObj {
 
         $nb_where_clause = 0;
         // If there is a where clause to add
-        if ($this->allow_image == 0 || $this->allow_text == 0 || $this->by_user || $this->liked_by){
+        if ($this->allow_image == 0 || $this->allow_text == 0 || $this->by_user || $this->liked_by || $this->post_id != -1){
             $req = $req.' WHERE ';
             // If we want to allow only image posts
             if ( $this->allow_image == 0 ) {
@@ -153,8 +157,16 @@ class GetPostObj {
                 $req = $req.'post_likes.user_id = '.$this->liked_by_ID;
                 $nb_where_clause++;
             }
+
+            if ($this->post_id != -1) {
+                if ($nb_where_clause > 0) {
+                    $req = $req.'AND ';
+                }
+                $req = $req.'userpost.post_id = '.$this->post_id;
+                $nb_where_clause++;
+            }
         }
-        $req = $req.' GROUP BY userpost.post_id ORDER BY '.$this->sort.' DESC LIMIT '.$this->nb;
+        $req = $req.' GROUP BY userpost.post_id ORDER BY '.$this->sort.' DESC LIMIT '.$this->nb.' OFFSET '.$this->offset;
         return $req;
     }
 }

@@ -17,9 +17,9 @@ function formatText(text) {
     // Replace [text](link) with <a href="link">text</a>
     const linkedText = newLineText.replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2'>$1</a>");
 
-    // Replace all --r with <span class="rainbow"> and </span>
-    const rainbowText = linkedText.replace(/--r(.*?)r--/g, "<span class='rainbow'>$1</span>");
-
+    // Replace all --r[]r-- with <span class="rainbow"> and </span>
+    const rainbowText = linkedText.replace(/--r\[(.*?)\]r--/g, "<span class='rainbow'>$1</span>");
+    
     return rainbowText;
 }
 

@@ -28,6 +28,9 @@ class AddPostObj {
             case 'delete_post':
                 $this->delete_post();
                 break;
+            case 'edit_post':
+                $this->edit_post();
+                break;
             default:
                 $response = array(
                     'success' => false,
@@ -39,13 +42,14 @@ class AddPostObj {
 
         
     }
-
-    public function delete_post(){
+    public function edit_post(){
         $post_id = null;
+        $post_text = null;
+        $post_image = null;
         // Get post argument 
-        if (isset($_POST['post_id']) == true) {
-            $post_id = $_POST['post_id'];
-        }
+        isset($_POST['post_id']) ? $post_id = $_POST['post_id'] : $post_id = null;
+        isset($_POST['post_text']) ? $post_text = $_POST['post_text'] : $post_text = null;
+        isset($_POST['post_image']) ? $post_image = $_POST['post_image'] : $post_image = null;
 
         // Get connected user id
         session_start();
@@ -73,6 +77,63 @@ class AddPostObj {
             return;
         }
 
+        // Update the post in the database
+        $sql = "UPDATE userpost SET post_text = '".$post_text."', post_image = '".$post_image."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        $results = $this->sqlConnector->ask_database($sql);
+
+        $response = array(
+            'success' => true,
+        );
+
+        echo json_encode($response);
+    }
+
+    public function delete_post(){
+        $post_id = null;
+        // Get post argument 
+        if (isset($_POST['post_id']) == true) {
+            $post_id = $_POST['post_id'];
+        }
+
+
+        // Get connected user id
+        session_start();
+        $connected_user_id = $_SESSION['user_id'];
+
+        if ($_SESSION['user_id'] == null) {
+            $response = array(
+                'success' => false,
+                'error' => 'User not found',
+            );
+            echo json_encode($response);
+            return;
+        }
+
+        // Verify that the post is from the connected user
+        $sql = "SELECT * FROM userpost WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        $results = $this->sqlConnector->ask_database($sql);
+
+        if ($results->num_rows == 0) {
+            $response = array(
+                'success' => false,
+                'error' => 'Post not found',
+            );
+            echo json_encode($response);
+            return;
+        }
+        else {
+            // Get the post image path
+            $image_path = $results->fetch_assoc()['image_path'];
+
+            if ($image_path != null || $image_path != ''){
+                unlink('../'.$image_path);
+            }
+        }
+
+        // Delete the likes of the post in the database
+        $sql = "DELETE FROM post_likes WHERE post_id = '".$post_id."'";
+        $results = $this->sqlConnector->ask_database($sql);
+        
         // Delete the post in the database
         $sql = "DELETE FROM userpost WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         $results = $this->sqlConnector->ask_database($sql);
@@ -93,8 +154,12 @@ class AddPostObj {
             $post_text = $_POST['post_text'];
         }
 
-        if (isset($_POST['post_image']) == true) {
-            $post_image = $_POST['post_image'];
+        $image_path = null;
+        if (isset($_FILES['post_image']) == true) {
+            $post_image = $_FILES['post_image'];
+            $image_path = 'images/userImages/'.$post_image['name'];
+            move_uploaded_file($post_image['tmp_name'], '../images/userImages/'.$post_image['name']);
+
         }
         // Get connected username from session 
         session_start();
@@ -112,7 +177,7 @@ class AddPostObj {
         }
 
         // Insert the post in the database
-        $sql = "INSERT INTO userpost (author_id, content, image_path, likes, repost, time) VALUES ('".$connected_user_id."', '".$post_text."', '".$post_image."', '0', '0'," . time() . ")";
+        $sql = "INSERT INTO userpost (author_id, content, image_path, likes, repost, time) VALUES ('".$connected_user_id."', '".$post_text."', '".$image_path."', '0', '0'," . time() . ")";
         $results = $this->sqlConnector->ask_database($sql);
 
         $response = array(

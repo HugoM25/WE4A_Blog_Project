@@ -146,7 +146,7 @@ function deleteFunctionality(postID){
 }
 
 function editFunctionality(postID){
-    alert("Edit " + postID);
+    
 }
 
 export { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality };
