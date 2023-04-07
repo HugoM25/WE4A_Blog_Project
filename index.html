@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="css/connexion-panel.css">
+    <link rel="stylesheet" href="css/buttons.css">
 
     <script src="js/pagesScripts/mainScript.js" type="module" charset="utf-8" defer></script>
     <script src="js/utils/interactionHandler.js" type="module" charset="utf-8" defer></script>
@@ -16,6 +17,17 @@
     <div class="main-layout">
 
         <div class="left-side">
+
+            <button class="button-page-change">
+                <img src="images/icons/home_icon.svg" class="icon-home"></img>
+                <span> Home </span>
+            </button>
+
+            <button class="button-page-change">
+                <img src="images/icons/profile_icon.svg" class="icon-profile"></img>
+                <span> Profile </span>
+            </button>
+
 
             <div class="connexion-panel" id="connexion-panel">
                 <div class="icon-user">
@@ -73,7 +85,7 @@
         </div>
 
         <div class="posts-feed">
-            <div class="post">
+            <div class="post" edit-post="-1">
                 <div class="profile">
                     <img src="images/default_pic.jpg" alt="Profile Picture">
                 </div>
@@ -85,6 +97,9 @@
                 <div class="content">
                     <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280"></textarea>
                     <input type="file" id="image" name="image">
+                    <label for="image" class="image-add">
+                        <img src="images/icons/pic_icon.svg"/>
+                    </label>
                 </div>
                 <div class="footer">
                     <button id="post-edit-button"> <span> Send </span></button>
