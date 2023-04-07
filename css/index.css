@@ -52,6 +52,53 @@
 
     display: flex;
     flex-direction: column;
+
+    padding: 10px;
+}
+
+
+.options > div.trends {
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 100%;
+
+
+    padding: 10px;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    
+    gap: 20px;
+}
+
+.options > div.trends > h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.options > div.trends > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.options > div.trends > div > a {
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+}
+.options > div.trends > div > span {
+    color: grey;
+    font-size: 0.8em;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
 }
 
 .posts-feed {
