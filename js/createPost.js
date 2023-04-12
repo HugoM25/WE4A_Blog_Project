@@ -1,24 +1,68 @@
 var textarea = document.getElementById("textarea");
-const maxLineBreaks = 5;
-textarea.oninput = function() {
+var postCreator = document.getElementById("post-edit-button");
+var inputImageTag = document.getElementById("image");
 
-    // Limit the number of line breaks
-    const currentLineBreaks = (textarea.value.match(/\n/g) || []).length;
-    if (currentLineBreaks > maxLineBreaks) {
-        textarea.value = textarea.value.slice(0, -1);
+const maxLineBreaks = 5;
+
+MakePostMakerUseful();
+
+function MakePostMakerUseful(){
+    if (textarea == null){
+        textarea = document.getElementById("textarea");
+    }
+    if (postCreator == null){
+        postCreator = document.getElementById("post-edit-button");
+    }
+    if (inputImageTag == null){
+        inputImageTag = document.getElementById("image");
     }
 
-    // Enlarge the textarea if the user is typing
-    textarea.style.height = "";
-    textarea.style.height = textarea.scrollHeight + "px"
-};
+    // When the user has selected an image
+    inputImageTag.addEventListener("change", function() {
+        OnImageSelected();
+    });
 
-var postCreator = document.getElementById("post-edit-button");
+    postCreator.addEventListener("click", function() {
+        SendInfosPostsMaker();
+    });
 
-postCreator.addEventListener("click", function() {
+    textarea.oninput = function() {
+        // Limit the number of line breaks
+        const currentLineBreaks = (textarea.value.match(/\n/g) || []).length;
+        if (currentLineBreaks > maxLineBreaks) {
+            textarea.value = textarea.value.slice(0, -1);
+        }
+    
+        // Enlarge the textarea if the user is typing
+        textarea.style.height = "";
+        textarea.style.height = textarea.scrollHeight + "px"
+    };
+    
+}
 
+function OnImageSelected(){
+    console.log("Image selected");
+    // Find img by id
+    var image_icon = document.getElementById("icon-uploaded-img");
+    // If the user has selected an image
+    if (inputImageTag.files && inputImageTag.files[0]) {
+        // Change the icon
+        image_icon.src = "images/icons/pic_icon_valid.svg";
+
+
+        // Add the preview of the image inside html
+        var image_preview = document.getElementById("image-preview");
+
+        // Change src of img preview
+        image_preview.src = URL.createObjectURL(event.target.files[0]);
+
+        // Remove the hidden class
+        image_preview.classList.remove("hidden");
+    }
+}
+function SendInfosPostsMaker() {
     // Get the image
-    var image = document.getElementById("image").files[0];
+    var image = inputImageTag.files[0];
 
     // Get the content of the textarea
     var content = textarea.value;
@@ -63,9 +107,4 @@ postCreator.addEventListener("click", function() {
 
     // Send the HTTP request with the parameters
     xhr.send(formData);
-});
-
-
-
-
-
+}

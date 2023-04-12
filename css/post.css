@@ -239,6 +239,16 @@ html, body {
     height: 30px;
 }
 
+.post:has(> .content > textarea) > .content > img.preview {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    
+}
+
+.post:has(> .content > textarea) > .content > img.hidden {
+    display: none;
+}
 
 .post:has(> .content > textarea) > .content > button {
     border: solid 1px var(--text-color);

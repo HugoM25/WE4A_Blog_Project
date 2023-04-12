@@ -105,7 +105,7 @@
         </div>
 
         <div class="posts-feed">
-            <div class="post" edit-post="-1">
+            <div class="post" post-id="-1">
                 <div class="profile">
                     <img src="images/default_pic.jpg" alt="Profile Picture">
                 </div>
@@ -114,12 +114,14 @@
                     <p class="user-id">@elon</p>
                     <p class="post-date"></p>
                 </div>
-                <div class="content">
+                <div class="content" id="content-post-creator">
                     <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280"></textarea>
                     <input type="file" id="image" name="image">
+                    <img id="image-preview" class="preview hidden">
                     <label for="image" class="image-add">
-                        <img src="images/icons/pic_icon.svg"/>
+                        <img id="icon-uploaded-img" src="images/icons/pic_icon.svg"/>
                     </label>
+
                 </div>
                 <div class="footer">
                     <button id="post-edit-button"> <span> Send </span></button>
