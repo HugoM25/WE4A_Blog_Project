@@ -3,6 +3,7 @@ import { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality } from "..
 import { retrievePost } from "../utils/postLoader.js";
 import { generatePost } from "../templates/templatePost.js";
 import { initializeConnexionPanel } from "../utils/userConnexion.js";
+import { generatePostMaker, setupPostMaker } from "../templates/templatePostMaker.js";
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("feed-option-button");
 
@@ -17,6 +18,16 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
 }
 
 initializeConnexionPanel();
+
+
+setPostMaker();
+
+// Set the post maker as functional
+function setPostMaker(){
+    var postMakerArea = document.getElementById("post-maker-area");
+    postMakerArea.innerHTML = generatePostMaker();
+    setupPostMaker();
+}
 
 function setNewButtonActive(indexButtonActive) {
     // Remove active class from all buttons

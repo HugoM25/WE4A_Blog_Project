@@ -1,29 +1,47 @@
-var textarea = document.getElementById("textarea");
-var postCreator = document.getElementById("post-edit-button");
-var inputImageTag = document.getElementById("image");
-
 const maxLineBreaks = 5;
 
-MakePostMakerUseful();
+function generatePostMaker() {
+    
+    return `
+    <div class="post" post-id="-1">
+        <div class="profile">
+            <img src="images/default_pic.jpg" alt="Profile Picture">
+        </div>
+        <div class="header">
+            <a class="user-name" href="profile.html?username=ElonMusk">ElonMusk</a>
+            <p class="user-id">@elon</p>
+            <p class="post-date"></p>
+        </div>
+        <div class="content" id="content-post-creator">
+            <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280"></textarea>
+            <input type="file" id="image" name="image">
+            <img id="image-preview" class="preview hidden">
+            <label for="image" class="image-add">
+                <img id="icon-uploaded-img" src="images/icons/pic_icon.svg"/>
+            </label>
+        </div>
+        <div class="footer">
+            <button id="post-edit-button"> <span> Send </span></button>
+        </div>
+    </div>
+    `
+}
 
-function MakePostMakerUseful(){
-    if (textarea == null){
-        textarea = document.getElementById("textarea");
-    }
-    if (postCreator == null){
-        postCreator = document.getElementById("post-edit-button");
-    }
-    if (inputImageTag == null){
-        inputImageTag = document.getElementById("image");
-    }
+export { generatePostMaker, setupPostMaker};
+
+
+function setupPostMaker(){
+    var textarea = document.getElementById("textarea");
+    var postCreator = document.getElementById("post-edit-button");
+    var inputImageTag = document.getElementById("image");
 
     // When the user has selected an image
     inputImageTag.addEventListener("change", function() {
-        OnImageSelected();
+        OnImageSelected(inputImageTag);
     });
 
     postCreator.addEventListener("click", function() {
-        SendInfosPostsMaker();
+        SendInfosPostsMaker(inputImageTag, textarea);
     });
 
     textarea.oninput = function() {
@@ -37,11 +55,9 @@ function MakePostMakerUseful(){
         textarea.style.height = "";
         textarea.style.height = textarea.scrollHeight + "px"
     };
-    
 }
 
-function OnImageSelected(){
-    console.log("Image selected");
+function OnImageSelected(inputImageTag){
     // Find img by id
     var image_icon = document.getElementById("icon-uploaded-img");
     // If the user has selected an image
@@ -60,7 +76,8 @@ function OnImageSelected(){
         image_preview.classList.remove("hidden");
     }
 }
-function SendInfosPostsMaker() {
+
+function SendInfosPostsMaker(inputImageTag, textarea) {
     // Get the image
     var image = inputImageTag.files[0];
 
