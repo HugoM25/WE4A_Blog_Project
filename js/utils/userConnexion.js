@@ -1,7 +1,7 @@
 import { generateConnexionPanel } from '../templates/templateConnexionPanel.js';
 
 // Check if the user is logged in
-function checkUserLoggedIn() {
+async function checkUserLoggedIn() {
     var request = `php/getInfosOnConnectedUser.php`;
     
     return new Promise(function(resolve, reject) {

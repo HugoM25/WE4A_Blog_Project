@@ -1,21 +1,24 @@
 const maxLineBreaks = 5;
 
-function generatePostMaker() {
-    
+function generatePostMaker(infosUser, infosPostEdit = null) {
+
+    console.log(infosPostEdit);
+    console.log(infosUser);
+
     return `
     <div class="post" post-id="-1">
         <div class="profile">
             <img src="images/default_pic.jpg" alt="Profile Picture">
         </div>
         <div class="header">
-            <a class="user-name" href="profile.html?username=ElonMusk">ElonMusk</a>
-            <p class="user-id">@elon</p>
+            <a class="user-name" href="profile.html?username=${infosUser['name']}">${infosUser["name"]}</a>
+            <p class="user-id">${infosUser["ref"]}</p>
             <p class="post-date"></p>
         </div>
         <div class="content" id="content-post-creator">
-            <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280"></textarea>
+            <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280">${infosPostEdit == null ? "" : infosPostEdit["content"]}</textarea>
             <input type="file" id="image" name="image">
-            <img id="image-preview" class="preview hidden">
+            <img id="image-preview" class="preview ${infosPostEdit == null ? 'hidden' : ''}" src=${infosPostEdit == null ? "" : infosPostEdit["image_path"]}>
             <label for="image" class="image-add">
                 <img id="icon-uploaded-img" src="images/icons/pic_icon.svg"/>
             </label>
@@ -30,7 +33,7 @@ function generatePostMaker() {
 export { generatePostMaker, setupPostMaker};
 
 
-function setupPostMaker(){
+function setupPostMaker(editPostId = null){
     var textarea = document.getElementById("textarea");
     var postCreator = document.getElementById("post-edit-button");
     var inputImageTag = document.getElementById("image");
@@ -41,7 +44,7 @@ function setupPostMaker(){
     });
 
     postCreator.addEventListener("click", function() {
-        SendInfosPostsMaker(inputImageTag, textarea);
+        SendInfosPostsMaker(inputImageTag, textarea, editPostId);
     });
 
     textarea.oninput = function() {
@@ -77,7 +80,7 @@ function OnImageSelected(inputImageTag){
     }
 }
 
-function SendInfosPostsMaker(inputImageTag, textarea) {
+function SendInfosPostsMaker(inputImageTag, textarea, editPostId = null) {
     // Get the image
     var image = inputImageTag.files[0];
 
@@ -94,8 +97,21 @@ function SendInfosPostsMaker(inputImageTag, textarea) {
 
     var formData = new FormData();
     formData.append("post_text", content);
-    formData.append("post_image", image);
-    formData.append("action", "add_post");
+
+    if (editPostId != null && editPostId != -1) {
+        formData.append("post_id", editPostId);
+        formData.append("action", "edit_post");
+        
+        // Si l'image a changé 
+        if (image != undefined) {
+            formData.append("post_image", image);
+            console.log(image);
+        }
+    }
+    else {
+        formData.append("action", "add_post");
+        formData.append("post_image", image);
+    }
 
     // Create a new XMLHttpRequest object
     var xhr = new XMLHttpRequest();
@@ -114,7 +130,7 @@ function SendInfosPostsMaker(inputImageTag, textarea) {
             var response = JSON.parse(xhr.responseText);
 
             if (response["success"] == true) {
-                
+                ResetPostMaker();
             }
             else {
                 alert(response["error"]);
@@ -124,4 +140,20 @@ function SendInfosPostsMaker(inputImageTag, textarea) {
 
     // Send the HTTP request with the parameters
     xhr.send(formData);
+}
+
+function ResetPostMaker(){
+    var textarea = document.getElementById("textarea");
+    var inputImageTag = document.getElementById("image");
+    var image_preview = document.getElementById("image-preview");
+    var image_icon = document.getElementById("icon-uploaded-img");
+
+    // Reset the textarea
+    textarea.value = "";
+
+    // Reset the image
+    inputImageTag.value = "";
+    image_preview.src = "";
+    image_icon.src = "images/icons/pic_icon.svg";
+    image_preview.classList.add("hidden");
 }

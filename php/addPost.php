@@ -49,7 +49,7 @@ class AddPostObj {
         // Get post argument 
         isset($_POST['post_id']) ? $post_id = $_POST['post_id'] : $post_id = null;
         isset($_POST['post_text']) ? $post_text = $_POST['post_text'] : $post_text = null;
-        isset($_POST['post_image']) ? $post_image = $_POST['post_image'] : $post_image = null;
+        //isset($_POST['post_image']) ? $post_image = $_POST['post_image'] : $post_image = null;
 
         // Get connected user id
         session_start();
@@ -78,7 +78,17 @@ class AddPostObj {
         }
 
         // Update the post in the database
-        $sql = "UPDATE userpost SET post_text = '".$post_text."', post_image = '".$post_image."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        if (isset($_FILES['post_image'])){
+            $post_image = $_FILES['post_image'];
+            $image_path = 'images/userImages/'.$post_image['name'];
+            move_uploaded_file($post_image['tmp_name'], '../images/userImages/'.$post_image['name']);
+
+            $sql = "UPDATE userpost SET content = '".$post_text."', image_path = '".$image_path."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        }
+        else {
+            $sql = "UPDATE userpost SET content = '".$post_text."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        }
+
         $results = $this->sqlConnector->ask_database($sql);
 
         $response = array(

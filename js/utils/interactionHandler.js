@@ -1,3 +1,5 @@
+import { regeneratePostMaker } from "../pagesScripts/mainScript.js";
+
 // Set the buttons functionality ( click event for each button )
 function SetButtonsFunctionality() {
     document.querySelectorAll('.action').forEach(function(button) {
@@ -113,7 +115,6 @@ function SetSudoFunctionality() {
             button.addEventListener('click', function(){
                 editFunctionality(findPostParentID(button));
             }, false);
-        
     });
 
 }
@@ -146,7 +147,11 @@ function deleteFunctionality(postID){
 }
 
 function editFunctionality(postID){
+    console.log("Edit " + postID);
+
     
+    regeneratePostMaker(postID);
+
 }
 
 export { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality };

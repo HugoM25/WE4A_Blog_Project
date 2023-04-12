@@ -2,8 +2,10 @@
 import { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality } from "../utils/interactionHandler.js";
 import { retrievePost } from "../utils/postLoader.js";
 import { generatePost } from "../templates/templatePost.js";
-import { initializeConnexionPanel } from "../utils/userConnexion.js";
+import { initializeConnexionPanel, checkUserLoggedIn } from "../utils/userConnexion.js";
 import { generatePostMaker, setupPostMaker } from "../templates/templatePostMaker.js";
+
+
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("feed-option-button");
 
@@ -19,15 +21,27 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
 
 initializeConnexionPanel();
 
-
-setPostMaker();
-
 // Set the post maker as functional
-function setPostMaker(){
+function setPostMaker(userInfos, postEditInfos = null){
     var postMakerArea = document.getElementById("post-maker-area");
-    postMakerArea.innerHTML = generatePostMaker();
-    setupPostMaker();
+    postMakerArea.innerHTML = generatePostMaker(userInfos, postEditInfos);
+
+    if (postEditInfos == null) {
+        setupPostMaker();
+    } 
+    else {
+        setupPostMaker(postEditInfos['post_id']);
+    }
 }
+
+
+checkUserLoggedIn().then(function(response) {
+    response = JSON.parse(response);
+    console.log(response);
+    if (response['user_id'] != -1 ) {
+        setPostMaker(response);
+    }
+});
 
 function setNewButtonActive(indexButtonActive) {
     // Remove active class from all buttons
@@ -81,3 +95,20 @@ function setNewButtonActive(indexButtonActive) {
 }
 
 
+// Regenerate the post maker 
+async function regeneratePostMaker(postID) {
+
+    var postInfos = await retrievePost({nb : 1, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null', post_id : postID});
+    postInfos = JSON.parse(postInfos)[0]['post'];
+    
+    var userInfos = await checkUserLoggedIn();
+    userInfos = JSON.parse(userInfos);
+
+    if (userInfos['user_id'] != -1 ) {
+        setPostMaker(userInfos,postInfos);
+    }
+}
+
+
+
+export {regeneratePostMaker}
