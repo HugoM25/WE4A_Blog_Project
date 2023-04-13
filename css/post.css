@@ -226,9 +226,6 @@ html, body {
     transition: background-color 0.2s, transform 0.2s;
 }
 
-.post:has(> .content > textarea) > .content {
-    flex-grow: auto;
-}
 
 .post:has(> .content > textarea) > .content > input {
     visibility: hidden;
@@ -239,14 +236,45 @@ html, body {
     height: 30px;
 }
 
-.post:has(> .content > textarea) > .content > img.preview {
+.post:has(> .content > textarea) > .content > div > img.preview {
+    position: relative;
     width: 100%;
     height: auto;
     max-height: 80vh;
-    
 }
 
-.post:has(> .content > textarea) > .content > img.hidden {
+.post > .content:has(> .hidden) > div > img.preview {
+    display: none;
+}
+
+.post:has(> .content > textarea) > .content > div#preview-zone {
+    display: block;
+    position: relative;
+}
+
+.post:has(> .content > textarea) > .content > div > #suppr-button {
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    top: 10px;
+    background-color: #1da1f2;
+    border-radius: 50%;
+    border: none;
+    height: 30px;
+    width: 30px;
+}
+
+.post > .content:has(> .hidden) > div > #suppr-button {
+    display: none;
+}
+
+.post> .content:has(> textarea) > div > #suppr-button > img {
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.post:has(> .content > textarea) > .content > .hidden {
     display: none;
 }
 
@@ -267,6 +295,7 @@ html, body {
 }
 
 
+/* Change the colors of the differents buttons hover*/ 
 .post > .footer > .action.red:hover > img  {
     background-color: rgba(255,0,0,0.2);
     filter: invert(13%) sepia(79%) saturate(7446%) hue-rotate(6deg) brightness(110%) contrast(119%);
@@ -315,7 +344,10 @@ html, body {
 .post > .footer > .action.green:hover > p, .post > .footer > .action.green.active > p {
     color: rgb(7, 255, 7);
 }
+/*---------------------------------------------*/
 
+
+/* The style of the flairs */ 
 .post > .footer > .flair > p {
     font-size: 0.8em;
     font-weight: bold;
@@ -323,7 +355,9 @@ html, body {
     border-radius: 5px;
     background-color: rgba(255,255,255,0.2);
 }
- 
+
+
+/* The apparition animation moving up + fading in */
 @keyframes apparition-anim {
     0% {
         transform: translateY(100px);

@@ -17,8 +17,13 @@ function generatePostMaker(infosUser, infosPostEdit = null) {
         </div>
         <div class="content" id="content-post-creator">
             <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280">${infosPostEdit == null ? "" : infosPostEdit["content"]}</textarea>
-            <input type="file" id="image" name="image">
-            <img id="image-preview" class="preview ${infosPostEdit == null ? 'hidden' : ''}" src=${infosPostEdit == null ? "" : infosPostEdit["image_path"]}>
+            <input type="file" id="image" name="image" accept="image/png, image/gif, image/jpeg">
+            <div id="preview-zone" class="${infosPostEdit == null ? 'hidden' : ''}">
+                <img id="image-preview" class="preview" src=${infosPostEdit == null ? "" : infosPostEdit["image_path"]}>
+                <button id="suppr-button">
+                    <img id="icon-cross" src="images/icons/cross_icon.svg" />
+                </button>
+            </div>
             <label for="image" class="image-add">
                 <img id="icon-uploaded-img" src="images/icons/pic_icon.svg"/>
             </label>
@@ -37,6 +42,7 @@ function setupPostMaker(editPostId = null){
     var textarea = document.getElementById("textarea");
     var postCreator = document.getElementById("post-edit-button");
     var inputImageTag = document.getElementById("image");
+    var supprButton = document.getElementById("suppr-button");
 
     // When the user has selected an image
     inputImageTag.addEventListener("change", function() {
@@ -45,6 +51,10 @@ function setupPostMaker(editPostId = null){
 
     postCreator.addEventListener("click", function() {
         SendInfosPostsMaker(inputImageTag, textarea, editPostId);
+    });
+
+    supprButton.addEventListener("click", function() {
+        EmptyImageLoader();
     });
 
     textarea.oninput = function() {
@@ -58,6 +68,20 @@ function setupPostMaker(editPostId = null){
         textarea.style.height = "";
         textarea.style.height = textarea.scrollHeight + "px"
     };
+}
+
+function EmptyImageLoader(){
+    // Empty
+    var inputImageTag = document.getElementById("image");
+    inputImageTag.value = "";
+
+    // Remove preview
+    document.getElementById("preview-zone").classList.add("hidden");
+
+    // Reset icon
+    var image_icon = document.getElementById("icon-uploaded-img");
+    image_icon.src = "images/icons/pic_icon.svg";
+
 }
 
 function OnImageSelected(inputImageTag){
@@ -76,7 +100,7 @@ function OnImageSelected(inputImageTag){
         image_preview.src = URL.createObjectURL(event.target.files[0]);
 
         // Remove the hidden class
-        image_preview.classList.remove("hidden");
+        document.getElementById("preview-zone").classList.remove("hidden");
     }
 }
 
@@ -155,5 +179,6 @@ function ResetPostMaker(){
     inputImageTag.value = "";
     image_preview.src = "";
     image_icon.src = "images/icons/pic_icon.svg";
-    image_preview.classList.add("hidden");
+    document.getElementById("preview-zone").classList.add("hidden");
+
 }
