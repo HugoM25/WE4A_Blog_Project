@@ -80,8 +80,7 @@ class AddPostObj {
         // Update the post in the database
         if (isset($_FILES['post_image'])){
             $post_image = $_FILES['post_image'];
-            $image_path = 'images/userImages/'.$post_image['name'];
-            move_uploaded_file($post_image['tmp_name'], '../images/userImages/'.$post_image['name']);
+            $image_path = $this->save_image($post_image, $_SESSION['user_id']);
 
             $sql = "UPDATE userpost SET content = '".$post_text."', image_path = '".$image_path."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         }
@@ -157,6 +156,8 @@ class AddPostObj {
 
 
     public function add_post(){
+        session_start();
+
         $post_text = null;
         $post_image = null;
         // Get post argument 
@@ -167,12 +168,10 @@ class AddPostObj {
         $image_path = null;
         if (isset($_FILES['post_image']) == true) {
             $post_image = $_FILES['post_image'];
-            $image_path = 'images/userImages/'.$post_image['name'];
-            move_uploaded_file($post_image['tmp_name'], '../images/userImages/'.$post_image['name']);
+            $image_path = $this->save_image($post_image, $_SESSION['user_id']);
 
         }
         // Get connected username from session 
-        session_start();
         $connected_username = $_SESSION['username'];
 
         $connected_user_id = getUserID($connected_username);
@@ -194,6 +193,20 @@ class AddPostObj {
             'success' => true,
         );
         echo json_encode($response);
+    }
+
+    public function save_image($image_to_save, $user_id){
+        if ($image_to_save != NULL){
+            // Generate a new name 
+            // TIME + USER_ID + RANDOM STRING +  EXTENSION
+            $image_name = time().$user_id.rand(1000, 9999).'.'.pathinfo($image_to_save['name'], PATHINFO_EXTENSION);
+            $image_path = 'images/userImages/'.$image_name;
+            move_uploaded_file($image_to_save['tmp_name'], '../images/userImages/'.$image_name);
+            return $image_path;
+        }
+        else {
+            return null;
+        }
     }
 }
 
