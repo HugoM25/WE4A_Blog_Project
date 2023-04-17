@@ -128,17 +128,17 @@ class GetPostObj {
         // If there is a where clause to add
         if ($this->allow_image == 0 || $this->allow_text == 0 || $this->by_user || $this->liked_by || $this->post_id != -1){
             $req = $req.' WHERE ';
-            // If we want to allow only image posts
+            // If we want to allow only text posts
             if ( $this->allow_image == 0 ) {
-                $req = $req.'image_path IS NULL ';
+                $req = $req.'image_path IS NULL OR image_path = "" ';
                 $nb_where_clause++;
             }
-            // If we want to allow only text posts
+            // If we want to allow only image posts
             if ( $this->allow_text == 0) {
                 if ($nb_where_clause > 0) {
                     $req = $req.'AND ';
                 }
-                $req = $req.'image_path != "" ';
+                $req = $req.'image_path != "" AND image_path IS NOT NULL';
                 $nb_where_clause++;
             }
             // If we want to filter by user

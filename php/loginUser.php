@@ -13,10 +13,10 @@ if (validateCredentials($test_username, $test_password)) {
     $_SESSION['username'] = $test_username;
     $_SESSION['loggedin'] = true;
     $_SESSION['user_id'] = getUserID($test_username);
-
+    
     echo $_SESSION['user_id'];
     echo json_encode(['success' => true]);
-} 
+}
 else {
     echo json_encode(['success' => false, 'error' => 'Invalid credentials']);
 }

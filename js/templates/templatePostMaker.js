@@ -141,7 +141,7 @@ function SendInfosPostsMaker(inputImageTag, textarea, editPostId = null) {
     var xhr = new XMLHttpRequest();
 
     // Define the PHP script URL and parameters
-    var url = "php/addPost.php";
+    var url = "php/managePost.php";
 
     // Set the HTTP request method and content type
     xhr.open("POST", url, true);

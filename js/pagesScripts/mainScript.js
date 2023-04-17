@@ -1,11 +1,44 @@
-// Import the functions from interactionHandler.js
-import { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality } from "../utils/interactionHandler.js";
+import { SetButtonsFunctionality, SetSudoFunctionality } from "../utils/interactionHandler.js";
 import { retrievePost } from "../utils/postLoader.js";
 import { generatePost } from "../templates/templatePost.js";
 import { initializeConnexionPanel, checkUserLoggedIn } from "../utils/userConnexion.js";
 import { generatePostMaker, setupPostMaker } from "../templates/templatePostMaker.js";
 
+import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
+import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+// Mode of the page 
+// 0 : Feed page
+// 1 : Search page
+// 2 : Write page
+const mode = urlParams.get('mode');
+
+// Get the connected user infos 
+checkUserLoggedIn().then(function(response) {
+    // Parse the response to a JSON object
+    response = JSON.parse(response);
+    console.log(response);
+
+    // If the user is logged in 
+    if (response['user_id'] != -1 && mode == 2) {
+        setPostMaker(response);
+    }
+    
+    // Initialize the connection panel
+    document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
+    activeConnexionPanel(response);
+
+    //Initialize the nav menu 
+    document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
+    activeNavMenu(response);
+
+});
+
+
+// Handle buttons posts requests -------------------------------------------------------
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("feed-option-button");
 
@@ -19,7 +52,6 @@ for (var i = 0; i < buttonsOptionsSearch.length; i++) {
     });
 }
 
-initializeConnexionPanel();
 
 // Set the post maker as functional
 function setPostMaker(userInfos, postEditInfos = null){
@@ -34,14 +66,6 @@ function setPostMaker(userInfos, postEditInfos = null){
     }
 }
 
-
-checkUserLoggedIn().then(function(response) {
-    response = JSON.parse(response);
-    console.log(response);
-    if (response['user_id'] != -1 ) {
-        setPostMaker(response);
-    }
-});
 
 function setNewButtonActive(indexButtonActive) {
     // Remove active class from all buttons
@@ -80,12 +104,17 @@ function setNewButtonActive(indexButtonActive) {
         // Fill the feed with the new posts
         response = JSON.parse(response);
         console.log(response);
+        // Clear the feed
         document.getElementById("feed").innerHTML = "";
+        // Store all the posts in the feed
+        var posts = [];
+
         for (var i = 0; i < response.length; i++) {
             await generatePost(response[i]['post'], response[i]['user'], true).then(function(response) {
-                document.getElementById("feed").innerHTML += response;
+                posts.push(response);
             });
         }
+        document.getElementById("feed").innerHTML = posts.join("");
         SetButtonsFunctionality();
         SetSudoFunctionality();
     })

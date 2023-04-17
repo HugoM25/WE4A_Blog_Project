@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="css/connexion-panel.css">
+    <link rel="stylesheet" href="css/nav-menu.css">
     <link rel="stylesheet" href="css/buttons.css">
 
     <script src="js/pagesScripts/mainScript.js" type="module" charset="utf-8" defer></script>
@@ -17,38 +18,12 @@
 
         <div class="left-side">
 
-            <button class="button-page-change">
-                <img src="images/icons/write_icon.svg" class="icon-profile"></img>
-                <span> Write </span>
-            </button>
+            <div id="nav-menu">
+                <!-- Nav menu will be generated here-->
+            </div>
 
-
-            <button class="button-page-change">
-                <img src="images/icons/home_icon.svg" class="icon-home"></img>
-                <span> Home </span>
-            </button>
-
-            <button class="button-page-change">
-                <img src="images/icons/profile_icon.svg" class="icon-profile"></img>
-                <span> Profile </span>
-            </button>
-
-            <div class="connexion-panel" id="connexion-panel">
-                <div class="icon-user">
-                    <img src="images/default_pic.jpg" alt="user avatar"></img>
-                </div>
-                <div class="info-user">
-                    <span class="connected-username" >Username</span>
-                    <span class="connected-user-ref">@UserRef</span>
-                </div>
-                <div class="action-user">
-                    <button class="action-button">
-                        <img src="images/icons/logout_icon.svg" class="icon-logout"></img>
-                    </button>
-                    <button class="action-button">
-                        <img src="images/icons/settings_icon.svg" class="icon-settings"></img>
-                    </button>
-                </div>
+            <div id="connexion-panel">
+                <!-- Connexion Panel will be generated here-->
             </div>
             
         </div>
@@ -84,8 +59,7 @@
             </div>
         </div>
 
-        <div class="options">
-            
+        <div class="right-side">
             <div class="trends">
                 <h2> Trends </h2>
 
@@ -110,10 +84,10 @@
 
         <div class="posts-feed">
             <div id="post-maker-area">
-
+                <!-- Post maker will be generated here-->
             </div>
             <div id="feed">
-
+                <!-- Posts (feed) will be generated here-->
             </div>
         </div>
     </div>

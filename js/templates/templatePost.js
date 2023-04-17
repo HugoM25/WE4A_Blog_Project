@@ -2,6 +2,7 @@
 import { checkLikePost } from "../utils/interactionHandler.js";
 import { formatText } from "../utils/textFormatter.js";
 import { checkUserLoggedIn } from "../utils/userConnexion.js";
+import { sanitizeUserInput } from "../utils/security.js";
 
 async function generatePost(infosPost, infosUser, isUserConnected=false){
 
@@ -23,6 +24,8 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
 
         isPostFromUser = connectedUserId == infosPost['author_id'];
     }
+
+    var textContent = sanitizeUserInput(infosPost["content"]);
     
 
     return (`
@@ -46,7 +49,7 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
                 <p class="post-date">${parseTime(infosPost["time"], Date.now()/1000)}</p>
             </div>
             <div class="content">
-                <p>${formatText(infosPost["content"])}</p>
+                <p>${formatText(textContent)}</p>
                 ${
                     processImgLink(infosPost["image_path"])
                 }

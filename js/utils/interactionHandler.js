@@ -54,6 +54,7 @@ function likePost(postId) {
 }
 function LikeFunctionality(postID, button){
     likePost(postID).then(function(response) {
+        console.log(response);
         response = JSON.parse(response);
         // if request is successful
         if (response['success'] === true) {
@@ -128,7 +129,7 @@ function deleteFunctionality(postID){
         // send post request to php script
         var xhr = new XMLHttpRequest();
         // Define the PHP script URL and parameters
-        var url = "php/addPost.php";
+        var url = "php/managePost.php";
         var params = "post_id=" + encodeURIComponent(postID) + "&action=delete_post";
 
         // Set the HTTP request method and content type

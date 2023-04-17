@@ -1,7 +1,9 @@
 import {retrievePost } from "../utils/postLoader.js";
 import { generatePost } from "../templates/templatePost.js";
-import { checkUserLoggedIn, initializeConnexionPanel } from "../utils/userConnexion.js";
-import { SetButtonsFunctionality, SetSudoFunctionality, checkLikePost } from "../utils/interactionHandler.js";
+import { checkUserLoggedIn} from "../utils/userConnexion.js";
+import { SetButtonsFunctionality, SetSudoFunctionality} from "../utils/interactionHandler.js";
+import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
+import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
 
 // Get the username from the URL
 const queryString = window.location.search;
@@ -14,23 +16,28 @@ var buttonsOptionsSearch = document.getElementsByClassName("button-selection-und
 
 if (username != null) {
 
-    let isSelfProfile = false;
     await checkUserLoggedIn().then(function(response) {
+
+        let isSelfProfile = false;
+
         response = JSON.parse(response);
         if (response['name'] == username) {
             isSelfProfile = true;
         }
+        // Make the feed options buttons functional
+        setButtonFeedFunctionalities();
+
+        // Initialize the connection panel
+        document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
+        activeConnexionPanel(response);
+
+        //Initialize the nav menu 
+        document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
+        activeNavMenu(response);
     });
-
-    console.log("is self profile ? " + isSelfProfile);
-    console.log("Looking for : " + username);
-
-    // Make the feed options buttons functional
-    setButtonFeedFunctionalities();
-    
-
-    // Initialize the connexion panel
-    initializeConnexionPanel(); 
+}
+else {
+    window.location.href = "index.html";
 }
 
 
