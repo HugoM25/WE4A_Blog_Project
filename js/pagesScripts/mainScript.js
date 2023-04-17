@@ -16,6 +16,7 @@ const urlParams = new URLSearchParams(queryString);
 // 2 : Write page
 const mode = urlParams.get('mode');
 
+
 // Get the connected user infos 
 checkUserLoggedIn().then(function(response) {
     // Parse the response to a JSON object

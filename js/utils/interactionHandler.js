@@ -62,9 +62,15 @@ function LikeFunctionality(postID, button){
             // Change the button style
             if (button.classList.contains("active")) {
                 button.classList.remove("active");
+                // Update the number of likes after finding p tag child of button
+                var likes = button.querySelector("p");
+                likes.innerHTML = parseInt(likes.innerHTML) - 1;
             }
             else {
                 button.classList.add("active");
+                // Update the number of likes
+                var likes = button.querySelector("p");
+                likes.innerHTML = parseInt(likes.innerHTML) + 1;
             }
         }
     });

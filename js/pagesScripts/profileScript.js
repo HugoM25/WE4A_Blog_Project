@@ -4,7 +4,7 @@ import { checkUserLoggedIn} from "../utils/userConnexion.js";
 import { SetButtonsFunctionality, SetSudoFunctionality} from "../utils/interactionHandler.js";
 import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
 import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
-
+import { generateProfileHeader, activeProfileHeader } from "../templates/templateProfileHeader.js";
 // Get the username from the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -34,6 +34,16 @@ if (username != null) {
         //Initialize the nav menu 
         document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
         activeNavMenu(response);
+
+        
+        //Initialize the profile header
+        document.getElementById("profile-header").innerHTML = generateProfileHeader(response, isSelfProfile);
+
+        generateProfileHeader(response, isSelfProfile).then(function(response) {
+            document.getElementById("profile-header").innerHTML = response;
+            activeProfileHeader(response, isSelfProfile);
+        });
+        
     });
 }
 else {
