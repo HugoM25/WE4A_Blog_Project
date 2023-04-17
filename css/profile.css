@@ -67,54 +67,6 @@ html, body {
     width: 0px;
 }
 
-.profile-header {
-    grid-area: profile;
-    display: grid;
-    grid-template-columns: 0.3fr 0.7fr;
-    grid-template-rows: 0.7fr 0.3fr; 
-    grid-template-areas: 
-        "profile-pdp profile-text"
-        "profile-pdp profile-stats";
-    
-    width: 100%;
-    height: 100%;
-
-}
-
-.pdp-container {
-    grid-area: profile-pdp;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-
-}
-
-.pdp-container > img {
-
-    width: 70%;
-    height: auto; 
-
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.stats-container {
-    grid-area: profile-stats;	
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    height: 100%;
-}
-
-.stat {
-    color: white;
-}
-
 .text-container {
     grid-area: profile-text;
     display: flex;

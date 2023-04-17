@@ -98,7 +98,8 @@ class GetPostObj {
                     "user" => array(
                         "user_id" => $row["user_id"],
                         "ref" => $row["ref"],
-                        "name" => $row["name"]
+                        "name" => $row["name"], 
+                        "profile_picture_path" => $row["profile_picture_path"]
                     )
                 );
                 $tmp_nb--;

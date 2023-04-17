@@ -41,7 +41,7 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
             </div>` : ""
         }
             <div class="profile">
-                <img src="images/default_pic.jpg" alt="Profile Picture">
+                <img src="${infosUser["profile_picture_path"]}" alt="Profile Picture">
             </div>
             <div class="header">
                 <a class="user-name" href="${"profile.html?username=" + infosUser["name"]}">${infosUser["name"]}</a>
