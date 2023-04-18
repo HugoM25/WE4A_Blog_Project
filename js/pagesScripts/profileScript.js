@@ -5,6 +5,7 @@ import { SetButtonsFunctionality, SetSudoFunctionality} from "../utils/interacti
 import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
 import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
 import { generateProfileHeader, activeProfileHeader } from "../templates/templateProfileHeader.js";
+import { GetInfosOnUser } from "../utils/infos.js";
 // Get the username from the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -37,12 +38,23 @@ if (username != null) {
 
         
         //Initialize the profile header
-        document.getElementById("profile-header").innerHTML = generateProfileHeader(response, isSelfProfile);
+        // Get infos on profile
+        GetInfosOnUser(username).then(function(infosUser) {
+            
+            console.log(infosUser);
+            infosUser = JSON.parse(infosUser);
 
-        generateProfileHeader(response, isSelfProfile).then(function(response) {
-            document.getElementById("profile-header").innerHTML = response;
-            activeProfileHeader(response, isSelfProfile);
+            if (infosUser['success'] == false) {
+                window.location.href = "404.html";
+            }
+            else {
+                generateProfileHeader(infosUser, isSelfProfile).then(function(response) {
+                    document.getElementById("profile-header").innerHTML = response;
+                    activeProfileHeader(response, isSelfProfile);
+                });
+            }
         });
+
         
     });
 }

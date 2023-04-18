@@ -169,7 +169,6 @@ class AddPostObj {
         if (isset($_FILES['post_image']) == true) {
             $post_image = $_FILES['post_image'];
             $image_path = $this->save_image($post_image, $_SESSION['user_id']);
-
         }
         // Get connected username from session 
         $connected_username = $_SESSION['username'];

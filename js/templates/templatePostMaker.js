@@ -1,10 +1,6 @@
 const maxLineBreaks = 5;
 
 function generatePostMaker(infosUser, infosPostEdit = null) {
-
-    console.log(infosPostEdit);
-    console.log(infosUser);
-
     return `
     <div class="post" post-id="-1">
         <div class="profile">

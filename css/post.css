@@ -126,6 +126,7 @@ html, body {
     height:auto;
     object-fit: cover;
     border-radius: 50%;
+    aspect-ratio: 1/1;
 }
 
 .post > .header > .user-name {
