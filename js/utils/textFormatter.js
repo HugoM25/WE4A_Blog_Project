@@ -15,12 +15,19 @@ function formatText(text) {
     const newLineText = strikedText.replace(/\n/g, "<br>");
 
     // Replace [text](link) with <a href="link">text</a>
-    const linkedText = newLineText.replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2'>$1</a>");
+    const linkedText = newLineText.replace(/\[(.*?)\]\((.*?)\)/g, "<a class='link' href='$2'>$1</a>");
 
     // Replace all --r[]r-- with <span class="rainbow"> and </span>
     const rainbowText = linkedText.replace(/--r\[(.*?)\]r--/g, "<span class='rainbow'>$1</span>");
+
+    // Replace all @name with <a href="profile.php?name=name">@name</a>
+    const mentionText = rainbowText.replace(/@(\w+)/g, "<a href='profile.html?username=$1' class='mention'>@$1</a>");
+
+    // Replace all #tag with <a href="search.php?tag=tag">#tag</a>
+    const hashtagText = mentionText.replace(/#(\w+)/g, `<a href='index.html?search=%23$1' class='tag'>#$1</a>`);
+
     
-    return rainbowText;
+    return hashtagText;
 }
 
 export {formatText};

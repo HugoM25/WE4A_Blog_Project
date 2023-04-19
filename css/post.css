@@ -202,11 +202,24 @@ html, body {
     outline: none;
 }
 
-.post > .content  a {
+.post > .content  a.link {
     text-decoration: underline;
     color: #1da1f2;
+}
+
+.post > .content a.mention {
+    color: #1da1f2;
+    text-decoration: none;
 
 }
+
+.post > .content a.tag {
+    color: #1da1f2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
 
 .post > .content span.hashtag {
     color: #1da1f2;

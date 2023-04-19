@@ -13,6 +13,8 @@ class GetPostObj {
     public $sort;
     public $nb;
 
+    public $search;
+
     public $by_user;
     public $by_user_ID; 
 
@@ -43,7 +45,7 @@ class GetPostObj {
         isset($_GET['nb']) ? $this->nb = $_GET['nb'] : $this->nb = 10;
         isset($_GET['post_id']) ? $this->post_id = $_GET['post_id'] : $this->post_id = -1;
         isset($_GET['offset']) ? $this->offset = $_GET['offset'] : $this->offset = 0;
-
+        isset($_GET['search']) ? $this->search = $_GET['search'] : $this->search = null;
         if (isset($_GET['by_user']) == false) {
             $this->by_user = null;
         }
@@ -70,7 +72,6 @@ class GetPostObj {
     public function getPosts(){
         // Get the SQL request
         $sql_request = $this->generateSQLPostRequest();
-
         // Get the posts
         $results = $this->sqlConnector->ask_database($sql_request);
 
@@ -127,7 +128,7 @@ class GetPostObj {
 
         $nb_where_clause = 0;
         // If there is a where clause to add
-        if ($this->allow_image == 0 || $this->allow_text == 0 || $this->by_user || $this->liked_by || $this->post_id != -1){
+        if ($this->allow_image == 0 || $this->allow_text == 0 || $this->by_user || $this->liked_by || $this->post_id != -1 || $this->search != null){
             $req = $req.' WHERE ';
             // If we want to allow only text posts
             if ( $this->allow_image == 0 ) {
@@ -166,6 +167,16 @@ class GetPostObj {
                 $req = $req.'userpost.post_id = '.$this->post_id;
                 $nb_where_clause++;
             }
+
+            if ($this->search != null){
+                if ($nb_where_clause > 0) {
+                    $req = $req.'AND ';
+                }
+                $escaped_search_string = str_replace(['%', '#', '_', '\\'], ['\%', '\#', '\_', '\\\\'], $this->search);
+                $req = $req.'(userpost.content LIKE "%'.$escaped_search_string.'%" OR siteuser.name LIKE "%'.$escaped_search_string.'%")';
+                $nb_where_clause++;
+            }
+
         }
         $req = $req.' GROUP BY userpost.post_id ORDER BY '.$this->sort.' DESC LIMIT '.$this->nb.' OFFSET '.$this->offset;
         return $req;

@@ -6,7 +6,9 @@ import { generatePostMaker, setupPostMaker } from "../templates/templatePostMake
 
 import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
 import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
+import { generateSearch, activeSearch } from "../templates/templateSearch.js";
 
+// Get the URL parameters
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -15,6 +17,9 @@ const urlParams = new URLSearchParams(queryString);
 // 1 : Search page
 // 2 : Write page
 const mode = urlParams.get('mode');
+const search = urlParams.get('search');
+
+var currentSearch = search ? search : '';
 
 
 // Get the connected user infos 
@@ -36,22 +41,11 @@ checkUserLoggedIn().then(function(response) {
     document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
     activeNavMenu(response);
 
+    // Initialize the search bar
+    document.getElementById("search-area").innerHTML = generateSearch();
+    activeSearch(currentSearch);
 });
 
-
-// Handle buttons posts requests -------------------------------------------------------
-// Get all the feed options buttons
-var buttonsOptionsSearch = document.getElementsByClassName("feed-option-button");
-
-// Add event listener to all the buttons
-for (var i = 0; i < buttonsOptionsSearch.length; i++) {
-    buttonsOptionsSearch[i].addEventListener("click", function() {
-        // Get the index of the clicked button
-        var indexButtonActive = Array.prototype.indexOf.call(buttonsOptionsSearch, this);
-        // Set the clicked button as active
-        setNewButtonActive(indexButtonActive);
-    });
-}
 
 
 // Set the post maker as functional
@@ -65,63 +59,6 @@ function setPostMaker(userInfos, postEditInfos = null){
     else {
         setupPostMaker(postEditInfos['post_id']);
     }
-}
-
-
-function setNewButtonActive(indexButtonActive) {
-    // Remove active class from all buttons
-    for (var i = 0; i < buttonsOptionsSearch.length; i++) {
-        buttonsOptionsSearch[i].classList.remove("active");
-    }
-    // Add active class to the clicked button
-    buttonsOptionsSearch[indexButtonActive].classList.add("active");
-
-    // Fill the post feed with the new posts
-    var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null'};
-    if (indexButtonActive == 0) {
-        reqObj.nb = 10;
-        reqObj.allow_image = 1;
-        reqObj.allow_text = 1;
-        reqObj.sort = 'time';
-    }else if (indexButtonActive == 1){
-        reqObj.nb = 10;
-        reqObj.allow_image = 1;
-        reqObj.allow_text = 1;
-        reqObj.sort = 'likes';
-    } else if (indexButtonActive == 2) {
-        reqObj.nb = 10;
-        reqObj.allow_image = 1;
-        reqObj.allow_text = 0;
-        
-    } else if (indexButtonActive == 3) {
-        reqObj.nb = 10;
-        reqObj.allow_image = 0;
-        reqObj.allow_text = 1;
-        
-    }
-
-    retrievePost(reqObj)
-    .then(async function(response) {
-        // Fill the feed with the new posts
-        response = JSON.parse(response);
-        console.log(response);
-        // Clear the feed
-        document.getElementById("feed").innerHTML = "";
-        // Store all the posts in the feed
-        var posts = [];
-
-        for (var i = 0; i < response.length; i++) {
-            await generatePost(response[i]['post'], response[i]['user'], true).then(function(response) {
-                posts.push(response);
-            });
-        }
-        document.getElementById("feed").innerHTML = posts.join("");
-        SetButtonsFunctionality();
-        SetSudoFunctionality();
-    })
-    .catch(function(error) {
-        console.error(error);
-    });
 }
 
 
@@ -140,5 +77,40 @@ async function regeneratePostMaker(postID) {
 }
 
 
+function displayPosts(reqObj){
+    
+    // Get the current search 
+    reqObj.search = currentSearch;
 
-export {regeneratePostMaker}
+    retrievePost(reqObj)
+    .then(async function(response) {
+        // Fill the feed with the new posts
+        response = JSON.parse(response);
+        // Find the feed area
+        var feedArea = document.getElementById("feed");
+        // Clear the feed area
+        feedArea.innerHTML = "";
+        // Get the posts
+        var posts = [];
+        for (var i = 0; i < response.length; i++) {
+            await generatePost(response[i]['post'], response[i]['user'], true).then(function(response) {
+                posts.push(response);
+            });
+        }
+        feedArea.innerHTML = posts.join("");
+        SetButtonsFunctionality();
+        SetSudoFunctionality();
+
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
+function changeCurrentSearch(newSearch){
+    currentSearch = newSearch;
+}
+
+
+
+export {regeneratePostMaker, displayPosts, changeCurrentSearch}

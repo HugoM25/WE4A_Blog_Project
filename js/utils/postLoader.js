@@ -2,13 +2,15 @@
 // It returns a promise that will be resolved when the request is done
 async function retrievePost(filterObj=null) {
     var request = `php/getPosts.php?
-        nb=${filterObj.nb}
-        &allow_image=${filterObj.allow_image}
-        &allow_text=${filterObj.allow_text}
-        &by_user=${filterObj.by_user ? filterObj.by_user : 'null'}
-        &sort=${filterObj.sort}&liked_by=${filterObj.liked_by ? filterObj.liked_by : 'null'}
-        &post_id=${filterObj.post_id ? filterObj.post_id : '-1'}
-        &offset=${filterObj.offset ? filterObj.offset : '0'}
+        ${filterObj.nb ? 'nb=' + filterObj.nb : 'nb=10'}
+        ${filterObj.allow_image ? '&allow_image=' + filterObj.allow_image : ''}
+        ${filterObj.allow_text ? '&allow_text=' + filterObj.allow_text : ''}
+        ${filterObj.by_user ? '&by_user=' + encodeURIComponent(filterObj.by_user) : ''}
+        ${filterObj.liked_by ? '&liked_by=' + encodeURIComponent(filterObj.liked_by) : ''}
+        ${filterObj.sort ? '&sort=' + filterObj.sort : ''}
+        ${filterObj.post_id ? '&post_id=' + filterObj.post_id : ''}
+        ${filterObj.offset ? '&offset=' + filterObj.offset : ''}
+        ${filterObj.search ? '&search=' + encodeURIComponent(filterObj.search) : ''}
     `;
     
     return new Promise(function(resolve, reject) {
