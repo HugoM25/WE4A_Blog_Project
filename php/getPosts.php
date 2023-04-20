@@ -94,7 +94,8 @@ class GetPostObj {
                         "image_path" => $row["image_path"],
                         "time" => $row["time"],
                         "likes" => $row["likes"],
-                        "repost" => $row["repost"]
+                        "repost" => $row["repost"],
+                        "edited" => $row["edited"],
                     ),
                     "user" => array(
                         "user_id" => $row["user_id"],

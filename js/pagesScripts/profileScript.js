@@ -17,40 +17,39 @@ var buttonsOptionsSearch = document.getElementsByClassName("button-selection-und
 
 if (username != null) {
 
-    await checkUserLoggedIn().then(function(response) {
+    await checkUserLoggedIn().then(function(infoConnectedUser) {
 
         let isSelfProfile = false;
 
-        response = JSON.parse(response);
-        if (response['name'] == username) {
+        infoConnectedUser = JSON.parse(infoConnectedUser);
+        if (infoConnectedUser['name'] == username) {
             isSelfProfile = true;
         }
         // Make the feed options buttons functional
         setButtonFeedFunctionalities();
 
         // Initialize the connection panel
-        document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
-        activeConnexionPanel(response);
+        document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(infoConnectedUser);
+        activeConnexionPanel(infoConnectedUser);
 
         //Initialize the nav menu 
-        document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
-        activeNavMenu(response);
+        document.getElementById("nav-menu").innerHTML = generateNavMenu(infoConnectedUser);
+        activeNavMenu(infoConnectedUser);
 
         
         //Initialize the profile header
         // Get infos on profile
         GetInfosOnUser(username).then(function(infosUser) {
             
-            console.log(infosUser);
             infosUser = JSON.parse(infosUser);
 
             if (infosUser['success'] == false) {
                 window.location.href = "404.html";
             }
             else {
-                generateProfileHeader(infosUser, isSelfProfile).then(function(response) {
+                generateProfileHeader(infosUser, isSelfProfile, infoConnectedUser).then(function(response) {
                     document.getElementById("profile-header").innerHTML = response;
-                    activeProfileHeader(response, isSelfProfile);
+                    activeProfileHeader(infosUser, isSelfProfile, infoConnectedUser);
                 });
             }
         });

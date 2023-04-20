@@ -67,9 +67,9 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
                     <img src="images/icons/share_icon.svg" class="icon-like"></img>
                     <p> SHARE </p>
                 </button>
-                <div class="flair">
-                    <p>Sport</p>
-                </div>
+                ${
+                    infosPost["edited"] ? ` <div class="flair"> <p>edited</p> </div>` : ''
+                }
             </div>
         </div>
     `);

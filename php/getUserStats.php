@@ -64,7 +64,7 @@ class GetUserStatsObj {
         }
 
         // Count the number of followers
-        $sql = "SELECT COUNT(*) AS nb_followers FROM following WHERE user_id = '".$user_id."'";
+        $sql = "SELECT COUNT(*) AS nb_followers FROM follow WHERE followed_id = '".$user_id."'";
         $result = $this->sqlConnector->ask_database($sql);
 
         if ($result != null){
@@ -76,7 +76,7 @@ class GetUserStatsObj {
         }
 
         // Count the number of following
-        $sql = "SELECT COUNT(*) AS nb_following FROM following WHERE following_id = '".$user_id."'";
+        $sql = "SELECT COUNT(*) AS nb_following FROM follow WHERE follower_id = '".$user_id."'";
         $result = $this->sqlConnector->ask_database($sql);
 
         if ($result != null){

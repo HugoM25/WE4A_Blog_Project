@@ -82,10 +82,11 @@ class AddPostObj {
             $post_image = $_FILES['post_image'];
             $image_path = $this->save_image($post_image, $_SESSION['user_id']);
 
-            $sql = "UPDATE userpost SET content = '".$post_text."', image_path = '".$image_path."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+            $sql = "UPDATE userpost SET edited = true, content = '".$post_text."', image_path = '".$image_path."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         }
         else {
-            $sql = "UPDATE userpost SET content = '".$post_text."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+            
+            $sql = "UPDATE userpost SET edited = true, content = '".$post_text."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         }
 
         $results = $this->sqlConnector->ask_database($sql);
@@ -185,7 +186,7 @@ class AddPostObj {
         }
 
         // Insert the post in the database
-        $sql = "INSERT INTO userpost (author_id, content, image_path, likes, repost, time) VALUES ('".$connected_user_id."', '".$post_text."', '".$image_path."', '0', '0'," . time() . ")";
+        $sql = "INSERT INTO userpost (author_id, content, image_path, likes, repost, time) VALUES ('".$connected_user_id."', '".$post_text."', '".$image_path."', '0', '0'," . time() .")";
         $results = $this->sqlConnector->ask_database($sql);
 
         $response = array(
