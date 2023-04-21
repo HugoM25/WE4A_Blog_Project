@@ -5,6 +5,8 @@ class GetFollowObj {
 
     public $sqlConnector;
 
+    public $limit; 
+
     public function __construct(){
         $this->sqlConnector = new SqlConnector();
         if ($this->sqlConnector->is_working == false) {
@@ -13,7 +15,7 @@ class GetFollowObj {
 
         isset($_GET['follower_id']) ? $follower_id = $_GET['follower_id'] : $follower_id = null;
         isset($_GET['followed_id']) ? $followed_id = $_GET['followed_id'] : $followed_id = null;
-
+        isset($_GET['limit']) ? $this->limit = $_GET['limit'] : $this->limit = 10;
         if ($followed_id == null && $follower_id == null) {
             die("No parameters given");
         }
@@ -54,12 +56,20 @@ class GetFollowObj {
             return;  
         }
         while($row = $results->fetch_assoc()) {
+
+            // Limit the number of results
+            if ($i >= $this->limit) {
+                break;
+            }
+
+            // Put the data in the response array
             $response[$i] = array(
                 "user_id" => $row["user_id"],
                 "ref" => $row["ref"],
                 "name" => $row["name"],
                 "profile_picture_path" => $row["profile_picture_path"],
             );
+
             $i++;
         }
 
@@ -72,11 +82,20 @@ class GetFollowObj {
         $response = array();
         $i = 0;
 
+        // If there are no results
         if ($results == null) {
             echo json_encode($response);
             return;  
         }
+
         while($row = $results->fetch_assoc()) {
+            
+            // Limit the number of results
+            if ($i >= $this->limit) {
+                break;
+            }
+
+            // Put the data in the response array
             $response[$i] = array(
                 "user_id" => $row["user_id"],
                 "ref" => $row["ref"],
@@ -84,6 +103,8 @@ class GetFollowObj {
                 "profile_picture_path" => $row["profile_picture_path"],
             );
             $i++;
+
+
         }
 
         echo json_encode($response);

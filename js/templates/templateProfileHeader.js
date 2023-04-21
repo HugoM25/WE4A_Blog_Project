@@ -26,19 +26,19 @@ async function generateProfileHeader(userInfos, isSelfProfile, connectedUserInfo
         </div>
         <div class="stats-container">
             <div class="stat">
-                <p class="stat-number">${userStats['nb_posts']}</p>
+                <p class="stat-number" id='posts_nb'>${userStats['nb_posts']}</p>
                 <p class="stat-text">Posts</p>
             </div>
             <div class="stat">
-                <p class="stat-number">${userStats['nb_likes']}</p>
+                <p class="stat-number" id='likes_nb'>${userStats['nb_likes']}</p>
                 <p class="stat-text">Likes</p>
             </div>
             <div class="stat">
-                <p class="stat-number">${userStats['nb_following']}</p>
+                <p class="stat-number" id='followed_nb'>${userStats['nb_following']}</p>
                 <p class="stat-text">Following</p>
             </div>
             <div class="stat">
-                <p class="stat-number">${userStats['nb_followers']}</p>
+                <p class="stat-number" id='follower_nb'>${userStats['nb_followers']}</p>
                 <p class="stat-text">Followers</p>
             </div>
         </div>
@@ -83,15 +83,28 @@ function activeProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
             // Send request to server to follow/unfollow the user
             if (followButton.innerText == 'Follow') {
                 follow(userInfos['user_id']).then((response) => {
+
+                    // Change the button to unfollow
                     followButton.classList.add('active');
                     followButton.innerText = 'Unfollow';
+
+                    // Update the number of followers
+                    let followerNb = document.getElementById('follower_nb');
+                    followerNb.innerText = parseInt(followerNb.innerText) + 1;
+
                 }).catch((error) => {
                     alert(error);
                 });
             }else {
                 unfollow(userInfos['user_id']).then((response) => {
+
+                    // Change the button to follow
                     followButton.classList.remove('active');
                     followButton.innerText = 'Follow';
+                    // Update the number of followers
+                    let followerNb = document.getElementById('follower_nb');
+                    followerNb.innerText = parseInt(followerNb.innerText) - 1;
+                    
                 }).catch((error) => {
                     alert(error);
                 });

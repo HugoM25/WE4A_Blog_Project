@@ -73,6 +73,7 @@ async function regeneratePostMaker(postID) {
 
     if (userInfos['user_id'] != -1 ) {
         setPostMaker(userInfos,postInfos);
+        window.scrollTo(0, 0);
     }
 }
 
@@ -110,7 +111,5 @@ function displayPosts(reqObj){
 function changeCurrentSearch(newSearch){
     currentSearch = newSearch;
 }
-
-
 
 export {regeneratePostMaker, displayPosts, changeCurrentSearch}

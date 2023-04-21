@@ -55,10 +55,10 @@ function checkFollow(follower, followed){
     });
 }
 
-function getFollowers(username){
+function getFollowers(followed){
     // send get request to server
     // return stats
-    var request = `php/getFollowers.php?username=${username}`;
+    var request = `php/getFollow.php?followed_id=${followed}`;
     
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();
@@ -74,5 +74,22 @@ function getFollowers(username){
     });
 }
 
+function getFollowed(follower){
+    var request = `php/getFollow.php?follower_id=${follower}`;
 
-export { follow, unfollow, checkFollow, getFollowers }
+    return new Promise(function(resolve, reject) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                resolve(this.responseText);
+            } else if (this.readyState == 4) {
+                reject('Error retrieving post.');
+            }
+        };
+        xmlhttp.open('GET', request, true);
+        xmlhttp.send();
+    });
+}
+
+
+export { follow, unfollow, checkFollow, getFollowers, getFollowed}

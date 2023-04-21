@@ -1,11 +1,18 @@
 import {retrievePost } from "../utils/postLoader.js";
-import { generatePost } from "../templates/templatePost.js";
 import { checkUserLoggedIn} from "../utils/userConnexion.js";
 import { SetButtonsFunctionality, SetSudoFunctionality} from "../utils/interactionHandler.js";
+
+// Import les templates
 import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
 import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
 import { generateProfileHeader, activeProfileHeader } from "../templates/templateProfileHeader.js";
+import { generatePost } from "../templates/templatePost.js";
+
+// Import les services
+import { getFollowers, getFollowed } from "../utils/serviceFollow.js";
 import { GetInfosOnUser } from "../utils/infos.js";
+import { generateFollowCard } from "../templates/templateFollowCard.js";
+
 // Get the username from the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -47,18 +54,104 @@ if (username != null) {
                 window.location.href = "404.html";
             }
             else {
+                // Generate the profile header
                 generateProfileHeader(infosUser, isSelfProfile, infoConnectedUser).then(function(response) {
                     document.getElementById("profile-header").innerHTML = response;
                     activeProfileHeader(infosUser, isSelfProfile, infoConnectedUser);
                 });
+
+                
+                // Add funct to the feed followed button
+                document.getElementById("feed-button-following").addEventListener("click", function() {
+                    displayFollowed(infoConnectedUser, infosUser);
+                    changeActiveButton(2);
+                });
+
+                // Add funct to the feed followers button
+                document.getElementById("feed-button-followers").addEventListener("click", function() {
+                    displayFollowers(infoConnectedUser, infosUser);
+                    changeActiveButton(3);
+                }); 
+
             }
         });
-
-        
     });
 }
 else {
     window.location.href = "index.html";
+}
+
+
+function displayPosts(reqObj){  
+    retrievePost(reqObj)
+    .then(async function(response) {
+        // Fill the feed with the new posts
+        response = JSON.parse(response);
+        // Find the feed area
+        var feedArea = document.getElementById("feed");
+        // Clear the feed area
+        feedArea.innerHTML = "";
+        // Get the posts
+        var posts = [];
+        for (var i = 0; i < response.length; i++) {
+            await generatePost(response[i]['post'], response[i]['user'], true).then(function(response) {
+                posts.push(response);
+            });
+        }
+        feedArea.innerHTML = posts.join("");
+        SetButtonsFunctionality();
+        SetSudoFunctionality();
+
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
+function displayFollowers(connectedUserInfos, userPageInfos ){
+    getFollowers(userPageInfos['user_id'])
+    .then(async function(response) {
+        // Fill the feed with the new posts
+        response = JSON.parse(response);
+        // Find the feed area
+        var feedArea = document.getElementById("feed");
+        // Clear the feed area
+        feedArea.innerHTML = "";
+        // Get the posts
+        var followersCards = [];
+        for (var i = 0; i < response.length; i++) {
+            await generateFollowCard(response[i], connectedUserInfos).then(function(response) {
+                followersCards.push(response);
+            });
+        }
+        feedArea.innerHTML = followersCards.join("");
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
+function displayFollowed(connectedUserInfos, userPageInfos){
+    getFollowed(userPageInfos['user_id'])
+    .then(async function(response) {
+        // Fill the feed with the new posts
+        response = JSON.parse(response);
+        // Find the feed area
+        var feedArea = document.getElementById("feed");
+        // Clear the feed area
+        feedArea.innerHTML = "";
+        // Get the posts
+        var followedCards = [];
+        for (var i = 0; i < response.length; i++) {
+            await generateFollowCard(response[i], connectedUserInfos).then(function(response) {
+                followedCards.push(response);
+            });
+        }
+        feedArea.innerHTML = followedCards.join("");
+    })
+    .catch(function(error) {
+        console.error(error);
+    });  
 }
 
 
