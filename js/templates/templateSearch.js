@@ -76,19 +76,19 @@ function SetButtonsFunctionality(){
 
             switch (indexButtonActive) {
                 case 0:
-                    reqObj = { nb: 10, allow_image: 1, allow_text: 1, sort: 'time' };
+                    reqObj = { nb: 10, allow_image: '1', allow_text: '1', sort: 'time' };
                     break;
                 case 1:
-                    reqObj = { nb: 10, allow_image: 1, allow_text: 1, sort: 'likes' };
+                    reqObj = { nb: 10, allow_image: '1', allow_text: '1', sort: 'likes' };
                     break;
                 case 2:
-                    reqObj = { nb: 10, allow_image: 1, allow_text: 0 };
+                    reqObj = { nb: 10, allow_image: '1', allow_text: '0' };
                     break;
                 case 3:
-                    reqObj = { nb: 10, allow_image: 0, allow_text: 1 };
+                    reqObj = { nb: 10, allow_image: '0', allow_text: '1' };
                     break;
                 default:
-                    reqObj = { nb: 10, allow_image: 1, allow_text: 1, sort: 'time' };
+                    reqObj = { nb: 10, allow_image: '1', allow_text: '1', sort: 'time' };
                     break;
             };
 

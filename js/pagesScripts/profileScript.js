@@ -1,4 +1,4 @@
-import {retrievePost } from "../utils/postLoader.js";
+import {retrievePost } from "../utils/servicePost.js";
 import { checkUserLoggedIn} from "../utils/userConnexion.js";
 import { SetButtonsFunctionality, SetSudoFunctionality} from "../utils/interactionHandler.js";
 
@@ -21,7 +21,6 @@ const username = urlParams.get('username');
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("button-selection-underlined");
 
-
 if (username != null) {
 
     await checkUserLoggedIn().then(function(infoConnectedUser) {
@@ -32,8 +31,6 @@ if (username != null) {
         if (infoConnectedUser['name'] == username) {
             isSelfProfile = true;
         }
-        // Make the feed options buttons functional
-        setButtonFeedFunctionalities();
 
         // Initialize the connection panel
         document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(infoConnectedUser);
@@ -60,20 +57,12 @@ if (username != null) {
                     activeProfileHeader(infosUser, isSelfProfile, infoConnectedUser);
                 });
 
-                
-                // Add funct to the feed followed button
-                document.getElementById("feed-button-following").addEventListener("click", function() {
-                    displayFollowed(infoConnectedUser, infosUser);
-                    changeActiveButton(2);
-                });
-
-                // Add funct to the feed followers button
-                document.getElementById("feed-button-followers").addEventListener("click", function() {
-                    displayFollowers(infoConnectedUser, infosUser);
-                    changeActiveButton(3);
-                }); 
-
+                // Make the feed options buttons functional
+                setButtonFeedFunctionalities(infoConnectedUser, infosUser);
             }
+
+            // By default display posts of the user
+            displayPosts({nb : 10, allow_image : 1, allow_text : 1, sort : 'time', by_user : username});
         });
     });
 }
@@ -82,7 +71,12 @@ else {
 }
 
 
-function displayPosts(reqObj){  
+function displayPosts(reqObj){ 
+    /* 
+    *   Display the posts in the feed area
+    *   @param {object} reqObj - The request object
+    * */
+
     retrievePost(reqObj)
     .then(async function(response) {
         // Fill the feed with the new posts
@@ -109,6 +103,12 @@ function displayPosts(reqObj){
 }
 
 function displayFollowers(connectedUserInfos, userPageInfos ){
+    /*
+    *   Display the followers in the feed area
+    *   @param {object} connectedUserInfos - The infos on the connected user
+    *   @param {object} userPageInfos - The infos on the user page
+    * */
+
     getFollowers(userPageInfos['user_id'])
     .then(async function(response) {
         // Fill the feed with the new posts
@@ -136,6 +136,12 @@ function displayFollowers(connectedUserInfos, userPageInfos ){
 }
 
 function displayFollowed(connectedUserInfos, userPageInfos){
+    /*
+    *   Display the followed users in the feed area
+    *   @param {object} connectedUserInfos - The infos on the connected user
+    *   @param {object} userPageInfos - The infos on the user page
+    *  */
+
     getFollowed(userPageInfos['user_id'])
     .then(async function(response) {
         // Fill the feed with the new posts
@@ -163,6 +169,11 @@ function displayFollowed(connectedUserInfos, userPageInfos){
 
 
 function changeActiveButton(indexButtonActive){
+    /*
+    *   Change the active button
+    *  @param {int} indexButtonActive - The index of the button to set active
+    */
+
     // Remove active class from all buttons
     for (var i = 0; i < buttonsOptionsSearch.length; i++) {
         buttonsOptionsSearch[i].classList.remove("active");
@@ -171,59 +182,38 @@ function changeActiveButton(indexButtonActive){
     buttonsOptionsSearch[indexButtonActive].classList.add("active");
 }
 
-function setButtonFeedFunctionalities() {
-    // Add event listener to all the buttons
+function setButtonFeedFunctionalities(infoConnectedUser, infosUser) {
+    /*
+    *   Set the buttons functionalities
+    *   @param {object} infoConnectedUser - The infos on the connected user
+    *   @param {object} infosUser - The infos on the user page
+    */
     
     // Button 0 : Posts filtered by time
     buttonsOptionsSearch[0].addEventListener("click", function() {
         changeActiveButton(0);
-        // Set up the request object
-        var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'time', by_user : username, allow_repost : 1};
-        // Retrieve the posts
-        retrievePost(reqObj)
-        .then(async function(response) {
-            // Fill the feed with the new posts
-            response = JSON.parse(response);
-            console.log(response);
-            document.getElementById("feed").innerHTML = "";
-            for (var i = 0; i < response.length; i++) {
-                await generatePost(response[i]['post'], response[i]['user'], true).then(function(response) {
-                    document.getElementById("feed").innerHTML += response;
-                });
-            }
-            SetButtonsFunctionality();
-            SetSudoFunctionality();
-        })
-        .catch(function(error) {
-            console.error(error);
-        });
+        var reqObj = {nb : 10, allow_image : '1', allow_text : '1', sort : 'time', by_user : username};
+        displayPosts(reqObj);
     });
 
     // Button 1 : Posts liked by the owner of the page
-
     buttonsOptionsSearch[1].addEventListener("click", function() {
+        changeActiveButton(1);
         // Set up the request object
-        var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'time', by_user : null, liked_by : username};
-        console.log(reqObj);
-        // Retrieve the posts
-        retrievePost(reqObj)
-        .then(async function(response) {
-            changeActiveButton(1);
-            // Fill the feed with the new posts
-            response = JSON.parse(response);
-            console.log(response);
-            document.getElementById("feed").innerHTML = "";
-            for (var i = 0; i < response.length; i++) {
-                await generatePost(response[i]['post'], response[i]['user'], true).then(function(response) {
-                    document.getElementById("feed").innerHTML += response;
-                });
-            }
-            SetButtonsFunctionality();
-            SetSudoFunctionality();
-        })
-        .catch(function(error) {
-            console.error(error);
-        });
+        var reqObj = {nb : 10, allow_image : '1', allow_text : '1', sort : 'time', by_user : null, liked_by : username};
+        displayPosts(reqObj);
+    }); 
+
+    // Button 2 : Show the users followed by the owner of the page
+    buttonsOptionsSearch[2].addEventListener("click", function() {
+        changeActiveButton(2);
+        displayFollowed(infoConnectedUser, infosUser);
+    });
+
+    // Button 3 : Show the followers of the owner of the page
+    buttonsOptionsSearch[3].addEventListener("click", function() {
+        changeActiveButton(3);
+        displayFollowers(infoConnectedUser, infosUser);
     }); 
 }
 

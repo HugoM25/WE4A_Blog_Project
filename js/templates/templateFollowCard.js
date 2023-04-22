@@ -26,10 +26,8 @@ async function generateFollowCard(userCardInfos, connectedUserInfos){
 function activeFollowCard(userCardInfos){
     // Get the follow button
     let followButton = document.getElementById(`follow-button-${userCardInfos['user_id']}`);
-    console.log(followButton);
     // Add the event listener
     followButton.addEventListener('click', () => {
-        console.log('click');
         if (followButton.classList.contains('active')) {
             // Unfollow the user
             unfollow(userCardInfos['user_id']).then((response) => {

@@ -1,14 +1,13 @@
 import { follow, unfollow, checkFollow } from "../utils/serviceFollow.js";
 import { sanitizeUserInput } from "../utils/security.js";
-import { getStats } from "../utils/serviceInfoUser.js";
+import { getStats, changeProfilePicture } from "../utils/serviceInfoUser.js";
+
 async function generateProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
-    console.log(userInfos['name']);
     let userStats = JSON.parse(await getStats(userInfos['name']));
 
     let showFollowOptions = !isSelfProfile && userInfos['user_id'] != -1;
 
     let followInfos = await checkFollow(connectedUserInfos['user_id'],userInfos['user_id']);
-    console.log(followInfos);
     let isFollowing = JSON.parse(followInfos)['follow'];
     return `
     <div class="profile-header">
@@ -16,7 +15,7 @@ async function generateProfileHeader(userInfos, isSelfProfile, connectedUserInfo
             showFollowOptions ? `<button class="follow-button ${isFollowing ? 'active' : ''}" id="follow">${isFollowing ? 'Unfollow' : 'Follow'}</button>` : ''
         }
         <div class="pdp-container" id="pdp"> 
-            <img src="${userInfos["profile_picture_path"]}" alt="user avatar">
+            <img src="${sanitizeUserInput(userInfos["profile_picture_path"])}" alt="user avatar" ${isSelfProfile ? 'class="own"' : ''}>
         ${
             isSelfProfile ? `<input type="file" id="image" name="image" accept="image/png, image/gif, image/jpeg" class="hideme">` : ''
         }
@@ -113,26 +112,5 @@ function activeProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
         });
     }
 }
-
-function changeProfilePicture(file){
-    // Send the file to the server
-    var request = `php/changeProfilePicture.php`;
-    var formData = new FormData();
-    formData.append('pdp_image', file);
-    return new Promise(function(resolve, reject) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            } else if (this.readyState == 4) {
-                reject('Error retrieving post.');
-            }
-        };
-        xmlhttp.open('POST', request, true);
-        xmlhttp.send(formData);
-    });
-}
-
-
 
 export { generateProfileHeader, activeProfileHeader};

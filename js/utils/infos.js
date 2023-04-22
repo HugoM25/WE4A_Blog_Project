@@ -1,7 +1,6 @@
 function GetInfosOnUser(username){
     // Send get request to get the user infos
     let request = `php/getUserInfos.php?username=${username}`;
-    console.log(request);
     return new Promise(function(resolve, reject) {
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {

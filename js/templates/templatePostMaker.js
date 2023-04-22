@@ -40,10 +40,10 @@ function generatePostMaker(infosUser, infosPostEdit = null) {
     `
 }
 
-export { generatePostMaker, setupPostMaker};
+export { generatePostMaker, activePostMaker};
 
 
-function setupPostMaker(editPostId = null){
+function activePostMaker(editPostId = null){
     var textarea = document.getElementById("textarea");
     var postCreator = document.getElementById("post-edit-button");
     var inputImageTag = document.getElementById("image");
@@ -90,6 +90,11 @@ function EmptyImageLoader(){
 }
 
 function OnImageSelected(inputImageTag){
+    /* 
+    *  This function is called when the user has selected an image
+    *  @param inputImageTag : the input tag of the image
+    */
+
     // Find img by id
     var image_icon = document.getElementById("icon-uploaded-img");
     // If the user has selected an image
@@ -110,6 +115,13 @@ function OnImageSelected(inputImageTag){
 }
 
 function SendInfosPostsMaker(inputImageTag, textarea, editPostId = null) {
+    /* 
+    *  This function send the content of the textarea and the image to the server
+    *  @param inputImageTag : the input tag of the image
+    *  @param textarea : the textarea tag
+    *  @param editPostId : the id of the post to edit
+    */
+
     // Get the image
     var image = inputImageTag.files[0];
 
@@ -172,6 +184,9 @@ function SendInfosPostsMaker(inputImageTag, textarea, editPostId = null) {
 }
 
 function ResetPostMaker(){
+    /*
+    * Reset the post maker
+    */
     var textarea = document.getElementById("textarea");
     var inputImageTag = document.getElementById("image");
     var image_preview = document.getElementById("image-preview");
