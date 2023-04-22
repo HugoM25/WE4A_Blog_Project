@@ -48,7 +48,10 @@ checkUserLoggedIn().then(function(response) {
 
     if (postID != null) {
         console.log(postID);
-        displayPosts({nb : 1, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null', post_id : postID});
+        displayPosts({nb : 1, allow_image : 1, allow_text : 1, post_id : postID});
+    }
+    else {
+        displayPosts({ nb: 10, allow_image: 1, allow_text: 1, sort: 'time' });
     }
 });
 

@@ -1,3 +1,4 @@
+import { sanitizeUserInput } from "../utils/security.js";
 function generateNavMenu(infoUser=null) {
     return (`
     <div class="nav-menu">
@@ -9,7 +10,7 @@ function generateNavMenu(infoUser=null) {
             <img src="images/icons/home_icon.svg" class="icon-home"></img>
             <span> Home </span>
         </a>
-        <a href=${infoUser == null ? "'login.html'" : `profile.html?username=${infoUser["name"]}`} class="button-page-change">
+        <a href=${infoUser == null ? "'login.html'" : `profile.html?username=${sanitizeUserInput(infoUser["name"])}`} class="button-page-change">
             <img src="images/icons/profile_icon.svg" class="icon-profile"></img>
             <span> Profile </span>
         </a>

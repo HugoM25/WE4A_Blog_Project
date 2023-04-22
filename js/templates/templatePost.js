@@ -1,5 +1,5 @@
 
-import { formatText } from "../utils/textFormatter.js";
+import { formatText, parseNb, parseTime, processImgLink } from "../utils/textFormatter.js";
 import { checkUserLoggedIn } from "../utils/userConnexion.js";
 import { sanitizeUserInput } from "../utils/security.js";
 
@@ -82,51 +82,5 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
         </div>
     `);
 }
-function parseTime(time_then, time_now){
-    let diff = parseInt(time_now) - parseInt(time_then);
-    let time = "";
-    if(diff < 60){
-        time = "Just now";
-    }else if(diff < 3600){
-        time = Math.floor(diff/60) + "m";
-    }else if(diff < 86400){
-        time = Math.floor(diff/3600) + "h";
-    }else if(diff < 604800){
-        time = Math.floor(diff/86400) + "d";
-    }else if(diff < 2628000){
-        time = Math.floor(diff/604800) + "w";
-    }else if(diff < 31536000){
-        time = Math.floor(diff/2628000) + "m";
-    }else{
-        time = Math.floor(diff/31536000) + "y";
-    }
-    return time;
-}
-
-function parseNb(num){
-    num = parseInt(num);
-    // If add letter after number
-    let res = "";
-    if(num < 1000){
-        res = num;
-    }else if(num < 1000000){
-        res = Math.floor(num/1000) + "K";
-    }else if(num < 1000000000){
-        res = Math.floor(num/1000000) + "M";
-    }else{
-        res = Math.floor(num/1000000000) + "B";
-    }
-    return res;
-
-}
-
-function processImgLink(link){
-    if(link == "" || link == null){
-        return '';
-    }else{
-        return `<img src="${link}" alt="Post Image">`;
-    }
-}
-
 
 export { generatePost };

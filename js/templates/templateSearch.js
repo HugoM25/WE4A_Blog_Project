@@ -10,7 +10,7 @@ function generateSearch(defaultSearch) {
                 </button>
             </div>
             <div class="feed-selection">
-                <button class="feed-option-button">
+                <button class="feed-option-button active">
                     <span>
                         Latest
                     </span>
@@ -20,7 +20,7 @@ function generateSearch(defaultSearch) {
                         Top
                     </span>
                 </button>
-                <button class="feed-option-button active">
+                <button class="feed-option-button">
                     <span>
                         Photos
                     </span>

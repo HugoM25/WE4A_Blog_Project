@@ -110,14 +110,23 @@ function ShareFunctionality(postID){
     var linkToPost = `http://localhost/BlogProjectW4AB/index.html?mode=0&postID=${postID}`;
     // Copy the link to the clipboard
     navigator.clipboard.writeText(linkToPost).then(function() {
+        
         // Show a message to the user
+        
+        // if there is already a message, don't add another one
+        if (document.querySelector(`.post[post-id="${postID}"] .action#share .share-message`) != null) {
+            return;
+        }
+        // Create the message
         var shareButton = document.querySelector(`.post[post-id="${postID}"] .action#share`);
         var shareMessage = document.createElement("p");
         shareMessage.innerHTML = "Link copied to clipboard!";
         shareMessage.classList.add("share-message");
         shareButton.appendChild(shareMessage);
+        // Remove the message after 2s
         setTimeout(function(){ shareMessage.remove(); }, 2000);
     }, function(err) {
+        // If there is an error, log it to the console
         console.error('Async: Could not copy text: ', err);
     });
 }

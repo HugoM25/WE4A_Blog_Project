@@ -1,12 +1,20 @@
+import { sanitizeUserInput } from "../utils/security.js";
+
 function generateConnexionPanel(infosUser){
+
+    // Sanitize the text content that the user entered (Never trust the user)
+    var sanitizedName = sanitizeUserInput(infosUser["name"]);
+    var sanitizedRef = sanitizeUserInput(infosUser["ref"]);
+    var sanitizedAvatarPath = sanitizeUserInput(infosUser["profile_picture_path"]);
+
     return (`
     <div class="connexion-panel">
         <div class="icon-user">
-                <img src="${infosUser['profile_picture_path']}" alt="user avatar">
+                <img src="${sanitizedAvatarPath}" alt="user avatar">
         </div>
         <div class="info-user">
-            <a class="connected-username" href="profile.html?username=${infosUser['name']}">${infosUser['name']}</a>
-            <span class="connected-user-ref">${infosUser['ref']}</span>
+            <a class="connected-username" href="profile.html?username=${sanitizedName}">${sanitizedName}</a>
+            <span class="connected-user-ref">${sanitizedRef}</span>
         </div>
         <div class="action-user">
             <button class="action-button">

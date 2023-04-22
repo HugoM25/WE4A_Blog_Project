@@ -1,5 +1,6 @@
 import { follow, unfollow, checkFollow } from "../utils/serviceFollow.js";
-
+import { sanitizeUserInput } from "../utils/security.js";
+import { getStats } from "../utils/serviceInfoUser.js";
 async function generateProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
     console.log(userInfos['name']);
     let userStats = JSON.parse(await getStats(userInfos['name']));
@@ -21,8 +22,8 @@ async function generateProfileHeader(userInfos, isSelfProfile, connectedUserInfo
         }
         </div>
         <div class="text-container">
-            <p class="username">${userInfos['name']}</p>
-            <p class="user-ref">${userInfos['ref']}</p>
+            <p class="username">${sanitizeUserInput(userInfos['name'])}</p>
+            <p class="user-ref">${sanitizeUserInput(userInfos['ref'])}</p>
         </div>
         <div class="stats-container">
             <div class="stat">
@@ -64,7 +65,7 @@ function activeProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
             if (confirm('Do you want to change your profile picture?')) {
                 changeProfilePicture(file).then((response) => {
                     // Get the new profile picture
-                    let newPdp = JSON.parse(response)['image_path'];
+                    let newPdp = sanitizeUserInput(JSON.parse(response)['image_path']);
                     // Change the profile picture
                     pdp.innerHTML = `
                     <img src="${newPdp}" alt="user avatar">
@@ -132,23 +133,6 @@ function changeProfilePicture(file){
     });
 }
 
-function getStats(username){
-    // send get request to server
-    // return stats
-    var request = `php/getUserStats.php?username=${username}`;
-    
-    return new Promise(function(resolve, reject) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            } else if (this.readyState == 4) {
-                reject('Error retrieving post.');
-            }
-        };
-        xmlhttp.open('GET', request, true);
-        xmlhttp.send();
-    });
-}
+
 
 export { generateProfileHeader, activeProfileHeader};

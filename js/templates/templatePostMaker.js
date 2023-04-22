@@ -1,21 +1,30 @@
+import { sanitizeUserInput } from "../utils/security.js";
+
 const maxLineBreaks = 5;
 
 function generatePostMaker(infosUser, infosPostEdit = null) {
+
+    let sanitizedAvatarPath = sanitizeUserInput(infosUser["profile_picture_path"]);
+    let sanitizedName = sanitizeUserInput(infosUser["name"]);
+    let sanitizedRef = sanitizeUserInput(infosUser["ref"]);
+    let sanitizedContent = sanitizeUserInput(infosPostEdit == null ? "" : infosPostEdit["content"]); 
+    let sanitizedImagePath = sanitizeUserInput(infosPostEdit == null ? "" : infosPostEdit["image_path"]);
+
     return `
     <div class="post" post-id="-1">
         <div class="profile">
-            <img src="${infosUser["profile_picture_path"]}" alt="Profile Picture">
+            <img src="${sanitizedAvatarPath}" alt="Profile Picture">
         </div>
         <div class="header">
-            <a class="user-name" href="profile.html?username=${infosUser['name']}">${infosUser["name"]}</a>
-            <p class="user-id">${infosUser["ref"]}</p>
+            <a class="user-name" href="profile.html?username=${sanitizedName}">${sanitizedName}</a>
+            <p class="user-id">${sanitizedRef}</p>
             <p class="post-date"></p>
         </div>
         <div class="content" id="content-post-creator">
-            <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280">${infosPostEdit == null ? "" : infosPostEdit["content"]}</textarea>
+            <textarea placeholder="Write something funny here" class="post-writing-field" id="textarea" maxlength="280">${sanitizedContent}</textarea>
             <input type="file" id="image" name="image" accept="image/png, image/gif, image/jpeg">
             <div id="preview-zone" class="${infosPostEdit == null ? 'hidden' : ''}">
-                <img id="image-preview" class="preview" src=${infosPostEdit == null ? "" : infosPostEdit["image_path"]}>
+                <img id="image-preview" class="preview" src=${sanitizedImagePath}>
                 <button id="suppr-button">
                     <img id="icon-cross" src="images/icons/cross_icon.svg" />
                 </button>
