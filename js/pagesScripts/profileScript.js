@@ -171,7 +171,7 @@ function setButtonFeedFunctionalities() {
     buttonsOptionsSearch[0].addEventListener("click", function() {
         changeActiveButton(0);
         // Set up the request object
-        var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'time', by_user : username, liked_by : null};
+        var reqObj = {nb : 10, allow_image : 1, allow_text : 1, sort : 'time', by_user : username, allow_repost : 1};
         // Retrieve the posts
         retrievePost(reqObj)
         .then(async function(response) {

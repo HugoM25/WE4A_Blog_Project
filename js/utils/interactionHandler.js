@@ -1,5 +1,6 @@
 import { regeneratePostMaker } from "../pagesScripts/mainScript.js";
 
+import { repostPost } from "./serviceRepost.js";
 // Set the buttons functionality ( click event for each button )
 function SetButtonsFunctionality() {
     document.querySelectorAll('.action').forEach(function(button) {
@@ -11,7 +12,7 @@ function SetButtonsFunctionality() {
         }
         else if (button.id == "repost") {
             button.addEventListener('click', function(){
-                RepostFunctionality(findPostParentID(button));
+                RepostFunctionality(findPostParentID(button), button);
             }, false);
         }
         else if (button.id === "share") {
@@ -78,8 +79,28 @@ function LikeFunctionality(postID, button){
 
 
 
-function RepostFunctionality(postID){
-    alert("Repost " + postID);
+function RepostFunctionality(postID, button){
+    repostPost(postID).then(function(response) {
+        console.log(response);
+        response = JSON.parse(response);
+        // if request is successful
+        if (response['success'] === true) {
+            console.log("Like " + postID);
+            // Change the button style
+            if (button.classList.contains("active")) {
+                button.classList.remove("active");
+                // Update the number of likes after finding p tag child of button
+                var likes = button.querySelector("p");
+                likes.innerHTML = parseInt(likes.innerHTML) - 1;
+            }
+            else {
+                button.classList.add("active");
+                // Update the number of likes
+                var likes = button.querySelector("p");
+                likes.innerHTML = parseInt(likes.innerHTML) + 1;
+            }
+        }
+    });
 }
 
 function ShareFunctionality(postID){
@@ -154,9 +175,6 @@ function deleteFunctionality(postID){
 }
 
 function editFunctionality(postID){
-    console.log("Edit " + postID);
-
-    
     regeneratePostMaker(postID);
 
 }

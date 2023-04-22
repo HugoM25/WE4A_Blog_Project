@@ -10,6 +10,7 @@ class GetPostObj {
     // Parameters from the url
     public $allow_image;
     public $allow_text;
+    public $allow_repost;
     public $sort;
     public $nb;
 
@@ -46,6 +47,10 @@ class GetPostObj {
         isset($_GET['post_id']) ? $this->post_id = $_GET['post_id'] : $this->post_id = -1;
         isset($_GET['offset']) ? $this->offset = $_GET['offset'] : $this->offset = 0;
         isset($_GET['search']) ? $this->search = $_GET['search'] : $this->search = null;
+
+        // By default, disallow repost
+        $this->allow_repost = 0; 
+
         if (isset($_GET['by_user']) == false) {
             $this->by_user = null;
         }
@@ -54,6 +59,13 @@ class GetPostObj {
             $this->by_user_ID = getUserID($this->by_user);
             if ($this->by_user_ID == -1) {
                 $this->by_user = null;
+            }
+            // If the user is specified, allow repost by the user
+            if ($this->by_user != null && isset($_GET['allow_repost'])) {
+                $this->allow_repost = $_GET['allow_repost'];
+            }
+            else {
+                $this->allow_repost = 0;
             }
         }
 
@@ -121,15 +133,40 @@ class GetPostObj {
     // Set up SQL request to get the posts
     public function generateSQLPostRequest(){
 
-        $req= 'SELECT userpost.*, siteuser.* FROM userpost JOIN siteuser ON userpost.author_id = siteuser.user_id  '; 
+        // Select the posts and user info
+        $req = 'SELECT post_data.*, siteuser.* FROM'; 
+
+        // Group post from the user + reposts from the user
+        if ( $this->allow_repost == 1){
+            $req = $req." (
+                SELECT userpost.*, 'original' AS post_type
+                FROM userpost
+                WHERE userpost.author_id = ".$this->by_user_ID."
+                UNION ALL
+                SELECT userpost.*, 'repost' AS post_type
+                FROM userpost
+                JOIN post_reposts ON userpost.post_id = post_reposts.post_id
+                WHERE post_reposts.user_id = ".$this->by_user_ID."
+            ) ";
+        }
+        else {
+            $req = $req." userpost ";
+        }
+
+        // Rename the table
+        $req = $req." AS post_data ";
+
+        // Join the user info
+        $req = $req."JOIN siteuser ON post_data.author_id = siteuser.user_id "; 
+
 
         if( $this->liked_by != null) {
-            $req = $req.'JOIN post_likes ON post_likes.post_id = userpost.post_id ';
+            $req = $req.'JOIN post_likes ON post_likes.post_id = post_data.post_id ';
         }
 
         $nb_where_clause = 0;
         // If there is a where clause to add
-        if ($this->allow_image == 0 || $this->allow_text == 0 || $this->by_user || $this->liked_by || $this->post_id != -1 || $this->search != null){
+        if ($this->allow_image == 0 || $this->allow_text == 0 || ($this->by_user && $this->allow_repost == 0)  || $this->liked_by || $this->post_id != -1 || $this->search != null){
             $req = $req.' WHERE ';
             // If we want to allow only text posts
             if ( $this->allow_image == 0 ) {
@@ -145,14 +182,14 @@ class GetPostObj {
                 $nb_where_clause++;
             }
             // If we want to filter by user
-            if ($this->by_user) {
+            if ($this->by_user && $this->allow_repost == 0) {
                 if ($nb_where_clause > 0) {
                     $req = $req.'AND ';
                 }
                 $req = $req.'author_id = '.$this->by_user_ID;
                 $nb_where_clause++;
             }
-
+            // If we want to filter by posts liked by a user
             if ($this->liked_by) {
                 if ($nb_where_clause > 0) {
                     $req = $req.'AND ';
@@ -160,7 +197,7 @@ class GetPostObj {
                 $req = $req.'post_likes.user_id = '.$this->liked_by_ID;
                 $nb_where_clause++;
             }
-
+            // If we want to filter by post id
             if ($this->post_id != -1) {
                 if ($nb_where_clause > 0) {
                     $req = $req.'AND ';
@@ -169,6 +206,7 @@ class GetPostObj {
                 $nb_where_clause++;
             }
 
+            // If we want to filter by search
             if ($this->search != null){
                 if ($nb_where_clause > 0) {
                     $req = $req.'AND ';
@@ -177,9 +215,8 @@ class GetPostObj {
                 $req = $req.'(userpost.content LIKE "%'.$escaped_search_string.'%" OR siteuser.name LIKE "%'.$escaped_search_string.'%")';
                 $nb_where_clause++;
             }
-
         }
-        $req = $req.' GROUP BY userpost.post_id ORDER BY '.$this->sort.' DESC LIMIT '.$this->nb.' OFFSET '.$this->offset;
+        $req = $req.' GROUP BY post_data.post_id ORDER BY '.$this->sort.' DESC LIMIT '.$this->nb.' OFFSET '.$this->offset;
         return $req;
     }
 }

@@ -4,6 +4,8 @@ import { formatText } from "../utils/textFormatter.js";
 import { checkUserLoggedIn } from "../utils/userConnexion.js";
 import { sanitizeUserInput } from "../utils/security.js";
 
+import { checkRepost } from "../utils/serviceRepost.js";
+
 async function generatePost(infosPost, infosUser, isUserConnected=false){
 
     var isPostLiked = false;
@@ -16,8 +18,9 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
         isPostLiked = JSON.parse(likeInfos)['has_liked'];
 
         // Check if user reposted the post
+        var repostInfos = await checkRepost(infosPost['post_id']);
+        isPostReposted = JSON.parse(repostInfos)['has_reposted'];
         
-
         // Check if the post is from the user
         var connectedUserInfos = await checkUserLoggedIn();
         var connectedUserId = JSON.parse(connectedUserInfos)['user_id']; 

@@ -14,19 +14,15 @@ html, body {
 }
 
 .connexion-panel {
-    position: relative;
-    
-    display: grid; 
-    grid-template-columns: 0.33fr 0.33fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: 
-        "icon-user info-user action-user";
 
+    display: flex;
     padding: 10px;
-
+    
     width: 100%;
     height: 15vh;
 
+
+    gap: 10px;
     border: solid 1px white;
     color: white;
     font-family: 'Montserrat', sans-serif;
@@ -45,12 +41,11 @@ html, body {
 }
 
 .icon-user > img {
-    display: block;
+    height:70%;
+    width:auto;
     object-fit: cover;
-    width: 60%;
-    height: auto;
-    aspect-ratio: 1/1;
     border-radius: 50%;
+    aspect-ratio: 1/1;
 }
 
 .info-user {

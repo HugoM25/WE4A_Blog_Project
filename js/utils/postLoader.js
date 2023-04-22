@@ -11,6 +11,7 @@ async function retrievePost(filterObj=null) {
         ${filterObj.post_id ? '&post_id=' + filterObj.post_id : ''}
         ${filterObj.offset ? '&offset=' + filterObj.offset : ''}
         ${filterObj.search ? '&search=' + encodeURIComponent(filterObj.search) : ''}
+        ${filterObj.allow_repost ? '&allow_repost=' + filterObj.allow_repost : ''}
     `;
     
     return new Promise(function(resolve, reject) {
