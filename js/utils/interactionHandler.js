@@ -1,8 +1,15 @@
 import { regeneratePostMaker } from "../pagesScripts/mainScript.js";
 
+// Import services
 import { repostPost } from "./serviceRepost.js";
-// Set the buttons functionality ( click event for each button )
+import { likePost } from "./serviceLike.js";
+
+
 function SetButtonsFunctionality() {
+    /*
+    *   Set the functionality of the buttons
+    * 
+    * */
     document.querySelectorAll('.action').forEach(function(button) {
         // Get the action type
         if (button.id === 'like') {
@@ -23,37 +30,24 @@ function SetButtonsFunctionality() {
     });
 }
 
-// Find the post-id this button belongs to
 var findPostParentID = function(elem) {
+    /*
+    *   Find the post parent ID of the button
+    *   @param {HTMLElement} elem : the button element
+    *   @return {String} : the post ID
+    * */
     var attribute = elem.closest(".post").getAttribute("post-id");
     return attribute;
 };
 
 
-// Like a post -------------------------------------------
 
-function likePost(postId) {
-    return new Promise(function(resolve, reject) {
-        var xhr = new XMLHttpRequest();
-        // Define the PHP script URL and parameters
-        var url = "php/likePost.php";
-        var params = "post_id=" + encodeURIComponent(postId);
-    
-        // Set the HTTP request method and content type
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            } else if (this.readyState == 4) {
-                reject('Error retrieving post.');
-            }
-        };
-        xhr.send(params);
-    });
-}
 function LikeFunctionality(postID, button){
+    /* 
+    *   Like a post and update the button style
+    *   @param {String} postID : the ID of the post
+    *   @param {HTMLElement} button : the button element
+    * */
     likePost(postID).then(function(response) {
         console.log(response);
         response = JSON.parse(response);
@@ -80,6 +74,11 @@ function LikeFunctionality(postID, button){
 
 
 function RepostFunctionality(postID, button){
+    /*
+    *   Repost a post and update the button style
+    *   @param {String} postID : the ID of the post
+    *   @param {HTMLElement} button : the button element
+    * */
     repostPost(postID).then(function(response) {
         console.log(response);
         response = JSON.parse(response);
@@ -104,6 +103,10 @@ function RepostFunctionality(postID, button){
 }
 
 function ShareFunctionality(postID){
+    /*
+    *   Copy the link to the clipboard and show a message to the user (for 2s)
+    *   @param {String} postID : the ID of the post
+    * */
     var linkToPost = `http://localhost/BlogProjectW4AB/index.html?mode=0&postID=${postID}`;
     // Copy the link to the clipboard
     navigator.clipboard.writeText(linkToPost).then(function() {
@@ -120,28 +123,12 @@ function ShareFunctionality(postID){
 }
 
 
-async function checkLikePost(postID) {
-    var request = `php/checkUserLikePost.php?post_id=${postID}`;
-    return new Promise(function(resolve, reject) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                resolve(this.responseText);
-            } else if (this.readyState == 4) {
-                reject('Error retrieving post.');
-            }
-        };
-        xmlhttp.open('GET', request, true);
-        xmlhttp.send();
-    });   
-}
-
-
-
-// delete a post -------------------------------------------
 
 function SetSudoFunctionality() {
-    // Set the sudo delete buttons functionality
+    /*
+    *   Set the functionality of the sudo buttons (delete and edit)
+    *
+    * */
     document.querySelectorAll('#sudo-delete').forEach(function(button) {
         // Get the action type
         button.addEventListener('click', function(){
@@ -149,7 +136,6 @@ function SetSudoFunctionality() {
             }, false);
     });
 
-    // Set the sudo edit buttons functionality
     document.querySelectorAll('#sudo-edit').forEach(function(button) {
         // Get the action type
             button.addEventListener('click', function(){
@@ -160,6 +146,11 @@ function SetSudoFunctionality() {
 }
 
 function deleteFunctionality(postID){
+    /*
+    *   Delete a post
+    *   @param {String} postID : the ID of the post
+    * */
+
     /* Create a alert box to confirm the deletion */
     var confirmDelete = confirm("Are you sure you want to delete this post?");
     if (confirmDelete == true) {
@@ -187,11 +178,15 @@ function deleteFunctionality(postID){
 }
 
 function editFunctionality(postID){
+    /*
+    *   Edit a post
+    *   @param {String} postID : the ID of the post
+    * */
     regeneratePostMaker(postID);
 
 }
 
-export { SetButtonsFunctionality, checkLikePost, SetSudoFunctionality };
+export { SetButtonsFunctionality, SetSudoFunctionality };
 
 
 

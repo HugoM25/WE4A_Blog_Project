@@ -3,7 +3,7 @@
 require_once('SqlConnector.php');
 require_once('dbUtils.php');
 
-class AddPostObj {
+class ManagePostObj {
     public $sqlConnector;
 
     public function __construct() {
@@ -211,5 +211,5 @@ class AddPostObj {
 }
 
 
-$addPost = new AddPostObj();
+$managePost = new ManagePostObj();
 ?>

@@ -1,10 +1,11 @@
 
-import { checkLikePost } from "../utils/interactionHandler.js";
 import { formatText } from "../utils/textFormatter.js";
 import { checkUserLoggedIn } from "../utils/userConnexion.js";
 import { sanitizeUserInput } from "../utils/security.js";
 
+// Import functions from services
 import { checkRepost } from "../utils/serviceRepost.js";
+import { checkLikePost } from "../utils/serviceLike.js";
 
 async function generatePost(infosPost, infosUser, isUserConnected=false){
 
@@ -28,8 +29,12 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
         isPostFromUser = connectedUserId == infosPost['author_id'];
     }
 
-    var textContent = sanitizeUserInput(infosPost["content"]);
-    
+    // Sanitize the text content that the user entered (Never trust the user)
+    var sanitizedTextContent = sanitizeUserInput(infosPost["content"]);
+    var sanitiziedName = sanitizeUserInput(infosUser["name"]);
+    var sanitizedRef = sanitizeUserInput(infosUser["ref"]);
+    var sanitizedImagePath = sanitizeUserInput(infosPost["image_path"]);
+    var sanitizedAvatarPath = sanitizeUserInput(infosUser["profile_picture_path"]);
 
     return (`
         <div class="post" post-id="${infosPost["post_id"]}">
@@ -44,17 +49,17 @@ async function generatePost(infosPost, infosUser, isUserConnected=false){
             </div>` : ""
         }
             <div class="profile">
-                <img src="${infosUser["profile_picture_path"]}" alt="Profile Picture">
+                <img src="${sanitizedAvatarPath}" alt="Profile Picture">
             </div>
             <div class="header">
-                <a class="user-name" href="${"profile.html?username=" + infosUser["name"]}">${infosUser["name"]}</a>
-                <p class="user-id">${infosUser["ref"]}</p>
+                <a class="user-name" href="${"profile.html?username=" + sanitiziedName}">${sanitiziedName}</a>
+                <p class="user-id">${sanitizedRef}</p>
                 <p class="post-date">${parseTime(infosPost["time"], Date.now()/1000)}</p>
             </div>
             <div class="content">
-                <p>${formatText(textContent)}</p>
+                <p>${formatText(sanitizedTextContent)}</p>
                 ${
-                    processImgLink(infosPost["image_path"])
+                    processImgLink(sanitizedImagePath)
                 }
             </div>
             <div class="footer">

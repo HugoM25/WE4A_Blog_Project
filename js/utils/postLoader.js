@@ -1,6 +1,10 @@
-// This function is used to retrieve the post from the server
-// It returns a promise that will be resolved when the request is done
+
 async function retrievePost(filterObj=null) {
+    /*
+    * Retrieve the posts from the database
+    * @param {Object} filterObj - Object containing the filters to apply to the request
+    * @return {Promise} - Promise object represents the response of the request
+    */
     var request = `php/getPosts.php?
         ${filterObj.nb ? 'nb=' + filterObj.nb : 'nb=10'}
         ${filterObj.allow_image ? '&allow_image=' + filterObj.allow_image : ''}
