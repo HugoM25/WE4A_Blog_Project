@@ -13,7 +13,7 @@ async function retrievePost(filterObj=null) {
         ${filterObj.search ? '&search=' + encodeURIComponent(filterObj.search) : ''}
         ${filterObj.allow_repost ? '&allow_repost=' + filterObj.allow_repost : ''}
     `;
-    
+
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -25,7 +25,10 @@ async function retrievePost(filterObj=null) {
         };
         xmlhttp.open('GET', request, true);
         xmlhttp.send();
+    }).catch(function(error) {
+        console.log(error);
     });
+
 }
 
 export { retrievePost};

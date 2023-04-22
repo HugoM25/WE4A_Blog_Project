@@ -51,6 +51,10 @@ function formSub(event){
 }
 
 function signUp(event){
+    /*
+    *   Sign up the user
+    */
+
     event.preventDefault();
 
     //Check if the passwords match
@@ -93,6 +97,9 @@ function signUp(event){
 }
 
 function signIn(event){
+    /*
+    *  Sign in the user
+    */
     event.preventDefault();
 
     if (usernameInput.value == "" || passwordInput.value == "") {

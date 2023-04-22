@@ -202,7 +202,7 @@ class GetPostObj {
                 if ($nb_where_clause > 0) {
                     $req = $req.'AND ';
                 }
-                $req = $req.'userpost.post_id = '.$this->post_id;
+                $req = $req.'post_data.post_id = '.$this->post_id;
                 $nb_where_clause++;
             }
 
@@ -212,7 +212,7 @@ class GetPostObj {
                     $req = $req.'AND ';
                 }
                 $escaped_search_string = str_replace(['%', '#', '_', '\\'], ['\%', '\#', '\_', '\\\\'], $this->search);
-                $req = $req.'(userpost.content LIKE "%'.$escaped_search_string.'%" OR siteuser.name LIKE "%'.$escaped_search_string.'%")';
+                $req = $req.'(post_data.content LIKE "%'.$escaped_search_string.'%" OR siteuser.name LIKE "%'.$escaped_search_string.'%")';
                 $nb_where_clause++;
             }
         }

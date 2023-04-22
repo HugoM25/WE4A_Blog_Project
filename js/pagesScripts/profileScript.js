@@ -11,7 +11,7 @@ import { generatePost } from "../templates/templatePost.js";
 // Import les services
 import { getFollowers, getFollowed } from "../utils/serviceFollow.js";
 import { GetInfosOnUser } from "../utils/infos.js";
-import { generateFollowCard } from "../templates/templateFollowCard.js";
+import { activeFollowCard, generateFollowCard } from "../templates/templateFollowCard.js";
 
 // Get the username from the URL
 const queryString = window.location.search;
@@ -120,11 +120,15 @@ function displayFollowers(connectedUserInfos, userPageInfos ){
         // Get the posts
         var followersCards = [];
         for (var i = 0; i < response.length; i++) {
-            await generateFollowCard(response[i], connectedUserInfos).then(function(response) {
-                followersCards.push(response);
+            await generateFollowCard(response[i], connectedUserInfos).then(function(cardHtml) {
+                followersCards.push(cardHtml);
             });
         }
         feedArea.innerHTML = followersCards.join("");
+        for (var i = 0; i < response.length; i++){
+            activeFollowCard(response[i]);
+        }    
+        
     })
     .catch(function(error) {
         console.error(error);
@@ -148,6 +152,9 @@ function displayFollowed(connectedUserInfos, userPageInfos){
             });
         }
         feedArea.innerHTML = followedCards.join("");
+        for (var i = 0; i < response.length; i++){
+            activeFollowCard(response[i]);
+        }    
     })
     .catch(function(error) {
         console.error(error);

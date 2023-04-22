@@ -1,4 +1,18 @@
 function formatText(text) {
+    /*
+    This function takes a string and returns a string with the following formatting:
+        **bold** -> <b>bold</b>
+        ##italic## -> <i>italic</i>
+        __underlined__ -> <u>underlined</u>
+        ~~striked~~ -> <s>striked</s>
+        \n -> <br>
+        [text](link) -> <a href="link">text</a>
+        --r[text]r-- -> <span class="rainbow">text</span>
+        @name -> <a href="profile.php?name=name">@name</a>
+    @param text: the string to format
+    @return: the formatted string
+    */
+
     // Replace all ** with <b> and </b>
     const boldText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
 

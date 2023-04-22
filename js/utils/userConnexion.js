@@ -1,7 +1,8 @@
-import { generateConnexionPanel } from '../templates/templateConnexionPanel.js';
-
-// Check if the user is logged in
 async function checkUserLoggedIn() {
+    /*
+    Check if the user is logged in
+    @return {Promise} - Promise object represents the response of the request
+    */
     var request = `php/getInfosOnConnectedUser.php`;
     
     return new Promise(function(resolve, reject) {
@@ -18,22 +19,4 @@ async function checkUserLoggedIn() {
     });
 }
 
-function initializeConnexionPanel(){
-    // Initialize the connection panel
-    checkUserLoggedIn().then(function(response) {
-
-    response = JSON.parse(response);
-    document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
-
-    // Add event listener to logout button
-    document.getElementById("logout-button").addEventListener("click", function() {
-        window.location.href = "login.html";
-    });
-    // Add event listener to settings button
-    document.getElementById("settings-button").addEventListener("click", function() {
-        window.location.href = "profile.html?username=" + response['name'];
-    });
-    });
-}
-
-export { initializeConnexionPanel, checkUserLoggedIn };
+export { checkUserLoggedIn };

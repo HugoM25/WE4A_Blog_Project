@@ -3,8 +3,10 @@ import { follow, unfollow, checkFollow } from "../utils/serviceFollow.js";
 async function generateFollowCard(userCardInfos, connectedUserInfos){
 
     // Check if the connected user is following the profile page user
-    let followInfos = await checkFollow(userCardInfos['user_id'], connectedUserInfos['user_id']);
+    let followInfos = await checkFollow(connectedUserInfos['user_id'], userCardInfos['user_id']);
     console.log(followInfos);
+    console.log(userCardInfos['user_id']);
+    console.log(connectedUserInfos['user_id']);
     let isFollowing = JSON.parse(followInfos)['follow'];
 
     return (`                
@@ -14,16 +16,17 @@ async function generateFollowCard(userCardInfos, connectedUserInfos){
             <a class="follow-card-name" href="profile.html?username=${userCardInfos['name']}">${userCardInfos['name']}</a>
             <div class="follow-card-username">${userCardInfos['ref']}</div>
         </div>
-        <button class="button-follow" id="follow-button-${userCardInfos['user_id']}">${isFollowing ? 'Unfollow' : 'Follow'}</button>
+        <button class="button-follow ${isFollowing ? 'active' : ''}" id="follow-button-${userCardInfos['user_id']}">${isFollowing ? 'Unfollow' : 'Follow'}</button>
     </div>`)
 }
 
 function activeFollowCard(userCardInfos){
     // Get the follow button
     let followButton = document.getElementById(`follow-button-${userCardInfos['user_id']}`);
+    console.log(followButton);
     // Add the event listener
     followButton.addEventListener('click', () => {
-
+        console.log('click');
         if (followButton.classList.contains('active')) {
             // Unfollow the user
             unfollow(userCardInfos['user_id']).then((response) => {

@@ -1,7 +1,7 @@
 import { SetButtonsFunctionality, SetSudoFunctionality } from "../utils/interactionHandler.js";
 import { retrievePost } from "../utils/postLoader.js";
 import { generatePost } from "../templates/templatePost.js";
-import { initializeConnexionPanel, checkUserLoggedIn } from "../utils/userConnexion.js";
+import { checkUserLoggedIn } from "../utils/userConnexion.js";
 import { generatePostMaker, setupPostMaker } from "../templates/templatePostMaker.js";
 
 import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
@@ -18,6 +18,7 @@ const urlParams = new URLSearchParams(queryString);
 // 2 : Write page
 const mode = urlParams.get('mode');
 const search = urlParams.get('search');
+const postID = urlParams.get('postID');
 
 var currentSearch = search ? search : '';
 
@@ -44,6 +45,11 @@ checkUserLoggedIn().then(function(response) {
     // Initialize the search bar
     document.getElementById("search-area").innerHTML = generateSearch();
     activeSearch(currentSearch);
+
+    if (postID != null) {
+        console.log(postID);
+        displayPosts({nb : 1, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null', post_id : postID});
+    }
 });
 
 

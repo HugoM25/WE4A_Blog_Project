@@ -104,7 +104,19 @@ function RepostFunctionality(postID, button){
 }
 
 function ShareFunctionality(postID){
-    alert("Share " + postID);
+    var linkToPost = `http://localhost/BlogProjectW4AB/index.html?mode=0&postID=${postID}`;
+    // Copy the link to the clipboard
+    navigator.clipboard.writeText(linkToPost).then(function() {
+        // Show a message to the user
+        var shareButton = document.querySelector(`.post[post-id="${postID}"] .action#share`);
+        var shareMessage = document.createElement("p");
+        shareMessage.innerHTML = "Link copied to clipboard!";
+        shareMessage.classList.add("share-message");
+        shareButton.appendChild(shareMessage);
+        setTimeout(function(){ shareMessage.remove(); }, 2000);
+    }, function(err) {
+        console.error('Async: Could not copy text: ', err);
+    });
 }
 
 
