@@ -2,6 +2,7 @@
 
 require_once('SqlConnector.php');
 require_once('dbUtils.php');
+require_once('manageHashtag.php');
 
 class ManagePostObj {
     public $sqlConnector;
@@ -68,7 +69,7 @@ class ManagePostObj {
         $sql = "SELECT * FROM userpost WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         $results = $this->sqlConnector->ask_database($sql);
 
-        if ($results->num_rows == 0) {
+        if ($results == null) {
             $response = array(
                 'success' => false,
                 'error' => 'Post not found',
@@ -86,7 +87,18 @@ class ManagePostObj {
         }
         else {
             
-            $sql = "UPDATE userpost SET edited = true, content = '".$post_text."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+            $sql = "UPDATE userpost SET edited = true, content = '".$post_text."', image_path ='' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+        }
+
+        // Remove every hashtag from the post in the database
+        deleteEveryHastagFromPost($sqlConnector, $post_id);
+
+        // Add every hashtag from the post in the database
+        $hashtagsInPost = searchHashtagsInContent($post_text);
+        if ($hashtagsInPost != null){
+            foreach ($hashtagsInPost as $hashtag) {
+                addHashtag($this->sqlConnector, $hashtag, $post_id);
+            }    
         }
 
         $results = $this->sqlConnector->ask_database($sql);
@@ -140,8 +152,15 @@ class ManagePostObj {
             }
         }
 
+        // Remove every hashtag from the post in the database
+        deleteEveryHastagFromPost($this->sqlConnector, $post_id);
+
         // Delete the likes of the post in the database
         $sql = "DELETE FROM post_likes WHERE post_id = '".$post_id."'";
+        $results = $this->sqlConnector->ask_database($sql);
+
+        // Delete the reposts of the post in the database
+        $sql = "DELETE FROM post_reposts WHERE post_id = '".$post_id."'";
         $results = $this->sqlConnector->ask_database($sql);
         
         // Delete the post in the database
@@ -188,6 +207,19 @@ class ManagePostObj {
         // Insert the post in the database
         $sql = "INSERT INTO userpost (author_id, content, image_path, likes, repost, time) VALUES ('".$connected_user_id."', '".$post_text."', '".$image_path."', '0', '0'," . time() .")";
         $results = $this->sqlConnector->ask_database($sql);
+
+        // Get id of the post
+        $sql = "SELECT post_id FROM userpost WHERE author_id = '".$connected_user_id."' AND content = '".$post_text."' AND image_path = '".$image_path."'";
+        $results = $this->sqlConnector->ask_database($sql);
+        $post_id = $results->fetch_assoc()['post_id'];
+
+        // Add every hashtag from the post in the database
+        $hashtagsInPost = searchHashtagsInContent($post_text);
+        if ($hashtagsInPost != null){
+            foreach ($hashtagsInPost as $hashtag) {
+                addHashtag($this->sqlConnector, $hashtag, $post_id);
+            }    
+        }
 
         $response = array(
             'success' => true,

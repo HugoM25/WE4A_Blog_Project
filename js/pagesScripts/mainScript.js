@@ -7,9 +7,10 @@ import { generatePostMaker, activePostMaker } from "../templates/templatePostMak
 import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
 import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
 import { generateSearch, activeSearch } from "../templates/templateSearch.js";
+import { generateTrendsPanel, activeTrendsPanel } from "../templates/templateTrendsPanel.js";
 
 // Make sure the script works only on index.html
-if (window.location.pathname.includes("index.html")) {
+if (window.location.pathname.includes("index.html") || window.location.pathname == "/BlogProjectW4AB/") {
         
     // Get the URL parameters
     const queryString = window.location.search;
@@ -33,7 +34,8 @@ if (window.location.pathname.includes("index.html")) {
 
         // If the user is logged in 
         if (response['user_id'] != -1 && mode == 2) {
-            setPostMaker(response);
+            document.getElementById("post-maker-area").innerHTML = generatePostMaker(response);
+            activePostMaker();
         }
         
         // Initialize the connection panel
@@ -43,6 +45,12 @@ if (window.location.pathname.includes("index.html")) {
         //Initialize the nav menu 
         document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
         activeNavMenu(response);
+
+        // Initialize the trends panel
+        generateTrendsPanel().then(function(response) {
+            document.getElementById("trends-side").innerHTML = response;
+            activeTrendsPanel();
+        });
 
         // Initialize the search bar
         document.getElementById("search-area").innerHTML = generateSearch();
@@ -66,25 +74,28 @@ async function regeneratePostMaker(postID) {
     */
 
     // Get the post infos
-    var postInfos = await retrievePost({nb : 1, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null', post_id : postID});
-    postInfos = JSON.parse(postInfos)[0]['post'];
-
+    var postInfos = null;
+    if (postID != null) {
+        postInfos = await retrievePost({nb : 1, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null', post_id : postID});
+        postInfos = JSON.parse(postInfos)[0]['post'];
+    }
     // Get the user infos
     var userInfos = await checkUserLoggedIn();
     userInfos = JSON.parse(userInfos);
+
 
     // If the user is still well connected
     if (userInfos['user_id'] != -1 ) {
         
         var postMakerArea = document.getElementById("post-maker-area");
-        postMakerArea.innerHTML = generatePostMaker(userInfos, postEditInfos);
+        postMakerArea.innerHTML = generatePostMaker(userInfos, postInfos);
 
         // Set the post maker functionality (and fill the fields if needed)
-        if (postEditInfos == null) {
-            activePostMaker();
+        if (postInfos == null) {
+            activePostMaker(null);
         } 
         else {
-            activePostMaker(postEditInfos['post_id']);
+            activePostMaker(postInfos['post_id']);
         }
 
         // Scroll to the top of the page to see the post maker

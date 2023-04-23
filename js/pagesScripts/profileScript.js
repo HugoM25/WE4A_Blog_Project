@@ -7,6 +7,7 @@ import { generateConnexionPanel, activeConnexionPanel } from "../templates/templ
 import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
 import { generateProfileHeader, activeProfileHeader } from "../templates/templateProfileHeader.js";
 import { generatePost } from "../templates/templatePost.js";
+import { generateTrendsPanel, activeTrendsPanel } from "../templates/templateTrendsPanel.js";
 
 // Import les services
 import { getFollowers, getFollowed } from "../utils/serviceFollow.js";
@@ -39,6 +40,12 @@ if (username != null) {
         //Initialize the nav menu 
         document.getElementById("nav-menu").innerHTML = generateNavMenu(infoConnectedUser);
         activeNavMenu(infoConnectedUser);
+
+        // Initialize the trends panel
+        generateTrendsPanel().then(function(response) {
+            document.getElementById("trends-side").innerHTML = response;
+            activeTrendsPanel();
+        });
 
         
         //Initialize the profile header

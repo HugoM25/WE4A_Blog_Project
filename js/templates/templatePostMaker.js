@@ -1,5 +1,5 @@
 import { sanitizeUserInput } from "../utils/security.js";
-
+import { regeneratePostMaker } from "../pagesScripts/mainScript.js";
 const maxLineBreaks = 5;
 
 function generatePostMaker(infosUser, infosPostEdit = null) {
@@ -146,8 +146,12 @@ function SendInfosPostsMaker(inputImageTag, textarea, editPostId = null) {
         // Si l'image a changé 
         if (image != undefined) {
             formData.append("post_image", image);
-            console.log(image);
         }
+        else if (document.getElementById("preview-zone").classList.contains("hidden")) {
+            // Sinon si l'image a été supprimée
+            formData.append("post_image", null);
+        }
+
     }
     else {
         formData.append("action", "add_post");
@@ -201,4 +205,6 @@ function ResetPostMaker(){
     image_icon.src = "images/icons/pic_icon.svg";
     document.getElementById("preview-zone").classList.add("hidden");
 
+    // Reset functionalities
+    regeneratePostMaker();
 }

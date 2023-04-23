@@ -49,11 +49,9 @@ function LikeFunctionality(postID, button){
     *   @param {HTMLElement} button : the button element
     * */
     likePost(postID).then(function(response) {
-        console.log(response);
         response = JSON.parse(response);
         // if request is successful
         if (response['success'] === true) {
-            console.log("Like " + postID);
             // Change the button style
             if (button.classList.contains("active")) {
                 button.classList.remove("active");
@@ -80,11 +78,9 @@ function RepostFunctionality(postID, button){
     *   @param {HTMLElement} button : the button element
     * */
     repostPost(postID).then(function(response) {
-        console.log(response);
         response = JSON.parse(response);
         // if request is successful
         if (response['success'] === true) {
-            console.log("Like " + postID);
             // Change the button style
             if (button.classList.contains("active")) {
                 button.classList.remove("active");
