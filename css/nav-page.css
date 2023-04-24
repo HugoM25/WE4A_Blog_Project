@@ -1,0 +1,36 @@
+/* The style used for the navPage template */ 
+
+div.nav-page {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    animation: apparition-anim 1s ease-in-out;
+}
+
+div.nav-page a {
+    text-decoration: none;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+div.nav-page a:hover {
+    text-decoration: underline;
+}
+
+/* When the two links are next to each other */
+
+div.nav-page:has(.previous-page + .next-page) > .previous-page {
+    border: none;
+    border-right: #ffffff solid 1px;
+    text-align: center;
+    width: 50%;
+}
+
+div.nav-page:has(.previous-page + .next-page) > .next-page {
+    border: none;
+    border-left: #ffffff solid 1px;
+    text-align: center;
+    width: 50%;
+}

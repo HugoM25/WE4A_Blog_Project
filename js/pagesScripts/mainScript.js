@@ -8,6 +8,7 @@ import { generateConnexionPanel, activeConnexionPanel } from "../templates/templ
 import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js";
 import { generateSearch, activeSearch } from "../templates/templateSearch.js";
 import { generateTrendsPanel, activeTrendsPanel } from "../templates/templateTrendsPanel.js";
+import { generateNavPage } from "../templates/templateNavPage.js";
 
 // Make sure the script works only on index.html
 if (window.location.pathname.includes("index.html") || window.location.pathname == "/BlogProjectW4AB/") {
@@ -23,8 +24,10 @@ if (window.location.pathname.includes("index.html") || window.location.pathname 
     const mode = urlParams.get('mode');
     const search = urlParams.get('search');
     const postID = urlParams.get('postID');
+    const offset = urlParams.get('offset');
 
     var currentSearch = search ? search : '';
+    var currentOffset = offset ? offset : 0;
 
 
     // Get the connected user infos 
@@ -57,11 +60,10 @@ if (window.location.pathname.includes("index.html") || window.location.pathname 
         activeSearch(currentSearch);
 
         if (postID != null) {
-            console.log(postID);
             displayPosts({nb : 1, allow_image : 1, allow_text : 1, post_id : postID});
         }
         else {
-            displayPosts({ nb: 10, allow_image: 1, allow_text: 1, sort: 'time' });
+            displayPosts({ nb: 10, allow_image: 1, allow_text: 1, sort: 'time', offset : currentOffset});
         }
     });
 }
@@ -129,8 +131,14 @@ function displayPosts(reqObj){
             });
         }
         feedArea.innerHTML = posts.join("");
+
+        // Add navPage at bottom of feed
+        feedArea.innerHTML += generateNavPage(currentOffset, response.length, reqObj.nb);
+
+
         SetButtonsFunctionality();
         SetSudoFunctionality();
+
 
     })
     .catch(function(error) {
