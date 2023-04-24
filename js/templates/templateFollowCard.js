@@ -1,4 +1,4 @@
-import { follow, unfollow, checkFollow } from "../utils/serviceFollow.js";
+import { follow, unfollow, checkFollow } from "../services/serviceFollow.js";
 import { sanitizeUserInput } from "../utils/security.js";
 
 async function generateFollowCard(userCardInfos, connectedUserInfos){

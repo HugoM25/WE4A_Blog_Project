@@ -1,6 +1,6 @@
-import { follow, unfollow, checkFollow } from "../utils/serviceFollow.js";
+import { follow, unfollow, checkFollow } from "../services/serviceFollow.js";
 import { sanitizeUserInput } from "../utils/security.js";
-import { getStats, changeProfilePicture } from "../utils/serviceInfoUser.js";
+import { getStats, changeProfilePicture } from "../services/serviceInfoUser.js";
 
 async function generateProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
     let userStats = JSON.parse(await getStats(userInfos['name']));

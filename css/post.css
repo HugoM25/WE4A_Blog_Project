@@ -1,18 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700'); 
 
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Main layout (using CSS grid) */
 .post {
     --background-color : #050a0f;
     --text-color : #fefcfb;
@@ -37,24 +25,13 @@ html, body {
     animation: apparition-anim 1s ease forwards;
 }
 
-
-.post:has(> .content > img){
-    grid-template-areas: 
-        "post-profile post-header"
-        "post-profile post-content"
-        "post-profile post-footer";
-    grid-template-columns: 0.15fr 0.85fr;
-    grid-template-rows: 0.1fr 0.8fr 0.1fr;
-}
-
-.post:has(> .content > img) > .content {
-    gap: 10px;
-}
-
-
 .post:hover {
     cursor: pointer;
 }
+
+
+/* Grid areas */
+
 .post > .header {
     display: flex;
     flex-direction: row;
@@ -72,23 +49,6 @@ html, body {
     width: 100%;
 }
 
-
-.post > .edit-options {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-.post > .edit-options img {
-    height: 30px;
-    width: 30px;
-}
-
-.post > .edit-options > button {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-}
 .post > .content > img {
     max-width: 100%;
     height: auto;
@@ -108,6 +68,7 @@ html, body {
     gap: 15px;
 }
 
+/* Style the profile picture div */
 .post > .profile {
     grid-area: post-profile;
     
@@ -118,9 +79,7 @@ html, body {
 
 }
 
-.post:has(> .content > img) > .profile  {
-    justify-content: flex-start;
-}
+/* Style the profile picture */
 .post > .profile > img {
     width: 70%;
     height:auto;
@@ -129,6 +88,7 @@ html, body {
     aspect-ratio: 1/1;
 }
 
+/* Style the header (user name, user id, post date) */
 .post > .header > .user-name {
     font-weight: bold;
     text-decoration: none;
@@ -146,6 +106,8 @@ html, body {
 .post > .header > .post-date {
     font-size: 0.8em;
 } 
+
+/* Style the footer actions (like, comment, share) */
 
 .post > .footer > .action > img {
     width: 30px;
@@ -185,9 +147,77 @@ html, body {
 }
 
 
-.post:has(> .content > textarea) > .footer {
-    justify-content: flex-end;
+
+
+
+/* Style the post's content */
+/* allow user to make their text **fancy**  */
+
+/* Links [text](link)  */
+.post > .content  a.link {
+    text-decoration: underline;
+    color: #1da1f2;
 }
+
+/* Mentions @text */
+.post > .content a.mention {
+    color: #1da1f2;
+    text-decoration: none;
+}
+
+/* Tags #text */
+.post > .content a.tag {
+    color: #1da1f2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Rainbow text effect --r[text]r--  */
+.post > .content span.rainbow {
+    background: linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+
+.post:has(> .content > textarea) > .footer > button {
+    width: 30%;
+    height: 30px;
+    background-color: transparent;
+    border: solid 1px var(--text-color);
+    color: white;
+    border-radius: 8px;
+
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Style the edit options buttons */
+/* make them be on the top right corner of the post */
+
+.post > .edit-options {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.post > .edit-options img {
+    height: 30px;
+    width: 30px;
+}
+
+.post > .edit-options > button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/*-----------------------------*/
+/* This part styles the post when they are being edited */
+/* (=the post maker component) */ 
+/* To know if the post should be styled as being edited, */
+/* we check if the post has a textarea as a child of .content */
+
 
 .post > .content > textarea {
     width: 100%;
@@ -202,57 +232,17 @@ html, body {
     outline: none;
 }
 
-.post > .content  a.link {
-    text-decoration: underline;
-    color: #1da1f2;
-}
-
-.post > .content a.mention {
-    color: #1da1f2;
-    text-decoration: none;
-
-}
-
-.post > .content a.tag {
-    color: #1da1f2;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-
-
-.post > .content span.hashtag {
-    color: #1da1f2;
-}
-
-.post > .content span.rainbow {
-    background: linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: bold;
-}
-.post:has(> .content > textarea) > .footer > button {
-    width: 30%;
-    height: 30px;
-    background-color: transparent;
-    border: solid 1px var(--text-color);
-    color: white;
-    border-radius: 8px;
-
-    transition: background-color 0.2s, transform 0.2s;
-}
-
-
-.post:has(> .content > textarea) > .content > input {
+.post > .content:has(> textarea) > input {
     visibility: hidden;
 }
 
-.post:has(> .content > textarea) > .content > label > img  {
+.post > .content:has(> textarea) > label > img  {
     width: 30px;
     height: 30px;
 }
 
-.post:has(> .content > textarea) > .content > div > img.preview {
+/* Style the image preview */ 
+.post > .content:has(> textarea) > div > img.preview {
     position: relative;
     max-width: 100%;
     height: auto;
@@ -262,16 +252,13 @@ html, body {
     margin: 0 auto 0 0;
 }
 
-.post > .content:has(> .hidden) > div > img.preview {
-    display: none;
-}
-
-.post:has(> .content > textarea) > .content > div#preview-zone {
+.post > .content:has(> textarea) > div#preview-zone {
     display: block;
     position: relative;
 }
 
-.post:has(> .content > textarea) > .content > div > #suppr-button {
+/* Style the delete button (the cross on the right of the image */
+.post > .content:has(> textarea) > div > #suppr-button {
     position: absolute;
     z-index: 1;
     right: 10px;
@@ -282,28 +269,32 @@ html, body {
     height: 30px;
     width: 30px;
 }
-
-.post > .content:has(> .hidden) > div > #suppr-button {
-    display: none;
-}
-
 .post> .content:has(> textarea) > div > #suppr-button > img {
     width: 100%;
     height: 100%;
     z-index: 0;
 }
 
-.post:has(> .content > textarea) > .content > .hidden {
+/* Use hidden class to hide elements */
+.post > .content:has(> .hidden) > div > #suppr-button {
+    display: none;
+}
+.post > .content:has(> .hidden) > div > img.preview {
+    display: none;
+}
+.post > .content:has(> textarea) > .hidden {
     display: none;
 }
 
-.post:has(> .content > textarea) > .content > button {
+/* Style the button that allows to add a picture to the post */
+.post > .content:has(> textarea) > button {
     border: solid 1px var(--text-color);
     width: 40px;
     height: 40px;
     background-image: url(images/icons/pic-icon.svg);
 }
 
+/* Style the send button from post-maker component */
 .post:has(> .content > textarea) > .footer > button:hover {
     background-color: var(--text-color);
     color: var(--background-color);
@@ -313,8 +304,11 @@ html, body {
     transform: scale(1.1);
 }
 
+.post:has(> .content > textarea) > .footer {
+    justify-content: flex-end;
+}
 
-/* Change the colors of the differents buttons hover*/ 
+/* Change the colors of the differents buttons hover */
 .post > .footer > .action.red:hover > img  {
     background-color: rgba(255,0,0,0.2);
     filter: invert(13%) sepia(79%) saturate(7446%) hue-rotate(6deg) brightness(110%) contrast(119%);
@@ -366,7 +360,8 @@ html, body {
 /*---------------------------------------------*/
 
 
-/* The style of the flairs */ 
+/* The style of the flairs */
+/* (which are used to let the user know a post has been edited) */ 
 .post > .footer > .flair > p {
     font-size: 0.8em;
     font-weight: bold;
@@ -386,4 +381,15 @@ html, body {
         transform: translateY(0px);
         opacity: 1;
     }
+}
+
+
+/* Style the post if there is an image inside it */
+
+.post:has(> .content > img) > .content {
+    gap: 10px;
+}
+
+.post:has(> .content > img) > .profile  {
+    justify-content: flex-start;
 }

@@ -1,4 +1,4 @@
-import { getTrends } from "../utils/serviceTrends.js";
+import { getTrends } from "../services/serviceTrends.js";
 
 async function generateTrendsPanel(){
 
@@ -13,8 +13,6 @@ async function generateTrendsPanel(){
     for (var i = 0; i < Math.min(infosTrends.length, displaySize); i++) {
         items.push(trendItem(infosTrends[i]['hashtag'], infosTrends[i]['count']));
     }
-
-    console.log(items);
 
     return `            
     <div class="trends">

@@ -2,13 +2,19 @@
 <?php
 
 require_once('dbUtils.php');
+require_once('SqlConnector.php');
+
 
 // retrieve the user's credentials from the request body
 $test_username = $_POST['username'];
 $test_password = $_POST['password'];
 
+
+// Start DB connection
+$sqlConnector = new SqlConnector();
+
 // validate the user's credentials and create a session for them
-if (validateCredentials($test_username, $test_password)) {
+if (validateCredentials($test_username, $test_password, $sqlConnector)) {
     session_start();
     $_SESSION['username'] = $test_username;
     $_SESSION['loggedin'] = true;
@@ -21,19 +27,12 @@ else {
     echo json_encode(['success' => false, 'error' => 'Invalid credentials']);
 }
 
-function validateCredentials($test_username, $test_password) {
+function validateCredentials($test_username, $test_password, $sqlConnector) {
     // assume the credentials are invalid
     $is_valid = false; 
-    // connect to the database
-    $servername = "localhost";
-    $username = "root";
-    $password = "root";
-    $dbname = "we4a_blog_db";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
     // check the database for the user's credentials
     $sql = "SELECT name, user_id, password_hash, profile_picture_path, ref FROM siteuser WHERE name = '".$test_username."' ORDER BY name DESC LIMIT 1";
-    $result = $conn->query($sql);
+    $result = $sqlConnector->ask_database($sql);
 
     // Check the password 
     if ($result->num_rows > 0 ) { 
@@ -47,17 +46,11 @@ function validateCredentials($test_username, $test_password) {
     return $is_valid;
 }
 
-function createNewCredentials($test_username, $test_password) {
-    // connect to the database
-    $servername = "localhost";
-    $username = "root";
-    $password = "root";
-    $dbname = "we4a_blog_db";
-    $conn = new mysqli($servername, $username, $password, $dbname);
+function createNewCredentials($test_username, $test_password, $sqlConnector) {
 
     // check the database for the user's credentials
     $sql = "INSERT INTO siteuser (name, password_hash, ref) VALUES ('".$test_username."', '".password_hash($test_password, PASSWORD_DEFAULT)."', '@".$username."')";
-    $result = $conn->query($sql);
+    $result = $sqlConnector->ask_database($sql);
 
     // close the connection
     $conn->close();

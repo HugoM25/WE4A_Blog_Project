@@ -1,5 +1,6 @@
 import { sanitizeUserInput } from "../utils/security.js";
 import { regeneratePostMaker } from "../pagesScripts/mainScript.js";
+
 const maxLineBreaks = 5;
 
 function generatePostMaker(infosUser, infosPostEdit = null) {

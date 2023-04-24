@@ -1,8 +1,8 @@
 import { regeneratePostMaker } from "../pagesScripts/mainScript.js";
 
 // Import services
-import { repostPost } from "./serviceRepost.js";
-import { likePost } from "./serviceLike.js";
+import { repostPost } from "../services/serviceRepost.js";
+import { likePost } from "../services/serviceLike.js";
 
 
 function SetButtonsFunctionality() {

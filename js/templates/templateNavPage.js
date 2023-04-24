@@ -12,11 +12,6 @@ function generateNavPage(currentOffset, postDisplayed, maxDisplayed){
         showPrevious = true;
     }
 
-    console.log(currentOffset);
-    console.log(postDisplayed);
-    console.log(showNext);
-    console.log(showPrevious);
-
     return (`
     <div class="nav-page">
     ${ showPrevious ? `<div class="previous-page"> <a href="index.html?mode=0&offset=${Math.max(parseInt(currentOffset)-10, 0)}">Previous page</a> </div>` : ``}

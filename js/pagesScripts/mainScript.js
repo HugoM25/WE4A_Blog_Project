@@ -1,7 +1,6 @@
 import { SetButtonsFunctionality, SetSudoFunctionality } from "../utils/interactionHandler.js";
-import { retrievePost } from "../utils/servicePost.js";
-import { generatePost } from "../templates/templatePost.js";
-import { checkUserLoggedIn } from "../utils/userConnexion.js";
+import { retrievePost } from "../services/servicePost.js";
+import { checkUserLoggedIn } from "../services/serviceUserConnexion.js";
 import { generatePostMaker, activePostMaker } from "../templates/templatePostMaker.js";
 
 import { generateConnexionPanel, activeConnexionPanel } from "../templates/templateConnexionPanel.js";
@@ -9,6 +8,8 @@ import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js"
 import { generateSearch, activeSearch } from "../templates/templateSearch.js";
 import { generateTrendsPanel, activeTrendsPanel } from "../templates/templateTrendsPanel.js";
 import { generateNavPage } from "../templates/templateNavPage.js";
+import { generatePost } from "../templates/templatePost.js";
+
 
 // Make sure the script works only on index.html
 if (window.location.pathname.includes("index.html") || window.location.pathname == "/BlogProjectW4AB/") {

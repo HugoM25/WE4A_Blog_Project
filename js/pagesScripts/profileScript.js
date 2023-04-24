@@ -1,5 +1,5 @@
-import {retrievePost } from "../utils/servicePost.js";
-import { checkUserLoggedIn} from "../utils/userConnexion.js";
+import {retrievePost } from "../services/servicePost.js";
+import { checkUserLoggedIn} from "../services/serviceUserConnexion.js";
 import { SetButtonsFunctionality, SetSudoFunctionality} from "../utils/interactionHandler.js";
 
 // Import les templates
@@ -10,8 +10,8 @@ import { generatePost } from "../templates/templatePost.js";
 import { generateTrendsPanel, activeTrendsPanel } from "../templates/templateTrendsPanel.js";
 
 // Import les services
-import { getFollowers, getFollowed } from "../utils/serviceFollow.js";
-import { GetInfosOnUser } from "../utils/infos.js";
+import { getFollowers, getFollowed } from "../services/serviceFollow.js";
+import { GetInfosOnUser } from "../services/serviceInfos.js";
 import { activeFollowCard, generateFollowCard } from "../templates/templateFollowCard.js";
 
 // Get the username from the URL

@@ -1,11 +1,11 @@
 
 import { formatText, parseNb, parseTime, processImgLink } from "../utils/textFormatter.js";
-import { checkUserLoggedIn } from "../utils/userConnexion.js";
+import { checkUserLoggedIn } from "../services/serviceUserConnexion.js";
 import { sanitizeUserInput } from "../utils/security.js";
 
 // Import functions from services
-import { checkRepost } from "../utils/serviceRepost.js";
-import { checkLikePost } from "../utils/serviceLike.js";
+import { checkRepost } from "../services/serviceRepost.js";
+import { checkLikePost } from "../services/serviceLike.js";
 
 async function generatePost(infosPost, infosUser, isUserConnected=false){
 

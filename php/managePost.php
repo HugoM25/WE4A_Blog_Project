@@ -91,7 +91,7 @@ class ManagePostObj {
         }
 
         // Remove every hashtag from the post in the database
-        deleteEveryHastagFromPost($sqlConnector, $post_id);
+        deleteEveryHastagFromPost($this->sqlConnector, $post_id);
 
         // Add every hashtag from the post in the database
         $hashtagsInPost = searchHashtagsInContent($post_text);
