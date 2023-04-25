@@ -17,7 +17,7 @@ function formatText(text) {
     const boldText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
 
     // Replace all ## with <i> and </i>
-    const italicText = boldText.replace(/##(.*?)##/g, "<i>$1</i>");
+    const italicText = boldText.replace(/\/\/\/(.*?)\/\/\//g, "<i>$1</i>");
 
     // Replace all __ with <u> and </u>
     const underlinedText = italicText.replace(/__(.*?)__/g, "<u>$1</u>");

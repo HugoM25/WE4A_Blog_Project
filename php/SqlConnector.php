@@ -4,8 +4,8 @@ class SqlConnector {
     // Database credentials
     private $servername = "localhost";
     private $username = "root";
-    private $password = "root";
-    private $dbname = "we4a_blog_db";
+    private $password = "WE4A";
+    private $dbname = "we4a_twitter_clone_db";
 
     public $conn;
     public $is_working = false;

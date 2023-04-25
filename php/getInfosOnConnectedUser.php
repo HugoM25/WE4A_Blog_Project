@@ -38,7 +38,7 @@ class GetInfoConnectedUserObj {
         $sql = "SELECT name, ref, profile_picture_path, user_id FROM siteuser WHERE user_id = '".$_SESSION['user_id']."'";
         $result = $this->sqlConnector->ask_database($sql);
     
-        if ($result->num_rows > 0) {
+        if ($result != null) {
             $row = $result->fetch_assoc();
             $response = array( 
                 "user_id" => $row["user_id"],

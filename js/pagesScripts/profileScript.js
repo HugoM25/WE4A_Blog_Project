@@ -133,7 +133,7 @@ function displayFollowers(connectedUserInfos, userPageInfos ){
         }
         feedArea.innerHTML = followersCards.join("");
         for (var i = 0; i < response.length; i++){
-            activeFollowCard(response[i]);
+            activeFollowCard(response[i], connectedUserInfos);
         }    
         
     })
@@ -166,7 +166,7 @@ function displayFollowed(connectedUserInfos, userPageInfos){
         }
         feedArea.innerHTML = followedCards.join("");
         for (var i = 0; i < response.length; i++){
-            activeFollowCard(response[i]);
+            activeFollowCard(response[i], connectedUserInfos);
         }    
     })
     .catch(function(error) {
