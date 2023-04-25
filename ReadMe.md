@@ -99,7 +99,8 @@ If you want to try this site out you have to :
 
 - Clone this repository and extract it on your pc
 - Start a local server using a software like Uwamp/Xampp to make the backend works
-- Use the .sql file to install the database
+- Use the .sql file to install the database 
+- Go to the SqlConnector.php file and make sure the password is `WE4A`
 - Open the `index.html` file in your favorite web browser
 
 
