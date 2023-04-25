@@ -55,13 +55,13 @@ The `getXXXX.php` routes contains the functions to SELECT from the database.
 
 # Security 
 
-To prevent the site to be hacked some securities have been used.
+As this site is not aiming to be deployed online the security is pretty basic. The main threat considered here is the user input. To prevent the user from injecting malicious code into the client's page a few securities have been implemented : 
 
-<ins> SQL Injections </ins> :
+<ins> SQL Injections </ins> : To prevent the user from injecting malicious sql query and corrupting our database we make sure to neutralise the ' character.
 
-<ins> Cross Site Scripting </ins> :
+<ins> Cross Site Scripting </ins> : To prevent the user from injecting malicious javascript code inside their post/names we remove every html tag present in a user query. This is mainly because setting .innerHTML may executes an user code that could be harmful to the client loading the post.
 
-<ins> Password saved inside database </ins> :
+<ins> Password saved inside database </ins> : To make sure the passwords of the user are not saved in plain text inside the database, we encrypt the password using php built-in functions. 
 
 # Installation 
 
