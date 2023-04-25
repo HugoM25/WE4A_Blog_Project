@@ -13,9 +13,9 @@ class GetUserStatsObj {
         if ($this->sqlConnector->is_working == false) {
             die("Connection failed: " . $this->sqlConnector->conn->connect_error);
         }
-        // Take GET parameter 
-        if (isset($_GET['username'])) {
-            $user_id = getUserId($_GET['username']);
+        // Take POST parameter 
+        if (isset($_POST['username'])) {
+            $user_id = getUserId($_POST['username']);
 
             if ($user_id == -1) {
                 $response = array( 

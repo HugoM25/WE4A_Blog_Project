@@ -1,4 +1,3 @@
-import { regeneratePostMaker } from "../pagesScripts/mainScript.js";
 
 // Import services
 import { repostPost } from "../services/serviceRepost.js";
@@ -187,7 +186,11 @@ function editFunctionality(postID){
     *   Edit a post
     *   @param {String} postID : the ID of the post
     * */
-    regeneratePostMaker(postID);
+    // Link to the edit page
+    var linkToEdit = `index.html?mode=2&editID=${postID}`;
+    // Redirect to the edit page
+    window.location.href = linkToEdit;
+
 
 }
 

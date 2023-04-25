@@ -1,5 +1,3 @@
-import {retrievePost } from "../services/servicePost.js";
-import { checkUserLoggedIn} from "../services/serviceUserConnexion.js";
 import { SetButtonsFunctionality, SetSudoFunctionality} from "../utils/interactionHandler.js";
 
 // Import les templates
@@ -8,28 +6,37 @@ import { generateNavMenu, activeNavMenu } from "../templates/templateNavMenu.js"
 import { generateProfileHeader, activeProfileHeader } from "../templates/templateProfileHeader.js";
 import { generatePost } from "../templates/templatePost.js";
 import { generateTrendsPanel, activeTrendsPanel } from "../templates/templateTrendsPanel.js";
+import { activeFollowCard, generateFollowCard } from "../templates/templateFollowCard.js";
+
 
 // Import les services
 import { getFollowers, getFollowed } from "../services/serviceFollow.js";
 import { GetInfosOnUser } from "../services/serviceInfos.js";
-import { activeFollowCard, generateFollowCard } from "../templates/templateFollowCard.js";
+import {retrievePost } from "../services/servicePost.js";
+import { checkUserLoggedIn} from "../services/serviceUserConnexion.js";
+
+
 
 // Get the username from the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const username = urlParams.get('username');
 
+// decode the username
+const usernameDecoded = decodeURIComponent(username);
+
 // Get all the feed options buttons
 var buttonsOptionsSearch = document.getElementsByClassName("button-selection-underlined");
 
 if (username != null) {
 
-    await checkUserLoggedIn().then(function(infoConnectedUser) {
+    checkUserLoggedIn().then(function(infoConnectedUser) {
 
         let isSelfProfile = false;
 
         infoConnectedUser = JSON.parse(infoConnectedUser);
-        if (infoConnectedUser['name'] == username) {
+
+        if (infoConnectedUser['name'] == usernameDecoded) {
             isSelfProfile = true;
         }
 
@@ -50,12 +57,15 @@ if (username != null) {
         
         //Initialize the profile header
         // Get infos on profile
-        GetInfosOnUser(username).then(function(infosUser) {
+        GetInfosOnUser(usernameDecoded).then(function(infosUser) {
             
+            console.log(infosUser);
+
             infosUser = JSON.parse(infosUser);
 
             if (infosUser['success'] == false) {
-                window.location.href = "404.html";
+                //window.location.href = "404.html";
+                console.log(infosUser);
             }
             else {
                 // Generate the profile header
@@ -69,7 +79,7 @@ if (username != null) {
             }
 
             // By default display posts of the user
-            displayPosts({nb : 10, allow_image : 1, allow_text : 1, sort : 'time', by_user : username});
+            displayPosts({nb : 10, allow_image : 1, allow_text : 1, sort : 'time', by_user : usernameDecoded});
         });
     });
 }

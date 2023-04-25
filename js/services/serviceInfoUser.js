@@ -1,8 +1,11 @@
 function getStats(username){
     // send get request to server
     // return stats
-    var request = `php/getUserStats.php?username=${username}`;
+    var request = `php/getUserStats.php`;
     
+    var formData = new FormData();
+    formData.append('username', username);
+
     return new Promise(function(resolve, reject) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -12,8 +15,8 @@ function getStats(username){
                 reject('Error retrieving post.');
             }
         };
-        xmlhttp.open('GET', request, true);
-        xmlhttp.send();
+        xmlhttp.open('POST', request, true);
+        xmlhttp.send(formData);
     });
 }
 

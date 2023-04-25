@@ -10,64 +10,66 @@ import { generateTrendsPanel, activeTrendsPanel } from "../templates/templateTre
 import { generateNavPage } from "../templates/templateNavPage.js";
 import { generatePost } from "../templates/templatePost.js";
 
+    
+// Get the URL parameters
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
-// Make sure the script works only on index.html
-if (window.location.pathname.includes("index.html") || window.location.pathname == "/BlogProjectW4AB/") {
-        
-    // Get the URL parameters
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+// Mode of the page 
+// 0 : Feed page
+// 1 : Search page
+// 2 : Write page
+const mode = urlParams.get('mode');
+const search = urlParams.get('search');
+const postID = urlParams.get('postID');
+const offset = urlParams.get('offset');
+const editID = urlParams.get('editID');
 
-    // Mode of the page 
-    // 0 : Feed page
-    // 1 : Search page
-    // 2 : Write page
-    const mode = urlParams.get('mode');
-    const search = urlParams.get('search');
-    const postID = urlParams.get('postID');
-    const offset = urlParams.get('offset');
-
-    var currentSearch = search ? search : '';
-    var currentOffset = offset ? offset : 0;
+var currentSearch = search ? search : '';
+var currentOffset = offset ? offset : 0;
 
 
-    // Get the connected user infos 
-    checkUserLoggedIn().then(function(response) {
-        // Parse the response to a JSON object
-        response = JSON.parse(response);
+// Get the connected user infos 
+checkUserLoggedIn().then(function(response) {
+    // Parse the response to a JSON object
+    response = JSON.parse(response);
 
-        // If the user is logged in 
-        if (response['user_id'] != -1 && mode == 2) {
-            document.getElementById("post-maker-area").innerHTML = generatePostMaker(response);
-            activePostMaker();
+    // If the user is logged in 
+    if (response['user_id'] != -1 && mode == 2) {
+        document.getElementById("post-maker-area").innerHTML = generatePostMaker(response);
+        activePostMaker();
+
+        if (editID != null) {
+            regeneratePostMaker(editID);
         }
-        
-        // Initialize the connection panel
-        document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
-        activeConnexionPanel(response);
+    }
+    
+    // Initialize the connection panel
+    document.getElementById("connexion-panel").innerHTML = generateConnexionPanel(response);
+    activeConnexionPanel(response);
 
-        //Initialize the nav menu 
-        document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
-        activeNavMenu(response);
+    //Initialize the nav menu 
+    document.getElementById("nav-menu").innerHTML = generateNavMenu(response);
+    activeNavMenu(response);
 
-        // Initialize the trends panel
-        generateTrendsPanel().then(function(response) {
-            document.getElementById("trends-side").innerHTML = response;
-            activeTrendsPanel();
-        });
-
-        // Initialize the search bar
-        document.getElementById("search-area").innerHTML = generateSearch();
-        activeSearch(currentSearch);
-
-        if (postID != null) {
-            displayPosts({nb : 1, allow_image : 1, allow_text : 1, post_id : postID});
-        }
-        else {
-            displayPosts({ nb: 10, allow_image: 1, allow_text: 1, sort: 'time', offset : currentOffset});
-        }
+    // Initialize the trends panel
+    generateTrendsPanel().then(function(response) {
+        document.getElementById("trends-side").innerHTML = response;
+        activeTrendsPanel();
     });
-}
+
+    // Initialize the search bar
+    document.getElementById("search-area").innerHTML = generateSearch();
+    activeSearch(currentSearch);
+
+    if (postID != null) {
+        displayPosts({nb : 1, allow_image : 1, allow_text : 1, post_id : postID});
+    }
+    else {
+        displayPosts({ nb: 10, allow_image: 1, allow_text: 1, sort: 'time', offset : currentOffset});
+    }
+});
+
 
 
 async function regeneratePostMaker(postID) {
@@ -82,14 +84,14 @@ async function regeneratePostMaker(postID) {
         postInfos = await retrievePost({nb : 1, allow_image : 1, allow_text : 1, sort : 'likes', by_user : 'null', post_id : postID});
         postInfos = JSON.parse(postInfos)[0]['post'];
     }
+
     // Get the user infos
     var userInfos = await checkUserLoggedIn();
     userInfos = JSON.parse(userInfos);
 
+    // If the user is still well connected and is the owner of the post
+    if (userInfos['user_id'] != -1  && (userInfos['user_id'] == postInfos['author_id'])) {
 
-    // If the user is still well connected
-    if (userInfos['user_id'] != -1 ) {
-        
         var postMakerArea = document.getElementById("post-maker-area");
         postMakerArea.innerHTML = generatePostMaker(userInfos, postInfos);
 

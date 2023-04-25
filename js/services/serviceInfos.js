@@ -1,6 +1,9 @@
 function GetInfosOnUser(username){
     // Send get request to get the user infos
-    let request = `php/getUserInfos.php?username=${username}`;
+    let url = `php/getUserInfos.php`;
+
+    var formData = new FormData();
+    formData.append('username', username);
     return new Promise(function(resolve, reject) {
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -10,8 +13,8 @@ function GetInfosOnUser(username){
                 reject('Error retrieving post.');
             }
         };
-        xmlhttp.open('GET', request, true);
-        xmlhttp.send();
+        xmlhttp.open('POST', url, true);
+        xmlhttp.send(formData);
     }
     );
 }

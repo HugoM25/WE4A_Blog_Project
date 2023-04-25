@@ -67,6 +67,9 @@
     background-color: #49afee;
 }
 
+.follow-card > .button-follow.active {
+    background-color: grey;
+}
 
 /* The apparition animation moving up + fading in */
 @keyframes apparition-anim {

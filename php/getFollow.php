@@ -65,8 +65,8 @@ class GetFollowObj {
             // Put the data in the response array
             $response[$i] = array(
                 "user_id" => $row["user_id"],
-                "ref" => $row["ref"],
-                "name" => $row["name"],
+                "ref" => urldecode($row["ref"]),
+                "name" => urldecode($row["name"]),
                 "profile_picture_path" => $row["profile_picture_path"],
             );
 
@@ -98,8 +98,8 @@ class GetFollowObj {
             // Put the data in the response array
             $response[$i] = array(
                 "user_id" => $row["user_id"],
-                "ref" => $row["ref"],
-                "name" => $row["name"],
+                "ref" => urldecode($row["ref"]),
+                "name" => urldecode($row["name"]),
                 "profile_picture_path" => $row["profile_picture_path"],
             );
             $i++;

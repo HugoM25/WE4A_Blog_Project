@@ -3,6 +3,7 @@ import { sanitizeUserInput } from "../utils/security.js";
 import { getStats, changeProfilePicture } from "../services/serviceInfoUser.js";
 
 async function generateProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
+    console.log(userInfos['name']);
     let userStats = JSON.parse(await getStats(userInfos['name']));
 
     let showFollowOptions = !isSelfProfile && userInfos['user_id'] != -1;

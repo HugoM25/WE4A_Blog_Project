@@ -46,7 +46,7 @@ function validateCredentials($test_username, $test_password, $sqlConnector) {
 function createNewCredentials($test_username, $test_password, $sqlConnector) {
 
     // check the database for the user's credentials
-    $sql = "INSERT INTO siteuser (name, password_hash, ref) VALUES ('".$test_username."', '".password_hash($test_password, PASSWORD_DEFAULT)."', '@".$username."')";
+    $sql = "INSERT INTO siteuser (name, password_hash, ref) VALUES ('".rawurlencode($test_username)."', '".password_hash($test_password, PASSWORD_DEFAULT)."', '@".rawurlencode($username)."')";
     $result = $sqlConnector->ask_database($sql);
 }
 ?>

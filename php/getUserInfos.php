@@ -13,9 +13,10 @@ class GetUserInfosObj {
         if ($this->sqlConnector->is_working == false) {
             die("Connection failed: " . $this->sqlConnector->conn->connect_error);
         }
-        // Take GET parameter 
-        if (isset($_GET['username'])) {
-            $user_id = getUserId($_GET['username']);
+        // Take POST parameter 
+        if (isset($_POST['username'])) {
+            $username = urldecode($_POST['username']);
+            $user_id = getUserId($username);
 
             if ($user_id == -1) {
                 $response = array( 
@@ -52,8 +53,8 @@ class GetUserInfosObj {
         // Return everything
         $response = array( 
             "success" => true,
-            "name" => $row["name"],
-            "ref" => $row["ref"],
+            "name" => urldecode($row["name"]),
+            "ref" => urldecode($row["ref"]),
             "profile_picture_path" => $row["profile_picture_path"],
             "user_id" => $row["user_id"],
         );

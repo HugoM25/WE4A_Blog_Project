@@ -111,8 +111,8 @@ class GetPostObj {
                     ),
                     "user" => array(
                         "user_id" => $row["user_id"],
-                        "ref" => $row["ref"],
-                        "name" => $row["name"], 
+                        "ref" => urldecode($row["ref"]),
+                        "name" => urldecode($row["name"]), 
                         "profile_picture_path" => $row["profile_picture_path"]
                     )
                 );

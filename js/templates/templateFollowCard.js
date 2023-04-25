@@ -4,9 +4,7 @@ import { sanitizeUserInput } from "../utils/security.js";
 async function generateFollowCard(userCardInfos, connectedUserInfos){
 
     // Prevent the user to follow himself
-    if (userCardInfos['user_id'] == connectedUserInfos['user_id']){
-        return '';
-    }
+    let showFollowOptions = userCardInfos['user_id'] != connectedUserInfos['user_id'];
 
     // Check if the connected user is following the profile page user
     let followInfos = await checkFollow(connectedUserInfos['user_id'], userCardInfos['user_id']);
@@ -24,7 +22,9 @@ async function generateFollowCard(userCardInfos, connectedUserInfos){
             <a class="follow-card-name" href="profile.html?username=${sanitizedName}">${sanitizedName}</a>
             <div class="follow-card-username">${sanitizedRef}</div>
         </div>
-        <button class="button-follow ${isFollowing ? 'active' : ''}" id="follow-button-${userCardInfos['user_id']}">${isFollowing ? 'Unfollow' : 'Follow'}</button>
+        ${
+            showFollowOptions ? `<button class="button-follow ${isFollowing ? 'active' : ''}" id="follow-button-${userCardInfos['user_id']}">${isFollowing ? 'Unfollow' : 'Follow'}</button>` : ''
+        }
     </div>`)
 }
 
