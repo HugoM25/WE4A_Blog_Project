@@ -1,3 +1,5 @@
+import { signInReq, signUpReq } from "../services/serviceLogin.js";
+
 // Find the buttons to choose signin/signup
 var buttonsAction = document.getElementsByClassName("action-button");
 // Hide the confirm password field
@@ -63,37 +65,22 @@ function signUp(event){
         return;
     }
 
-    // Create a new XMLHttpRequest object
-    var xhr = new XMLHttpRequest();
+    // Sign up
+    signUpReq(usernameInput.value, passwordInput.value).then(function(response) {
+        // Parse the JSON response
+        console.log(response);
+        var response = JSON.parse(response);
 
-    // Define the PHP script URL and parameters
-    var url = "php/register.php";
-    var params = "username=" + encodeURIComponent(usernameInput.value) + "&password=" + encodeURIComponent(passwordInput.value);
-
-    // Set the HTTP request method and content type
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-    // Define the function to be executed when the PHP script response is received
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            // Parse the JSON response
-            var response = JSON.parse(xhr.responseText);
-
-            if (response["success"] == true) {
-                // Redirect to the index.html page
-                window.location.href = "index.html";
-            }
-            else {
-                alert(response["error"]);
-            }
+        if (response["success"] == true) {
+            // Redirect to the index.html page
+            window.location.href = "index.html";
         }
-    }
-
-    // Send the HTTP request with the parameters
-    xhr.send(params);
-
-
+        else {
+            alert(response["error"]);
+        }
+    }).catch(function(error) {
+        alert(error);
+    });
 }
 
 function signIn(event){
@@ -102,33 +89,27 @@ function signIn(event){
     */
     event.preventDefault();
 
+    // Check if the fields are filled
     if (usernameInput.value == "" || passwordInput.value == "") {
         alert("Please fill all the fields");
         return;
     }
 
-    // Create a new XMLHttpRequest object
-    var xhr = new XMLHttpRequest();
+    // Sign in 
+    signInReq(usernameInput.value, passwordInput.value).then(function(response) {
+        // Parse the JSON response
+        console.log(response);
+        var response = JSON.parse(response);
 
-    // Define the PHP script URL and parameters
-    var url = "php/loginUser.php";
-    var params = "username=" + encodeURIComponent(usernameInput.value) + "&password=" + encodeURIComponent(passwordInput.value);
-
-    // Set the HTTP request method and content type
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-    // Define the function to be executed when the PHP script response is received
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {            
-            if (xhr.responseText.includes("success")) {
-                // Redirect to the index.html page
-                window.location.href = "index.html";
-            }
+        if (response["success"] == true) {
+            // Redirect to the index.html page
+            window.location.href = "index.html";
         }
-    }
-
-    // Send the HTTP request with the parameters
-    xhr.send(params);
+        else {
+            alert(response["error"]);
+        }
+    }).catch(function(error) {
+        alert(error);
+    });
 }
 

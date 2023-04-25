@@ -20,7 +20,6 @@ if (validateCredentials($test_username, $test_password, $sqlConnector)) {
     $_SESSION['loggedin'] = true;
     $_SESSION['user_id'] = getUserID($test_username);
     
-    echo $_SESSION['user_id'];
     echo json_encode(['success' => true]);
 }
 else {
@@ -35,14 +34,12 @@ function validateCredentials($test_username, $test_password, $sqlConnector) {
     $result = $sqlConnector->ask_database($sql);
 
     // Check the password 
-    if ($result->num_rows > 0 ) { 
+    if ($result != null ) { 
         $row = $result->fetch_assoc();
         if (password_verify($test_password, $row["password_hash"])){
             $is_valid = true; 
         }
     } 
-    // close the connection
-    $conn->close();
     return $is_valid;
 }
 
@@ -51,8 +48,5 @@ function createNewCredentials($test_username, $test_password, $sqlConnector) {
     // check the database for the user's credentials
     $sql = "INSERT INTO siteuser (name, password_hash, ref) VALUES ('".$test_username."', '".password_hash($test_password, PASSWORD_DEFAULT)."', '@".$username."')";
     $result = $sqlConnector->ask_database($sql);
-
-    // close the connection
-    $conn->close();
 }
 ?>
