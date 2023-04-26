@@ -3,6 +3,10 @@
 require_once('SqlConnector.php');
 
 function getUserID($curr_username){
+    /*
+    * This function will return the user's id from the database
+    * If the user is not in the database, it will return -1
+    */
     $user_current_id = -1;
 
     $sqlConnector = new SqlConnector();

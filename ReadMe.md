@@ -8,7 +8,6 @@
   * [Code overview](#code-overview)
 - [Getting Started](#getting-started)
   * [Installation](#installation)
-- [Usage](#usage)
   * [Launch the app locally](#launch-the-app-locally)
   * [Navigate](#navigate)
   * [Text Formatting](#text-formatter) 
@@ -93,16 +92,30 @@ As this site is not aiming to be deployed online the security is pretty basic. T
 
 <ins> Password saved inside database </ins> : To make sure the passwords of the user are not saved in plain text inside the database, we encrypt the password using php built-in functions. 
 
-# Installation 
+# Getting started 
+
+## Installation 
 
 If you want to try this site out you have to : 
 
 - Clone this repository and extract it on your pc
 - Start a local server using a software like Uwamp/Xampp to make the backend works
-- Use the .sql file to install the database 
+- Use the .sql file to install the database named we4a_twitter_clone_db (the database has been pre-filled with posts, users, likes, and so on)
 - Go to the SqlConnector.php file and make sure the password is `WE4A`
-- Open the `index.html` file in your favorite web browser
 
+## Launch the app locally
+
+Using Uwamp go to the www folder and open the `index.html` file.
+
+## Navigate 
+
+By opening the `index.html` file you'll be welcomed by the main menu. You will not be connected and will have to click on the bottom left connexion icon. From this page you can either connect yourself to an existing account or create your own. 
+
+After this you'll be redirected to the main page and will have acces to the main post feed. If you want to check your profile you can click on your name on your profile or the settings icon.
+
+From your profile's page you can edit your avatar by clicking on your current user image.
+
+You can create a post by clicking on the `write` icon on the left menu. After selecting your images and writing your text you can post it by clicking the send button.
 
 ## Text formatting 
 

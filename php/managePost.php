@@ -69,6 +69,8 @@ class ManagePostObj {
         $sql = "SELECT * FROM userpost WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         $results = $this->sqlConnector->ask_database($sql);
 
+        $image_path_to_delete = null;
+
         if ($results == null) {
             $response = array(
                 'success' => false,
@@ -76,6 +78,10 @@ class ManagePostObj {
             );
             echo json_encode($response);
             return;
+        }
+        else {
+            // Get the post image path
+            $image_path_to_delete = $results->fetch_assoc()['image_path'];
         }
 
         // Update the post in the database
@@ -86,8 +92,11 @@ class ManagePostObj {
             $sql = "UPDATE userpost SET edited = true, content = '".$post_text."', image_path = '".$image_path."' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         }
         else {
-            
             $sql = "UPDATE userpost SET edited = true, content = '".$post_text."', image_path ='' WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
+            
+            if ($image_path_to_delete != null || $image_path_to_delete != ''){
+                unlink('../'.$image_path_to_delete);
+            }	
         }
 
         // Remove every hashtag from the post in the database
@@ -135,7 +144,7 @@ class ManagePostObj {
         $sql = "SELECT * FROM userpost WHERE post_id = '".$post_id."' AND author_id = '".$connected_user_id."'";
         $results = $this->sqlConnector->ask_database($sql);
 
-        if ($results->num_rows == 0) {
+        if ($results == null) {
             $response = array(
                 'success' => false,
                 'error' => 'Post not found',
