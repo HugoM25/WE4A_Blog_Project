@@ -33,11 +33,26 @@
             $target_dir = "images/userPdp/";
 
             $image_path = null;
-            // Change the profile picture 
             if (isset($_FILES['pdp_image']) == true) {
+                // Save the new  profile picture
                 $post_image = $_FILES['pdp_image'];
                 $image_path = $this->save_image($post_image, $_SESSION['user_id'], $target_dir);
+
+                // Delete the old profile picture
+                $sql = "SELECT profile_picture_path FROM siteuser WHERE user_id = '".$curr_user_id."'";
+                $result = $this->sqlConnector->ask_database($sql);
+
+                if ($result != null){
+                    $row = $result->fetch_assoc();
+                    $old_image_path = $row['profile_picture_path'];
+                    if ($old_image_path != null && $old_image_path != "" && $old_image_path != 'images/default_pic.jpg'){
+                        unlink('../'.$old_image_path);
+                    }
+                }
             }
+
+
+
 
             // Update the database
             $sql = "UPDATE siteuser SET profile_picture_path = '".$image_path."' WHERE user_id = '".$curr_user_id."'";

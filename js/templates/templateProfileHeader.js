@@ -64,6 +64,7 @@ function activeProfileHeader(userInfos, isSelfProfile, connectedUserInfos){
             // Use confirm to ask the user if he wants to change his profile picture
             if (confirm('Do you want to change your profile picture?')) {
                 changeProfilePicture(file).then((response) => {
+                    console.log(response);
                     // Get the new profile picture
                     let newPdp = sanitizeUserInput(JSON.parse(response)['image_path']);
                     // Change the profile picture
