@@ -90,7 +90,7 @@ async function regeneratePostMaker(postID) {
     userInfos = JSON.parse(userInfos);
 
     // If the user is still well connected and is the owner of the post
-    if (userInfos['user_id'] != -1  && (userInfos['user_id'] == postInfos['author_id'])) {
+    if (userInfos['user_id'] != -1  && (postInfos != null && userInfos['user_id'] == postInfos['author_id'])) {
 
         var postMakerArea = document.getElementById("post-maker-area");
         postMakerArea.innerHTML = generatePostMaker(userInfos, postInfos);
